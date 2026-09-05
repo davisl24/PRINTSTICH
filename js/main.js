@@ -7,6 +7,8 @@
   const form = document.querySelector('[data-inquiry-form]');
   const formStatus = document.querySelector('[data-form-status]');
   const scrollTopButton = document.querySelector('.scroll-top');
+  const portfolioGrid = document.querySelector('[data-portfolio-grid]');
+  const portfolioFilters = [...document.querySelectorAll('.portfolio-filter')];
   const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const setHeaderState = () => {
@@ -52,15 +54,10 @@
     });
   };
 
-  const initRevealAnimations = () => {
-    const reduceMotion = reduceMotionQuery.matches;
-    const elements = [
-      ...document.querySelectorAll('.section-heading, .work-card, .service-row, .process-grid li, .quote-shell, .inquiry-copy, .inquiry-form')
-    ];
-
+  const revealElements = (elements) => {
     if (!elements.length) return;
 
-    if (reduceMotion || !('IntersectionObserver' in window)) {
+    if (reduceMotionQuery.matches || !('IntersectionObserver' in window)) {
       elements.forEach((element) => element.classList.add('is-visible'));
       return;
     }
@@ -82,6 +79,69 @@
     );
 
     elements.forEach((element) => observer.observe(element));
+  };
+
+  const initRevealAnimations = () => {
+    const elements = [
+      ...document.querySelectorAll('.section-heading, .service-row, .process-grid li, .quote-shell, .inquiry-copy, .inquiry-form')
+    ];
+
+    revealElements(elements);
+  };
+
+  const renderPortfolio = (category = 'Visi') => {
+    if (!portfolioGrid || !Array.isArray(window.PORTFOLIO_ITEMS)) return;
+
+    const items = category === 'Visi'
+      ? window.PORTFOLIO_ITEMS
+      : window.PORTFOLIO_ITEMS.filter((item) => item.kategorija === category);
+
+    portfolioGrid.innerHTML = '';
+
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((item, index) => {
+      const article = document.createElement('article');
+      article.className = 'portfolio-card';
+
+      const image = document.createElement('img');
+      image.className = 'portfolio-image';
+      image.src = `assets/images/darbi/${item.fails}`;
+      image.alt = item.alt;
+      image.width = 1200;
+      image.height = 1200;
+      image.decoding = 'async';
+
+      if (index >= 6) {
+        image.loading = 'lazy';
+      }
+
+      article.appendChild(image);
+      fragment.appendChild(article);
+    });
+
+    portfolioGrid.appendChild(fragment);
+    revealElements([...portfolioGrid.querySelectorAll('.portfolio-card')]);
+  };
+
+  const initPortfolioFilters = () => {
+    if (!portfolioGrid || !portfolioFilters.length || !Array.isArray(window.PORTFOLIO_ITEMS)) return;
+
+    renderPortfolio('Visi');
+
+    portfolioFilters.forEach((button) => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.category || 'Visi';
+
+        portfolioFilters.forEach((filterButton) => {
+          const isActive = filterButton === button;
+          filterButton.classList.toggle('is-active', isActive);
+          filterButton.setAttribute('aria-pressed', String(isActive));
+        });
+
+        renderPortfolio(category);
+      });
+    });
   };
 
   const initDividers = () => {
@@ -159,6 +219,7 @@
 
   setHeaderState();
   initMenu();
+  initPortfolioFilters();
   initRevealAnimations();
   initDividers();
   initScrollTop();
