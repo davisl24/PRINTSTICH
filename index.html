@@ -9,7 +9,9 @@
   <meta property="og:title" content="PrintStich — druka un dizains Limbažos">
   <meta property="og:description" content="No idejas un dizaina līdz gatavam drukas rezultātam.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://printstich.vercel.app/assets/images/hero-ligo.jpg">
+  <meta property="og:image" content="https://printstich.vercel.app/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://printstich.vercel.app/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +33,6 @@
 
       <nav class="site-nav" id="site-nav" aria-label="Galvenā navigācija" data-nav>
         <a href="#darbi">Darbi</a>
-        <a href="#video">Video</a>
         <a href="#pakalpojumi">Pakalpojumi</a>
         <a href="#process">Kā tas notiek</a>
         <a href="#kontakti">Kontakti</a>
@@ -67,48 +68,20 @@
           <p>Dažādi pasūtījumi, viena pieeja — atrast piemērotu risinājumu un kvalitatīvi to realizēt.</p>
         </div>
 
-        <div class="editorial-grid">
-          <article class="work-card work-card-large">
-            <img src="assets/images/tshirts-tetis.jpg" class="work-image" alt="Personalizēti T-krekli ar Tēta dizainiem" loading="lazy" width="1881" height="2048">
-            <div class="work-meta"><span>Apdruka</span><span>01</span></div>
-          </article>
-          <article class="work-card">
-            <img src="assets/images/mugs.jpg" class="work-image" alt="Personalizētu krūžu komplekti vīram un sievai" loading="lazy" width="1760" height="2048">
-            <div class="work-meta"><span>Personalizēti darbi</span><span>02</span></div>
-          </article>
-          <article class="work-card">
-            <div class="media-placeholder">Dizains un maketēšana</div>
-            <div class="work-meta"><span>Dizains</span><span>03</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <section class="section video-section" id="video">
-      <div class="container">
-        <div class="section-heading split-heading">
-          <div>
-            <p class="eyebrow">Video</p>
-            <h2>Skaties, kā top.</h2>
-          </div>
-          <p>PrintStich ikdiena, dizains un drukas darbi no Instagram.</p>
+        <div class="portfolio-filters" aria-label="Darbu kategorijas">
+          <button class="portfolio-filter is-active" type="button" data-category="Visi">Visi</button>
+          <button class="portfolio-filter" type="button" data-category="Apģērbs">Apģērbs</button>
+          <button class="portfolio-filter" type="button" data-category="Auto aplikācija">Auto aplikācija</button>
+          <button class="portfolio-filter" type="button" data-category="Suvenīri">Suvenīri</button>
+          <button class="portfolio-filter" type="button" data-category="Akrils">Akrils</button>
+          <button class="portfolio-filter" type="button" data-category="Iepakojums">Iepakojums</button>
+          <button class="portfolio-filter" type="button" data-category="Druka">Druka</button>
+          <button class="portfolio-filter" type="button" data-category="Darbnīca">Darbnīca</button>
         </div>
 
-        <div class="instagram-grid">
-          <div class="instagram-card" style="aspect-ratio: 9 / 16;">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DaW_PnuMK3d/" data-instgrm-version="14"></blockquote>
-          </div>
-          <div class="instagram-card" style="aspect-ratio: 9 / 16;">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/Daxdy9GsgWr/" data-instgrm-version="14"></blockquote>
-          </div>
-          <div class="instagram-card" style="aspect-ratio: 9 / 16;">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/Dc09CpLsbNc/" data-instgrm-version="14"></blockquote>
-          </div>
-        </div>
+        <div class="portfolio-grid" data-portfolio-grid></div>
 
-        <div class="video-footer">
+        <div class="portfolio-footer">
           <a class="button button-ghost" href="https://www.instagram.com/printstich/" target="_blank" rel="noopener noreferrer">Skatīt vairāk Instagram</a>
         </div>
       </div>
@@ -145,6 +118,12 @@
             <h3>Maketēšana</h3>
             <p>Esošās idejas un materiālu sagatavošana skaidram, profesionālam gala rezultātam.</p>
             <a href="#piedavajums" aria-label="Saņemt piedāvājumu maketēšanai">Jautāt par iespēju →</a>
+          </article>
+          <article class="service-row">
+            <span class="service-number">05</span>
+            <h3>Auto un transporta aplikācija</h3>
+            <p>Transportlīdzekļu vizuālā noformēšana ar uzrakstiem, logo un citiem aplikācijas elementiem.</p>
+            <a href="#piedavajums" aria-label="Saņemt piedāvājumu auto un transporta aplikācijai">Jautāt par iespēju →</a>
           </article>
         </div>
       </div>
@@ -242,8 +221,8 @@
 
   <button class="scroll-top" type="button" aria-label="Uz augšu" hidden>↑</button>
 
-  <script async src="https://www.instagram.com/embed.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/portfolio-data.js"></script>
   <script src="js/main.js"></script>
   <script>
     (() => {
