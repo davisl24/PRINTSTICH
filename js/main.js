@@ -6,10 +6,17 @@
   const nav = document.querySelector('[data-nav]');
   const form = document.querySelector('[data-inquiry-form]');
   const formStatus = document.querySelector('[data-form-status]');
+  const scrollTopButton = document.querySelector('.scroll-top');
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const setHeaderState = () => {
     if (!header) return;
     header.classList.toggle('is-scrolled', window.scrollY > 16);
+  };
+
+  const setScrollTopState = () => {
+    if (!scrollTopButton) return;
+    scrollTopButton.classList.toggle('is-visible', window.scrollY > 400);
   };
 
   const closeMenu = () => {
@@ -46,7 +53,7 @@
   };
 
   const initRevealAnimations = () => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = reduceMotionQuery.matches;
     const elements = [
       ...document.querySelectorAll('.section-heading, .work-card, .service-row, .process-grid li, .quote-shell, .inquiry-copy, .inquiry-form')
     ];
@@ -75,6 +82,42 @@
     );
 
     elements.forEach((element) => observer.observe(element));
+  };
+
+  const initDividers = () => {
+    const dividers = [...document.querySelectorAll('.divider')];
+    if (!dividers.length) return;
+
+    if (reduceMotionQuery.matches || !('IntersectionObserver' in window)) {
+      dividers.forEach((divider) => divider.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, instance) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          instance.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    dividers.forEach((divider) => observer.observe(divider));
+  };
+
+  const initScrollTop = () => {
+    if (!scrollTopButton) return;
+
+    setScrollTopState();
+
+    scrollTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotionQuery.matches ? 'auto' : 'smooth'
+      });
+    });
   };
 
   const validateContact = (value) => {
@@ -117,7 +160,12 @@
   setHeaderState();
   initMenu();
   initRevealAnimations();
+  initDividers();
+  initScrollTop();
   initForm();
 
-  window.addEventListener('scroll', setHeaderState, { passive: true });
+  window.addEventListener('scroll', () => {
+    setHeaderState();
+    setScrollTopState();
+  }, { passive: true });
 })();
