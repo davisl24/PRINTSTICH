@@ -9,11 +9,61 @@
   <meta property="og:title" content="PrintStich — druka un dizains Limbažos">
   <meta property="og:description" content="No idejas un dizaina līdz gatavam drukas rezultātam.">
   <meta property="og:type" content="website">
-  <!-- og:image: TRŪKST — pievienot pēc gala hero attēla apstiprināšanas. -->
+  <!-- og:image: pievienot pēc gala hero attēla ievietošanas repo. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Pagaidu hero precizējumi vienā failā. Nākamajā CSS solī pārnesam uz style.css. -->
+  <style>
+    .hero {
+      padding-top: clamp(1.5rem, 3.5vw, 3rem);
+      padding-bottom: clamp(3.5rem, 7vw, 6rem);
+    }
+
+    .hero-shell {
+      min-height: min(640px, calc(100vh - 96px));
+      gap: clamp(1.5rem, 3.5vw, 3.5rem);
+    }
+
+    .hero h1 {
+      max-width: 11.5ch;
+      margin-bottom: 1.15rem;
+      font-size: clamp(2.7rem, 5vw, 5.15rem);
+      line-height: 0.98;
+    }
+
+    .hero-lead {
+      max-width: 34rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-visual {
+      min-height: clamp(420px, 48vw, 610px);
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        padding-top: 1.25rem;
+        padding-bottom: 4rem;
+      }
+
+      .hero-shell {
+        min-height: auto;
+        gap: 1.75rem;
+      }
+
+      .hero h1 {
+        max-width: 12ch;
+        font-size: clamp(2.7rem, 12vw, 4rem);
+      }
+
+      .hero-visual {
+        min-height: 390px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header" data-header>
@@ -53,7 +103,6 @@
         </div>
 
         <div class="hero-visual" aria-label="PrintStich darbu vizuālais materiāls">
-          <!-- Aizstāt ar atlasītu reālu PrintStich darba attēlu, kad tas ir pievienots repo assets mapē. -->
           <div class="visual-placeholder">
             <span>PrintStich</span>
             <strong>Darbs, kas runā pats par sevi.</strong>
