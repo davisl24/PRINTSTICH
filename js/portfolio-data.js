@@ -5,6 +5,31 @@ const PORTFOLIO_ITEMS = [
     kategorija: 'Apģērbs'
   },
   {
+    fails: 'auto-scania-prieksa.jpg',
+    alt: 'Scania kravas auto priekšpuse ar personalizētu aplikāciju',
+    kategorija: 'Auto aplikācija'
+  },
+  {
+    fails: 'kruzes-45gadi.jpg',
+    alt: 'Personalizētas krūzes 45 gadu jubilejai',
+    kategorija: 'Suvenīri'
+  },
+  {
+    fails: 'akrils-vardu-topperi.jpg',
+    alt: 'Akrila vārdu topperi personalizētām dāvanām un dekorācijām',
+    kategorija: 'Akrils'
+  },
+  {
+    fails: 'maisini-printstich.jpg',
+    alt: 'PrintStich zīmola maisiņi ar drukātu logotipu',
+    kategorija: 'Iepakojums'
+  },
+  {
+    fails: 'uzlimes-motokross.jpg',
+    alt: 'Motokrosa tematikas personalizētu uzlīmju komplekts',
+    kategorija: 'Druka'
+  },
+  {
     fails: 'jakas-coach-manager.jpg',
     alt: 'Melnas jakas ar Coach un Manager uzrakstu apdruku',
     kategorija: 'Apģērbs'
@@ -18,11 +43,6 @@ const PORTFOLIO_ITEMS = [
     fails: 'cepure-boxing-tuvplans.jpg',
     alt: 'Tuvplānā cepure ar Boxing tematikas apdruku',
     kategorija: 'Apģērbs'
-  },
-  {
-    fails: 'auto-scania-prieksa.jpg',
-    alt: 'Scania kravas auto priekšpuse ar personalizētu aplikāciju',
-    kategorija: 'Auto aplikācija'
   },
   {
     fails: 'auto-scania-sans.jpg',
@@ -45,34 +65,14 @@ const PORTFOLIO_ITEMS = [
     kategorija: 'Auto aplikācija'
   },
   {
-    fails: 'kruzes-45gadi.jpg',
-    alt: 'Personalizētas krūzes 45 gadu jubilejai',
-    kategorija: 'Suvenīri'
-  },
-  {
     fails: 'nozimes-45gadi.jpg',
     alt: 'Personalizētas nozīmītes 45 gadu jubilejai',
     kategorija: 'Suvenīri'
   },
   {
-    fails: 'akrils-vardu-topperi.jpg',
-    alt: 'Akrila vārdu topperi personalizētām dāvanām un dekorācijām',
-    kategorija: 'Akrils'
-  },
-  {
     fails: 'akrils-davana-skolotajai.jpg',
     alt: 'Personalizēta akrila dāvana skolotājai',
     kategorija: 'Akrils'
-  },
-  {
-    fails: 'maisini-printstich.jpg',
-    alt: 'PrintStich zīmola maisiņi ar drukātu logotipu',
-    kategorija: 'Iepakojums'
-  },
-  {
-    fails: 'uzlimes-motokross.jpg',
-    alt: 'Motokrosa tematikas personalizētu uzlīmju komplekts',
-    kategorija: 'Druka'
   },
   {
     fails: 'foto-druka.jpg',
