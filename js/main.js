@@ -9,7 +9,11 @@
   const scrollTopButton = document.querySelector('.scroll-top');
   const portfolioGrid = document.querySelector('[data-portfolio-grid]');
   const portfolioFilters = [...document.querySelectorAll('.portfolio-filter')];
+  const galleryMoreButton = document.querySelector('.gallery-more');
   const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  let activePortfolioCategory = 'Visi';
+  let showAllPortfolioItems = false;
 
   const setHeaderState = () => {
     if (!header) return;
@@ -89,18 +93,39 @@
     revealElements(elements);
   };
 
-  const renderPortfolio = (category = 'Visi') => {
+  const getPortfolioItems = (category) => (
+    category === 'Visi'
+      ? window.PORTFOLIO_ITEMS
+      : window.PORTFOLIO_ITEMS.filter((item) => item.kategorija === category)
+  );
+
+  const updateGalleryMoreButton = (items) => {
+    if (!galleryMoreButton) return;
+
+    const canToggle = activePortfolioCategory === 'Visi' && items.length > 6;
+    galleryMoreButton.hidden = !canToggle;
+
+    if (canToggle) {
+      galleryMoreButton.textContent = showAllPortfolioItems
+        ? 'Rādīt mazāk'
+        : 'Rādīt visus darbus';
+      galleryMoreButton.setAttribute('aria-expanded', String(showAllPortfolioItems));
+    }
+  };
+
+  const renderPortfolio = (category = activePortfolioCategory) => {
     if (!portfolioGrid || !Array.isArray(window.PORTFOLIO_ITEMS)) return;
 
-    const items = category === 'Visi'
-      ? window.PORTFOLIO_ITEMS
-      : window.PORTFOLIO_ITEMS.filter((item) => item.kategorija === category);
+    const items = getPortfolioItems(category);
+    const visibleItems = category === 'Visi' && !showAllPortfolioItems
+      ? items.slice(0, 6)
+      : items;
 
     portfolioGrid.innerHTML = '';
 
     const fragment = document.createDocumentFragment();
 
-    items.forEach((item, index) => {
+    visibleItems.forEach((item, index) => {
       const article = document.createElement('article');
       article.className = 'portfolio-card';
 
@@ -121,17 +146,19 @@
     });
 
     portfolioGrid.appendChild(fragment);
+    updateGalleryMoreButton(items);
     revealElements([...portfolioGrid.querySelectorAll('.portfolio-card')]);
   };
 
   const initPortfolioFilters = () => {
     if (!portfolioGrid || !portfolioFilters.length || !Array.isArray(window.PORTFOLIO_ITEMS)) return;
 
-    renderPortfolio('Visi');
+    renderPortfolio();
 
     portfolioFilters.forEach((button) => {
       button.addEventListener('click', () => {
-        const category = button.dataset.category || 'Visi';
+        activePortfolioCategory = button.dataset.category || 'Visi';
+        showAllPortfolioItems = false;
 
         portfolioFilters.forEach((filterButton) => {
           const isActive = filterButton === button;
@@ -139,9 +166,17 @@
           filterButton.setAttribute('aria-pressed', String(isActive));
         });
 
-        renderPortfolio(category);
+        renderPortfolio();
       });
     });
+
+    if (galleryMoreButton) {
+      galleryMoreButton.addEventListener('click', () => {
+        if (activePortfolioCategory !== 'Visi') return;
+        showAllPortfolioItems = !showAllPortfolioItems;
+        renderPortfolio();
+      });
+    }
   };
 
   const initDividers = () => {
