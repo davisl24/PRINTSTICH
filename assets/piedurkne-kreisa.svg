@@ -1,0 +1,8 @@
+<svg id="ps-sleeve-left" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="700" fill="#F7F7F5"/>
+  <path class="shirt-body"
+    d="M170 130 L415 130 L470 215 L430 545 L185 545 L125 235 Z"
+    fill="#ffffff" stroke="#c9c6bf" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M170 130 L415 130" fill="none" stroke="#c9c6bf" stroke-width="8" stroke-linecap="round"/>
+  <path d="M185 545 L430 545" fill="none" stroke="#c9c6bf" stroke-width="7" stroke-linecap="round"/>
+</svg>
