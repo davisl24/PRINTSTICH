@@ -10,6 +10,7 @@
   const MB = 1024 * 1024;
   const MAX_CLIENT_FILE_SIZE = 8 * MB;
   const MAX_MOCKUP_FILE_SIZE = 1 * MB;
+  const MIN_VALID_MOCKUP_SIZE = 5000;
 
   const els = {
     panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'),
@@ -91,11 +92,19 @@
       hint.className = 'customizer-preview-hint customizer-mobile-drag-hint'; hint.dataset.mobileDragHint = '';
       hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu'; hint.hidden = true; els.previewCard.appendChild(hint);
     }
+    if (els.form && !$('#debugMockup')) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.id = 'debugMockup';
+      button.className = 'button button-ghost';
+      button.textContent = 'Debug mockup';
+      els.form.insertAdjacentElement('beforebegin', button);
+    }
   }
 
   ensureColorButtons(); ensureSideButtons(); ensureExtraUi();
   els.printSize = $('[data-print-size]'); els.printLimitWarning = $('[data-print-limit-warning]'); els.dpiWarning = $('[data-dpi-warning]');
-  els.presetButtons = $$('[data-position-preset]'); els.mobileDragHint = $('[data-mobile-drag-hint]');
+  els.presetButtons = $$('[data-position-preset]'); els.mobileDragHint = $('[data-mobile-drag-hint]'); els.debugMockup = $('#debugMockup');
 
   function ensureDesignCanvas() {
     let canvas = $('[data-design-canvas]', els.printArea);
@@ -160,23 +169,11 @@
     const aspect = side.naturalWidth / side.naturalHeight;
     let width = zoneWidth * side.scale;
     let height = width / aspect;
-    if (height > zoneHeight * side.scale) {
-      height = zoneHeight * side.scale;
-      width = height * aspect;
-    }
-    return {
-      width,
-      height,
-      x: side.positionX * zoneWidth - width / 2,
-      y: side.positionY * zoneHeight - height / 2
-    };
+    if (height > zoneHeight * side.scale) { height = zoneHeight * side.scale; width = height * aspect; }
+    return { width, height, x: side.positionX * zoneWidth - width / 2, y: side.positionY * zoneHeight - height / 2 };
   }
 
-  function designDimensions(side=currentSide()) {
-    const area=els.printArea.getBoundingClientRect(); if(!area.width||!area.height)return null;
-    const rect=getDesignRect(area.width,area.height,side); if(!rect)return null;
-    return {area,width:rect.width,height:rect.height};
-  }
+  function designDimensions(side=currentSide()) { const area=els.printArea.getBoundingClientRect(); if(!area.width||!area.height)return null; const rect=getDesignRect(area.width,area.height,side); if(!rect)return null; return {area,width:rect.width,height:rect.height}; }
   function printMetrics(side=currentSide()) { const d=designDimensions(side),mmArea=physicalArea(); if(!d||!mmArea)return null; const widthMm=d.width/d.area.width*mmArea.w,heightMm=d.height/d.area.height*mmArea.h,dpi=widthMm>0&&side.naturalWidth?side.naturalWidth/widthMm*25.4:0; return {widthMm,heightMm,dpi,widthRounded:Math.round(widthMm),heightRounded:Math.round(heightMm),dpiRounded:Math.round(dpi)}; }
   function maxAllowedScale(side=currentSide()) { const mmArea=physicalArea(); if(!mmArea||!side.naturalWidth||!side.naturalHeight)return 1; const area=els.printArea.getBoundingClientRect(); if(!area.width||!area.height)return 1; const aspect=side.naturalWidth/side.naturalHeight,max=product.maxDrukaMm; for(let candidate=1;candidate>=.05;candidate-=.005){let width=area.width*candidate,height=width/aspect;if(height>area.height*candidate){height=area.height*candidate;width=height*aspect;}if(width/area.width*mmArea.w<=max.w&&height/area.height*mmArea.h<=max.h)return candidate;}return .05; }
   function enforcePrintLimit(showMessage=false){const side=currentSide();if(!side.url||!state.size||side.vectorFallback)return false;const allowed=maxAllowedScale(side);if(side.scale<=allowed+.0001)return false;side.scale=allowed;if(showMessage&&els.printLimitWarning)els.printLimitWarning.textContent=`Šis izmērs pārsniedz maksimālo drukas laukumu (${product.maxDrukaMm.w} × ${product.maxDrukaMm.h} mm). Dizains automātiski samazināts.`;return true;}
@@ -185,13 +182,9 @@
   function updatePresetState(){els.presetButtons.forEach(button=>{const active=currentSide().preset===button.dataset.positionPreset;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active));});}
 
   function drawVectorFallback(ctx, width, height) {
-    ctx.save();
-    ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]);
-    ctx.strokeRect(1, 1, width - 2, height - 2);
-    ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px Manrope, Arial, sans-serif';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('vektora fails pielikumā', width / 2, height / 2);
-    ctx.restore();
+    ctx.save(); ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2);
+    ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px Manrope, Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore();
   }
 
   function drawDesignCanvas(){const canvas=els.designCanvas,side=currentSide(),rect=els.printArea.getBoundingClientRect();if(!canvas||!rect.width||!rect.height)return;const dpr=Math.min(window.devicePixelRatio||1,2),pixelWidth=Math.max(1,Math.round(rect.width*dpr)),pixelHeight=Math.max(1,Math.round(rect.height*dpr));if(canvas.width!==pixelWidth)canvas.width=pixelWidth;if(canvas.height!==pixelHeight)canvas.height=pixelHeight;const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,rect.width,rect.height);if(side.vectorFallback){drawVectorFallback(ctx,rect.width,rect.height);return;}if(!side.image)return;const designRect=getDesignRect(rect.width,rect.height,side);if(!designRect)return;ctx.drawImage(side.image,designRect.x,designRect.y,designRect.width,designRect.height);}
@@ -223,11 +216,58 @@
   const endDrag=event=>{if(drag?.pointerId===event.pointerId){drag=null;els.designCanvas.style.cursor='grab';}};els.designCanvas.addEventListener('pointerup',endDrag);els.designCanvas.addEventListener('pointercancel',endDrag);
   if(els.prev)els.prev.addEventListener('click',()=>showStep(state.step-1));if(els.next)els.next.addEventListener('click',()=>{if(!stepComplete(state.step)){if(state.step===1)error('size','Izvēlies krekla izmēru.');if(state.step===2)error('file','Pievieno savu dizainu.');return;}showStep(state.step+1);});
 
-  function loadImage(source){return new Promise((resolve,reject)=>{if(!source){reject(new Error('Attēla avots nav norādīts.'));return;}const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('Neizdevās ielādēt attēlu gala priekšskatījumam.'));image.src=source;});}
-  async function svgToImage(){if(!state.svgRoot)throw new Error('Krekla SVG nav ielādēts.');updateSvgColor();updateSvgSide();const clone=state.svgRoot.cloneNode(true);clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('width','600');clone.setAttribute('height','700');const serialized=new XMLSerializer().serializeToString(clone),blob=new Blob([serialized],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob);try{return await loadImage(url);}finally{URL.revokeObjectURL(url);}}
+  function inlineComputedSvgStyles(sourceSvg, cloneSvg) {
+    const sourceNodes = [sourceSvg, ...sourceSvg.querySelectorAll('*')];
+    const cloneNodes = [cloneSvg, ...cloneSvg.querySelectorAll('*')];
+    sourceNodes.forEach((sourceNode, index) => {
+      const cloneNode = cloneNodes[index];
+      if (!cloneNode) return;
+      const computed = getComputedStyle(sourceNode);
+      ['fill','stroke','stroke-width','opacity'].forEach(property => {
+        const value = computed.getPropertyValue(property);
+        if (value) cloneNode.setAttribute(property, value.trim());
+      });
+    });
+  }
+
+  function prepareSerializedSvg() {
+    if (!state.svgRoot) throw new Error('Krekla SVG nav ielādēts.');
+    updateSvgColor(); updateSvgSide();
+    const sourceRect = state.svgRoot.getBoundingClientRect();
+    const clone = state.svgRoot.cloneNode(true);
+    const existingViewBox = state.svgRoot.getAttribute('viewBox');
+    const fallbackWidth = sourceRect.width || state.svgRoot.viewBox?.baseVal?.width || 600;
+    const fallbackHeight = sourceRect.height || state.svgRoot.viewBox?.baseVal?.height || 700;
+    const width = Math.max(1, Math.round(fallbackWidth));
+    const height = Math.max(1, Math.round(fallbackHeight));
+
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('width', String(width));
+    clone.setAttribute('height', String(height));
+    if (!existingViewBox) clone.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    else clone.setAttribute('viewBox', existingViewBox);
+    inlineComputedSvgStyles(state.svgRoot, clone);
+
+    const viewBoxParts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number);
+    const viewBox = viewBoxParts.length === 4 && viewBoxParts.every(Number.isFinite)
+      ? { x: viewBoxParts[0], y: viewBoxParts[1], width: viewBoxParts[2], height: viewBoxParts[3] }
+      : { x: 0, y: 0, width, height };
+
+    return { svgString: new XMLSerializer().serializeToString(clone), viewBox };
+  }
+
+  async function svgToImage() {
+    const { svgString, viewBox } = prepareSerializedSvg();
+    const image = new Image();
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
+    await image.decode();
+    if (!image.naturalWidth || !image.naturalHeight) throw new Error('Serializētais SVG ielādējās ar 0×0 izmēru.');
+    return { image, viewBox };
+  }
 
   function drawMockupContent(ctx,canvas,side,shirtImage){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(shirtImage,0,0,canvas.width,canvas.height);
     const zone=product.drukasZona[state.side]; if(!zone)return;
     const zoneX=zone.x*canvas.width,zoneY=zone.y*canvas.height,zoneW=zone.w*canvas.width,zoneH=zone.h*canvas.height;
@@ -236,31 +276,52 @@
     ctx.drawImage(side.image,zoneX+designRect.x,zoneY+designRect.y,designRect.width,designRect.height);
   }
 
-  async function drawFinalPreview(){const canvas=els.finalPreview;if(!canvas)return;const ctx=canvas.getContext('2d'),side=currentSide();canvas.width=900;canvas.height=1050;try{const shirtImage=await svgToImage();drawMockupContent(ctx,canvas,side,shirtImage);canvas.toDataURL('image/png');}catch(previewError){console.error('PrintStich konfigurators: priekšskatījumu neizdevās izveidot no SVG.',previewError);ctx.fillStyle='#f7f7f5';ctx.fillRect(0,0,canvas.width,canvas.height);}}
+  async function drawFinalPreview(){const canvas=els.finalPreview;if(!canvas)return;const ctx=canvas.getContext('2d'),side=currentSide();try{const {image,viewBox}=await svgToImage();canvas.width=900;canvas.height=Math.round(900*(viewBox.height/viewBox.width));drawMockupContent(ctx,canvas,side,image);canvas.toDataURL('image/png');}catch(previewError){console.error('PrintStich konfigurators: priekšskatījumu neizdevās izveidot no SVG.',previewError);ctx.fillStyle='#f7f7f5';ctx.fillRect(0,0,canvas.width||900,canvas.height||1050);}}
 
   function positionLabel(side=currentSide()){const labels={center:'Centrā','left-chest':'Krūšu kreisajā pusē',top:'Augšā',lower:'Zemāk'};return labels[side.preset]||`X ${Math.round(side.positionX*100)}%, Y ${Math.round(side.positionY*100)}%`;}
   function syncFormData(){const side=currentSide(),metrics=printMetrics(),color=colorById(state.color);const set=(selector,value)=>{const input=$(selector);if(input)input.value=value;};set('[data-form-color]',color.nosaukums);set('[data-form-size]',state.size);set('[data-form-side]',sideLabel(state.side));set('[data-form-design-position]',positionLabel(side));set('[data-form-print-mm]',metrics?`${metrics.widthRounded} × ${metrics.heightRounded} mm`:'Nav aprēķināms');set('[data-form-position-x]',`${Math.round(side.positionX*100)}%`);set('[data-form-position-y]',`${Math.round(side.positionY*100)}%`);set('[data-form-original-filename]',side.file?.name||'');set('[data-form-resolution]',side.vectorFallback?'Vektora/PDF fails':metrics?`${side.naturalWidth} × ${side.naturalHeight} px, ${metrics.dpiRounded} DPI`:'' );set('[data-form-scale]',`${Math.round(side.scale*100)}%`);}
 
   function syncOriginalAttachment(){const side=currentSide();if(!side.file||!els.designInput||!els.attachmentSlot)return false;if(typeof DataTransfer==='undefined'){error('form','Šis pārlūks nevar sagatavot pielikumus. Lūdzu, izmanto jaunāko Chrome, Safari vai Firefox.');return false;}const transfer=new DataTransfer();transfer.items.add(side.file);els.designInput.files=transfer.files;els.attachmentSlot.appendChild(els.designInput);return true;}
-
   function canvasToBlob(canvas){return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG mockapu neizdevās izveidot.')),'image/png'));}
+
+  function validateMockupBlob(blob, cause = null) {
+    if (blob && blob.size >= MIN_VALID_MOCKUP_SIZE) return blob;
+    const validationError = new Error('Neizdevās sagatavot attēlu, mēģini vēlreiz');
+    console.error('PrintStich konfigurators: mockapa validācija neizdevās.', cause || new Error(`PNG izmērs: ${blob?.size || 0} baiti`));
+    throw validationError;
+  }
 
   async function createMockupBlob(){
     const side=currentSide();
-    const shirtImage=await svgToImage();
+    let svgData;
+    try { svgData=await svgToImage(); }
+    catch (cause) { console.error('PrintStich konfigurators: SVG renderēšana mockapam neizdevās.', cause); throw new Error('Neizdevās sagatavot attēlu, mēģini vēlreiz'); }
     let width=1000;
     while(width>=600){
       const canvas=document.createElement('canvas');
-      canvas.width=width;canvas.height=Math.round(width*7/6);
-      drawMockupContent(canvas.getContext('2d'),canvas,side,shirtImage);
-      const blob=await canvasToBlob(canvas);
+      canvas.width=width;canvas.height=Math.round(width*(svgData.viewBox.height/svgData.viewBox.width));
+      drawMockupContent(canvas.getContext('2d'),canvas,side,svgData.image);
+      const blob=validateMockupBlob(await canvasToBlob(canvas));
       if(blob.size<=MAX_MOCKUP_FILE_SIZE||width===600)return blob;
       width=Math.max(600,Math.round(width*.85));
     }
     throw new Error('Mockapa PNG pārsniedz 1 MB.');
   }
 
-  async function attachMockupFile(){if(!els.mockupInput)throw new Error('Mockup file input nav atrasts.');if(typeof DataTransfer==='undefined')throw new Error('DataTransfer nav pieejams.');const blob=await createMockupBlob();if(blob.size>MAX_MOCKUP_FILE_SIZE)throw new Error('Mockapa PNG pārsniedz 1 MB.');const color=colorById(state.color),file=new File([blob],`mockup-${color.id}-${state.side}.png`,{type:'image/png'}),transfer=new DataTransfer();transfer.items.add(file);els.mockupInput.files=transfer.files;return file;}
+  async function attachMockupFile(){if(!els.mockupInput)throw new Error('Mockup file input nav atrasts.');if(typeof DataTransfer==='undefined')throw new Error('DataTransfer nav pieejams.');const blob=validateMockupBlob(await createMockupBlob());if(blob.size>MAX_MOCKUP_FILE_SIZE)throw new Error('Mockapa PNG pārsniedz 1 MB.');const color=colorById(state.color),file=new File([blob],`mockup-${color.id}-${state.side}.png`,{type:'image/png'}),transfer=new DataTransfer();transfer.items.add(file);els.mockupInput.files=transfer.files;return file;}
+
+  if (els.debugMockup) els.debugMockup.addEventListener('click', async () => {
+    error('form');
+    try {
+      const blob = validateMockupBlob(await createMockupBlob());
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank', 'noopener');
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch (debugError) {
+      console.error('PrintStich konfigurators: debug mockupu neizdevās izveidot.', debugError);
+      error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
+    }
+  });
 
   function updateWhatsApp(){if(!els.whatsapp)return;const side=currentSide(),metrics=printMetrics(),color=colorById(state.color),text=['Sveiki! Vēlos PrintStich piedāvājumu savam krekla dizainam.',`Krekls: ${color.nosaukums}`,`Izmērs: ${state.size}`,`Apdruka: ${sideLabel(state.side)}`,metrics?`Drukas izmērs: ${metrics.widthRounded} × ${metrics.heightRounded} mm`:'',`Pozīcija: x ${Math.round(side.positionX*100)}%, y ${Math.round(side.positionY*100)}%`,metrics?`Fails: ${side.naturalWidth} × ${side.naturalHeight} px, ~${metrics.dpiRounded} DPI`:''].filter(Boolean).join('\n');els.whatsapp.href=`https://wa.me/37127333112?text=${encodeURIComponent(text)}`;}
   function updateSummary(){const color=colorById(state.color),summaryColor=$('[data-summary-color]'),summarySize=$('[data-summary-size]'),summarySide=$('[data-summary-side]');if(summaryColor)summaryColor.textContent=color.nosaukums;if(summarySize)summarySize.textContent=state.size||'—';if(summarySide)summarySide.textContent=sideLabel(state.side);syncFormData();updateWhatsApp();drawFinalPreview();}
@@ -279,10 +340,11 @@
     const submitButton=$('.customizer-submit',els.form);if(submitButton){submitButton.disabled=true;submitButton.textContent='Sagatavo nosūtīšanai...';}
     try{
       const mockupFile=await attachMockupFile();
+      if(mockupFile.size<MIN_VALID_MOCKUP_SIZE)throw new Error('Neizdevās sagatavot attēlu, mēģini vēlreiz');
       if(side.file.size+mockupFile.size>10*MB)throw new Error('Pielikumu kopējais izmērs pārsniedz FormSubmit 10 MB limitu.');
       state.submitting=true;
       els.form.submit();
-    }catch(submitError){console.error('PrintStich konfigurators: submit sagatavošana neizdevās.',submitError);error('form',submitError.message||'Neizdevās sagatavot mockapu nosūtīšanai. Mēģini vēlreiz.');if(submitButton){submitButton.disabled=false;submitButton.textContent='Nosūtīt savu dizainu';}}
+    }catch(submitError){console.error('PrintStich konfigurators: submit sagatavošana neizdevās.',submitError);error('form',submitError.message==='Neizdevās sagatavot attēlu, mēģini vēlreiz'?submitError.message:(submitError.message||'Neizdevās sagatavot mockapu nosūtīšanai. Mēģini vēlreiz.'));if(submitButton){submitButton.disabled=false;submitButton.textContent='Nosūtīt savu dizainu';}}
   });
 
   function showThankYouIfNeeded(){if(window.location.hash!=='#paldies')return;els.panels.forEach(panel=>{panel.hidden=true;});if(els.navigation)els.navigation.hidden=true;if(els.success)els.success.hidden=false;els.printArea.style.borderColor='transparent';}
