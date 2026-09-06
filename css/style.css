@@ -154,6 +154,12 @@ p:last-child { margin-bottom: 0; }
 .scroll-top.is-visible { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
 
 @media (min-width: 1024px) {
+  .hero { position: relative; }
+  .hero::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 55%; z-index: 0; background: linear-gradient(to right, rgba(247,247,245,0.95) 0%, rgba(247,247,245,0.80) 55%, rgba(247,247,245,0) 100%); pointer-events: none; }
+  .hero-shell { position: relative; z-index: 1; }
+  .hero-copy > * { max-width: 46%; }
+  .hero-copy h1 { max-width: 46%; text-wrap: balance; }
+  .hero-copy .hero-actions { max-width: 46%; }
   .portfolio-filters { flex-wrap: wrap; overflow: visible; padding-inline: 0; scroll-snap-type: none; }
 }
 
