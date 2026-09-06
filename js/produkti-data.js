@@ -5,44 +5,32 @@
     tshirt: {
       id: 'tshirt',
       nosaukums: 'T-krekls',
-      krasas: {
-        white: {
-          label: 'Balta',
-          value: '#ffffff',
-          mockups: {
-            front: 'assets/images/mokapi/krekls-balts-prieksa.jpg',
-            back: 'assets/images/mokapi/krekls-balts-aizmugure.jpg'
-          }
-        },
-        black: {
-          label: 'Melna',
-          value: '#151515',
-          mockups: {
-            front: 'assets/images/mokapi/krekls-melns-prieksa.jpg',
-            back: 'assets/images/mokapi/krekls-melns-aizmugure.jpg'
-          }
-        }
-      },
+      svg: 'assets/krekls.svg',
+      krasas: [
+        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
+        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A' },
+        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
+      ],
       izmeri: ['S', 'M', 'L', 'XL', 'XXL'],
       puses: {
-        front: 'Priekšpuse',
-        back: 'Aizmugure'
+        prieksa: 'Priekšpuse',
+        aizmugure: 'Aizmugure'
       },
       drukasZona: {
-        front: { x: 0.333, y: 0.300, w: 0.334, h: 0.343 },
-        back: { x: 0.325, y: 0.271, w: 0.350, h: 0.400 }
+        prieksa: { x: 0.350, y: 0.343, w: 0.300, h: 0.343 },
+        aizmugure: { x: 0.333, y: 0.307, w: 0.333, h: 0.407 }
       },
       // Pagaidu A3 drukas laukums visiem izmēriem un abām pusēm.
       // Precīzas atšķirības pievienosim pēc PrintStich preses/platnes izmēru apstiprināšanas.
       drukasLaukumsMm: {
-        front: {
+        prieksa: {
           S: { w: 297, h: 420 },
           M: { w: 297, h: 420 },
           L: { w: 297, h: 420 },
           XL: { w: 297, h: 420 },
           XXL: { w: 297, h: 420 }
         },
-        back: {
+        aizmugure: {
           S: { w: 297, h: 420 },
           M: { w: 297, h: 420 },
           L: { w: 297, h: 420 },
