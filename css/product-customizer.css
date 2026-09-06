@@ -191,6 +191,7 @@
 .print-size-info { display: grid; gap: .25rem; margin-top: .55rem; }
 .print-size-info p { margin: 0; }
 [data-print-size] { color: var(--color-text-strong); font-size: .88rem; font-weight: 750; font-variant-numeric: tabular-nums; }
+.print-limit-warning { color: #c66a16; font-size: 13px; font-weight: 650; }
 
 .customizer-tool-actions { align-items: center; margin-top: var(--space-md); }
 .text-action { min-height: 42px; padding: .55rem .25rem; border: 0; background: transparent; color: var(--color-text-muted); font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; }
