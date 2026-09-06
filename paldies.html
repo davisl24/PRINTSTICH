@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paldies | PrintStich</title>
+  <meta name="description" content="Paldies par PrintStich pasūtījuma pieprasījumu. Sazināsimies ar tevi tuvākajā laikā.">
+  <meta name="theme-color" content="#123f37">
+  <link rel="canonical" href="https://printstich.vercel.app/paldies.html">
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .thank-you-main {
+      min-height: calc(100vh - var(--header-height));
+      display: grid;
+      place-items: center;
+      padding: clamp(3rem, 8vw, 7rem) 0;
+    }
+
+    .thank-you-card {
+      width: min(calc(100% - 40px), 760px);
+      margin-inline: auto;
+      padding: clamp(2rem, 6vw, 4.5rem);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow-card);
+      text-align: center;
+    }
+
+    .thank-you-card h1 {
+      max-width: 12ch;
+      margin: 0 auto var(--space-md);
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: .98;
+      text-wrap: balance;
+    }
+
+    .thank-you-card p {
+      max-width: 38rem;
+      margin: 0 auto var(--space-xl);
+      color: var(--color-text-muted);
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+    }
+
+    @media (max-width: 768px) {
+      .thank-you-main {
+        padding: var(--space-xl) 0 var(--space-2xl);
+      }
+
+      .thank-you-card {
+        width: min(calc(100% - 24px), 760px);
+        padding: var(--space-xl) var(--space-lg);
+        border-radius: var(--radius-lg);
+      }
+
+      .thank-you-card .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="PrintStich sākumlapa">
+        <img src="assets/images/logo.png" class="brand-logo" alt="PrintStich logo" loading="lazy" width="2008" height="2008">
+        <span class="brand-name">PrintStich</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <span class="sr-only">Atvērt izvēlni</span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Galvenā navigācija" data-nav>
+        <a href="index.html#darbi">Darbi</a>
+        <a href="index.html#pakalpojumi">Pakalpojumi</a>
+        <a href="konfigurators.html">Konfigurators</a>
+        <a href="index.html#process">Kā tas notiek</a>
+        <a href="index.html#kontakti">Kontakti</a>
+        <a class="button button-small" href="index.html#piedavajums">Saņemt piedāvājumu</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="thank-you-main">
+    <section class="thank-you-card" aria-labelledby="thank-you-title">
+      <p class="eyebrow">Pieprasījums nosūtīts</p>
+      <h1 id="thank-you-title">Paldies! Sazināsimies ar tevi.</h1>
+      <p>PrintStich saņēma tavu konfigurāciju un dizaina failus.</p>
+      <a class="button" href="index.html">Atgriezties sākumlapā</a>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="kontakti">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="index.html" aria-label="PrintStich sākumlapa">
+          <img src="assets/images/logo-white.png" class="brand-logo" alt="PrintStich logo" loading="lazy" width="2008" height="2008">
+          <span class="brand-name">PrintStich</span>
+        </a>
+        <p>Druka un dizains Limbažos.</p>
+      </div>
+      <div class="footer-links">
+        <span>Kontakti</span>
+        <a href="tel:+37127333112">+371 27 333 112</a>
+        <a href="mailto:printstich@inbox.lv">printstich@inbox.lv</a>
+        <address>Cēsu iela 20, Limbaži, LV-4001</address>
+      </div>
+      <div class="footer-links">
+        <span>Seko</span>
+        <a href="https://www.instagram.com/printstich/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.facebook.com/profile.php?id=61590085437483" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
