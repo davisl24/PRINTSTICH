@@ -17,67 +17,14 @@
   const MIN_VALID_MOCKUP_SIZE = 5000;
 
   const SIDE_KEYS = ['front', 'back', 'sleeveLeft', 'sleeveRight'];
-  const SIDE_TO_PRODUCT = {
-    front: 'prieksa',
-    back: 'aizmugure',
-    sleeveLeft: 'sleeveLeft',
-    sleeveRight: 'sleeveRight'
-  };
-  const SIDE_LABELS = {
-    front: 'Priekša',
-    back: 'Aizmugure',
-    sleeveLeft: 'Kreisā piedurkne',
-    sleeveRight: 'Labā piedurkne'
-  };
+  const SIDE_TO_PRODUCT = { front: 'prieksa', back: 'aizmugure', sleeveLeft: 'sleeveLeft', sleeveRight: 'sleeveRight' };
+  const SIDE_LABELS = { front: 'Priekša', back: 'Aizmugure', sleeveLeft: 'Kreisā piedurkne', sleeveRight: 'Labā piedurkne' };
   const SHIRT_GROUPS = { front: '#shirt-front', back: '#shirt-back' };
-  const BODY_PRESETS = [
-    ['center', 'Centrā'],
-    ['left-chest', 'Krūšu kreisajā pusē'],
-    ['top', 'Augšā'],
-    ['lower', 'Zemāk']
-  ];
-  const SLEEVE_PRESETS = [
-    ['center', 'Centrā'],
-    ['sleeve-top', 'Augšāk'],
-    ['sleeve-lower', 'Zemāk']
-  ];
+  const BODY_PRESETS = [['center', 'Centrā'], ['left-chest', 'Krūšu kreisajā pusē'], ['top', 'Augšā'], ['lower', 'Zemāk']];
+  const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    panels: $$('[data-step-panel]'),
-    indicators: $$('[data-step-indicator]'),
-    steps: $('[data-steps]'),
-    prev: $('[data-prev-step]'),
-    next: $('[data-next-step]'),
-    navigation: $('[data-step-navigation]'),
-    sideSwitch: $('[data-side-switch]'),
-    preview: $('[data-preview]'),
-    previewCard: $('[data-preview-card]'),
-    previewColumn: $('[data-editor-preview]'),
-    placeholder: $('[data-mockup-placeholder]'),
-    printArea: $('[data-print-area]'),
-    previewHint: $('[data-preview-hint]'),
-    legacyDesign: $('[data-design-image]'),
-    colorButtons: $$('[data-color]'),
-    sizeButtons: $$('[data-size]'),
-    sideButtons: $$('[data-side]'),
-    sideStatuses: $$('[data-side-status]'),
-    uploadZone: $('[data-upload-zone]'),
-    designInput: $('[data-design-input]'),
-    fileName: $('[data-file-name]'),
-    fileActions: $('[data-file-actions]'),
-    replace: $('[data-replace-design]'),
-    remove: $('[data-remove-design]'),
-    activeSideLabel: $('[data-active-side-label]'),
-    scale: $('[data-scale-input]'),
-    presetContainer: $('[data-position-presets]'),
-    printSize: $('[data-print-size]'),
-    printLimitWarning: $('[data-print-limit-warning]'),
-    dpiWarning: $('[data-dpi-warning]'),
-    form: $('[data-customizer-form]'),
-    originalAttachments: $('[data-original-attachments]'),
-    worksheetInput: $('[data-worksheet-file]'),
-    whatsapp: $('[data-whatsapp-link]'),
-    debugMockup: $('#debugMockup')
+    panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -88,934 +35,124 @@
   const isSleeve = sideKey => sideKey === 'sleeveLeft' || sideKey === 'sleeveRight';
   const getSvgPath = sideKey => isSleeve(sideKey) ? product.sleeveSvgs?.[sideKey] : product.svg;
   const getMaxPrintMm = sideKey => isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : product.maxDrukaMm;
-
-  const createSideState = sideKey => ({
-    file: null,
-    url: '',
-    image: null,
-    naturalWidth: 0,
-    naturalHeight: 0,
-    x: 0.5,
-    y: 0.5,
-    scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5,
-    preset: 'center',
-    vectorFallback: false
-  });
-
-  const state = {
-    step: 1,
-    color: 'balts',
-    size: '',
-    activeSide: 'front',
-    svgLoaded: false,
-    svgRoot: null,
-    svgPath: '',
-    submitting: false,
-    sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)]))
-  };
-
+  const createSideState = sideKey => ({ file: null, url: '', image: null, naturalWidth: 0, naturalHeight: 0, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, preset: 'center', vectorFallback: false });
+  const state = { step: 1, color: 'balts', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const anySideHasDesign = () => SIDE_KEYS.some(key => Boolean(state.sides[key].file));
-  const error = (name, message = '') => {
-    const node = $(`[data-error="${name}"]`);
-    if (node) node.textContent = message;
-  };
+  const error = (name, message = '') => { const node = $(`[data-error="${name}"]`); if (node) node.textContent = message; };
 
   function ensureColorButtons() {
-    const group = $('[data-color-options]');
-    if (!group) return;
+    const group = $('[data-color-options]'); if (!group) return;
     product.krasas.forEach(color => {
       let button = $$('[data-color]', group).find(item => normalizeColor(item.dataset.color) === color.id);
-      if (!button) {
-        button = document.createElement('button');
-        button.className = 'color-swatch';
-        button.type = 'button';
-        button.dataset.color = color.id;
-        button.setAttribute('aria-pressed', 'false');
-        button.innerHTML = `<span class="swatch" aria-hidden="true"></span>${color.nosaukums}`;
-        group.appendChild(button);
-      }
-      button.dataset.color = color.id;
-      const swatch = $('.swatch', button);
-      if (swatch) swatch.style.backgroundColor = color.hex;
-      const textNode = [...button.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
-      if (textNode) textNode.textContent = color.nosaukums;
+      if (!button) { button = document.createElement('button'); button.className = 'color-swatch'; button.type = 'button'; button.dataset.color = color.id; button.setAttribute('aria-pressed', 'false'); button.innerHTML = `<span class="swatch" aria-hidden="true"></span>${color.nosaukums}`; group.appendChild(button); }
+      button.dataset.color = color.id; const swatch = $('.swatch', button); if (swatch) swatch.style.backgroundColor = color.hex;
+      const textNode = [...button.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()); if (textNode) textNode.textContent = color.nosaukums;
     });
     els.colorButtons = $$('[data-color]');
   }
 
   function ensureDesignCanvas() {
-    let canvas = $('[data-design-canvas]', els.printArea);
-    if (canvas) return canvas;
-    canvas = document.createElement('canvas');
-    canvas.className = 'customizer-design-canvas';
-    canvas.dataset.designCanvas = '';
-    canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums');
-    Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'grab' });
-    if (els.legacyDesign) els.legacyDesign.hidden = true;
-    els.printArea.appendChild(canvas);
-    return canvas;
+    let canvas = $('[data-design-canvas]', els.printArea); if (canvas) return canvas;
+    canvas = document.createElement('canvas'); canvas.className = 'customizer-design-canvas'; canvas.dataset.designCanvas = ''; canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums'); Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'grab' }); if (els.legacyDesign) els.legacyDesign.hidden = true; els.printArea.appendChild(canvas); return canvas;
   }
 
-  ensureColorButtons();
-  els.designCanvas = ensureDesignCanvas();
+  ensureColorButtons(); els.designCanvas = ensureDesignCanvas();
+  function setPressed(buttons, activeButton) { buttons.forEach(button => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); }); }
+  function getZone(sideKey = state.activeSide) { return product.drukasZona[productSide(sideKey)]; }
+  function getPhysicalArea(sideKey = state.activeSide) { if (!state.size) return null; return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null; }
+  function getDesignRect(zoneWidth, zoneHeight, side = currentSide()) { if (!side.naturalWidth || !side.naturalHeight) return null; const aspect = side.naturalWidth / side.naturalHeight; let width = zoneWidth * side.scale; let height = width / aspect; if (height > zoneHeight * side.scale) { height = zoneHeight * side.scale; width = height * aspect; } return { width, height, x: side.x * zoneWidth - width / 2, y: side.y * zoneHeight - height / 2 }; }
+  function getVirtualZoneSize(sideKey) { const zone = getZone(sideKey); return { width: zone.w * 600, height: zone.h * 700 }; }
+  function constrainPosition(sideKey = state.activeSide) { const side = state.sides[sideKey]; if (!side.file || side.vectorFallback) return; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side); if (!rect) return; const halfX = rect.width / (2 * virtual.width); const halfY = rect.height / (2 * virtual.height); let minX = halfX; let maxX = 1 - halfX; if (isSleeve(sideKey)) { const safe = SLEEVE_SAFE_MARGIN_MM / SLEEVE_MAX_MM; if (sideKey === 'sleeveLeft') maxX = Math.max(minX, 1 - safe - halfX); if (sideKey === 'sleeveRight') minX = Math.min(maxX, safe + halfX); } side.x = clamp(side.x, minX, maxX); side.y = clamp(side.y, halfY, 1 - halfY); }
+  function printMetrics(sideKey = state.activeSide) { const side = state.sides[sideKey]; const mmArea = getPhysicalArea(sideKey); if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return null; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side); if (!rect) return null; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; const dpi = widthMm > 0 ? (side.naturalWidth / widthMm) * 25.4 : 0; return { widthRounded: Math.round(widthMm), heightRounded: Math.round(heightMm), dpiRounded: Math.round(dpi) }; }
+  function maxAllowedScale(sideKey = state.activeSide) { const side = state.sides[sideKey]; const mmArea = getPhysicalArea(sideKey); if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return 1; const virtual = getVirtualZoneSize(sideKey); const max = getMaxPrintMm(sideKey); for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) { const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate }); if (!rect) return 1; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; if (widthMm <= max.w && heightMm <= max.h) return candidate; } return 0.05; }
+  function enforcePrintLimit(sideKey = state.activeSide, showMessage = false) { const side = state.sides[sideKey]; if (!side.file || !state.size || side.vectorFallback) return false; const allowed = maxAllowedScale(sideKey); if (side.scale <= allowed + 0.0001) return false; side.scale = allowed; if (showMessage && sideKey === state.activeSide && els.printLimitWarning) { const max = getMaxPrintMm(sideKey); els.printLimitWarning.textContent = `Šis izmērs pārsniedz maksimālo drukas laukumu (${max.w} × ${max.h} mm). Dizains automātiski samazināts.`; } return true; }
 
-  function setPressed(buttons, activeButton) {
-    buttons.forEach(button => {
-      const active = button === activeButton;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-  }
-
-  function getZone(sideKey = state.activeSide) {
-    return product.drukasZona[productSide(sideKey)];
-  }
-
-  function getPhysicalArea(sideKey = state.activeSide) {
-    if (!state.size) return null;
-    return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null;
-  }
-
-  function getDesignRect(zoneWidth, zoneHeight, side = currentSide()) {
-    if (!side.naturalWidth || !side.naturalHeight) return null;
-    const aspect = side.naturalWidth / side.naturalHeight;
-    let width = zoneWidth * side.scale;
-    let height = width / aspect;
-    if (height > zoneHeight * side.scale) {
-      height = zoneHeight * side.scale;
-      width = height * aspect;
-    }
-    return { width, height, x: side.x * zoneWidth - width / 2, y: side.y * zoneHeight - height / 2 };
-  }
-
-  function getVirtualZoneSize(sideKey) {
-    const zone = getZone(sideKey);
-    return { width: zone.w * 600, height: zone.h * 700 };
-  }
-
-  function constrainPosition(sideKey = state.activeSide) {
-    const side = state.sides[sideKey];
-    if (!side.file || side.vectorFallback) return;
-    const virtual = getVirtualZoneSize(sideKey);
-    const rect = getDesignRect(virtual.width, virtual.height, side);
-    if (!rect) return;
-    const halfX = rect.width / (2 * virtual.width);
-    const halfY = rect.height / (2 * virtual.height);
-    let minX = halfX;
-    let maxX = 1 - halfX;
-    if (isSleeve(sideKey)) {
-      const safe = SLEEVE_SAFE_MARGIN_MM / SLEEVE_MAX_MM;
-      if (sideKey === 'sleeveLeft') maxX = Math.max(minX, 1 - safe - halfX);
-      if (sideKey === 'sleeveRight') minX = Math.min(maxX, safe + halfX);
-    }
-    side.x = clamp(side.x, minX, maxX);
-    side.y = clamp(side.y, halfY, 1 - halfY);
-  }
-
-  function printMetrics(sideKey = state.activeSide) {
-    const side = state.sides[sideKey];
-    const mmArea = getPhysicalArea(sideKey);
-    if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return null;
-    const virtual = getVirtualZoneSize(sideKey);
-    const rect = getDesignRect(virtual.width, virtual.height, side);
-    if (!rect) return null;
-    const widthMm = (rect.width / virtual.width) * mmArea.w;
-    const heightMm = (rect.height / virtual.height) * mmArea.h;
-    const dpi = widthMm > 0 ? (side.naturalWidth / widthMm) * 25.4 : 0;
-    return { widthRounded: Math.round(widthMm), heightRounded: Math.round(heightMm), dpiRounded: Math.round(dpi) };
-  }
-
-  function maxAllowedScale(sideKey = state.activeSide) {
-    const side = state.sides[sideKey];
-    const mmArea = getPhysicalArea(sideKey);
-    if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return 1;
-    const virtual = getVirtualZoneSize(sideKey);
-    const max = getMaxPrintMm(sideKey);
-    for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) {
-      const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate });
-      if (!rect) return 1;
-      const widthMm = (rect.width / virtual.width) * mmArea.w;
-      const heightMm = (rect.height / virtual.height) * mmArea.h;
-      if (widthMm <= max.w && heightMm <= max.h) return candidate;
-    }
-    return 0.05;
-  }
-
-  function enforcePrintLimit(sideKey = state.activeSide, showMessage = false) {
-    const side = state.sides[sideKey];
-    if (!side.file || !state.size || side.vectorFallback) return false;
-    const allowed = maxAllowedScale(sideKey);
-    if (side.scale <= allowed + 0.0001) return false;
-    side.scale = allowed;
-    if (showMessage && sideKey === state.activeSide && els.printLimitWarning) {
-      const max = getMaxPrintMm(sideKey);
-      els.printLimitWarning.textContent = `Šis izmērs pārsniedz maksimālo drukas laukumu (${max.w} × ${max.h} mm). Dizains automātiski samazināts.`;
-    }
-    return true;
-  }
-
-  function updatePrintArea() {
-    const zone = getZone();
-    if (!zone) return;
-    const dark = ['melns', 'zils'].includes(state.color);
-    const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85';
-    Object.assign(els.printArea.style, {
-      left: `${zone.x * 100}%`, top: `${zone.y * 100}%`, width: `${zone.w * 100}%`, height: `${zone.h * 100}%`, borderColor: guideColor
-    });
-    if (els.previewHint) els.previewHint.style.color = guideColor;
-  }
-
-  function applySvgAppearance(root, sideKey) {
-    if (!root) return;
-    const color = colorById(state.color);
-    root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
-    const dark = ['melns', 'zils'].includes(color.id);
-    root.querySelectorAll('[stroke]').forEach(node => {
-      if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || '';
-      if (dark) node.setAttribute('stroke', '#D9DEE8');
-      else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf');
-      else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke);
-    });
-    Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => {
-      const group = root.querySelector(selector);
-      if (group) group.style.display = key === sideKey ? 'block' : 'none';
-    });
-  }
-
-  function updateSvgColor() {
-    applySvgAppearance(state.svgRoot, state.activeSide);
-    updatePrintArea();
-  }
-
-  async function getSvgMarkup(sideKey) {
-    const path = getSvgPath(sideKey);
-    if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`);
-    if (svgMarkupCache.has(path)) return svgMarkupCache.get(path);
-    const response = await fetch(path, { cache: 'no-cache' });
-    if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
-    const markup = await response.text();
-    svgMarkupCache.set(path, markup);
-    return markup;
-  }
-
-  async function loadActiveSvg() {
-    const sideKey = state.activeSide;
-    const path = getSvgPath(sideKey);
-    try {
-      const markup = await getSvgMarkup(sideKey);
-      if (sideKey !== state.activeSide) return;
-      let host = $('[data-shirt-svg-host]');
-      if (!host) {
-        host = document.createElement('div');
-        host.className = 'customizer-shirt-svg';
-        host.dataset.shirtSvgHost = '';
-        Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' });
-        els.preview.insertBefore(host, els.printArea);
-      }
-      host.innerHTML = markup;
-      const svg = $('svg', host);
-      if (!svg) throw new Error(`${path} nesatur <svg>.`);
-      svg.setAttribute('width', '100%');
-      svg.setAttribute('height', '100%');
-      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' });
-      state.svgRoot = svg;
-      state.svgPath = path;
-      state.svgLoaded = true;
-      if (els.placeholder) els.placeholder.hidden = true;
-      updateSvgColor();
-      renderDesign();
-    } catch (cause) {
-      state.svgLoaded = false;
-      state.svgRoot = null;
-      if (els.placeholder) els.placeholder.hidden = false;
-      console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause);
-    }
-  }
-
-  function drawVectorFallback(ctx, width, height) {
-    ctx.save();
-    ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2);
-    ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore();
-  }
-
-  function drawDesignCanvas() {
-    const side = currentSide();
-    const area = els.printArea.getBoundingClientRect();
-    const canvas = els.designCanvas;
-    if (!area.width || !area.height) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(area.width * dpr));
-    canvas.height = Math.max(1, Math.round(area.height * dpr));
-    const ctx = canvas.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, area.width, area.height);
-    if (!side.file) return;
-    if (side.vectorFallback) return drawVectorFallback(ctx, area.width, area.height);
-    if (!side.image) return;
-    const rect = getDesignRect(area.width, area.height, side);
-    if (!rect) return;
-    ctx.drawImage(side.image, rect.x, rect.y, rect.width, rect.height);
-  }
+  function updatePrintArea() { const zone = getZone(); if (!zone) return; const dark = ['melns', 'zils'].includes(state.color); const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85'; Object.assign(els.printArea.style, { left: `${zone.x * 100}%`, top: `${zone.y * 100}%`, width: `${zone.w * 100}%`, height: `${zone.h * 100}%`, borderColor: guideColor }); if (els.previewHint) els.previewHint.style.color = guideColor; }
+  function applySvgAppearance(root, sideKey) { if (!root) return; const color = colorById(state.color); root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex)); const dark = ['melns', 'zils'].includes(color.id); root.querySelectorAll('[stroke]').forEach(node => { if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || ''; if (dark) node.setAttribute('stroke', '#D9DEE8'); else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf'); else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke); }); Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => { const group = root.querySelector(selector); if (group) group.style.display = key === sideKey ? 'block' : 'none'; }); }
+  function updateSvgColor() { applySvgAppearance(state.svgRoot, state.activeSide); updatePrintArea(); }
+  async function getSvgMarkup(sideKey) { const path = getSvgPath(sideKey); if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`); if (svgMarkupCache.has(path)) return svgMarkupCache.get(path); const response = await fetch(path, { cache: 'no-cache' }); if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`); const markup = await response.text(); svgMarkupCache.set(path, markup); return markup; }
+  async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
+  function drawVectorFallback(ctx, width, height) { ctx.save(); ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2); ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore(); }
+  function drawDesignCanvas() { const side = currentSide(); const area = els.printArea.getBoundingClientRect(); const canvas = els.designCanvas; if (!area.width || !area.height) return; const dpr = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.max(1, Math.round(area.width * dpr)); canvas.height = Math.max(1, Math.round(area.height * dpr)); const ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, area.width, area.height); if (!side.file) return; if (side.vectorFallback) return drawVectorFallback(ctx, area.width, area.height); if (!side.image) return; const rect = getDesignRect(area.width, area.height, side); if (!rect) return; ctx.drawImage(side.image, rect.x, rect.y, rect.width, rect.height); }
 
   function updateMeasurementUi() {
     const side = currentSide();
     const metrics = printMetrics();
     if (els.printSize) els.printSize.textContent = metrics ? `Drukas izmērs: ${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Drukas izmērs: —';
+    if (els.printLimitWarning) {
+      const max = getMaxPrintMm(state.activeSide);
+      const nearMax = metrics && (metrics.widthRounded >= max.w * 0.95 || metrics.heightRounded >= max.h * 0.95);
+      els.printLimitWarning.textContent = nearMax ? 'Tuvu maksimālajam drukas izmēram' : '';
+    }
     if (els.dpiWarning) els.dpiWarning.textContent = metrics && metrics.dpiRounded < 150 ? `Faila izšķirtspēja šim izmēram ir zema (aptuveni ${metrics.dpiRounded} DPI).` : '';
     els.scale.value = String(Math.round(side.scale * 100));
     els.scale.max = String(Math.max(20, Math.floor(maxAllowedScale() * 100)));
   }
 
-  function getPresetList(sideKey = state.activeSide) {
-    return isSleeve(sideKey) ? SLEEVE_PRESETS : BODY_PRESETS;
-  }
+  function getPresetList(sideKey = state.activeSide) { return isSleeve(sideKey) ? SLEEVE_PRESETS : BODY_PRESETS; }
+  function renderPresetButtons() { if (!els.presetContainer) return; els.presetContainer.innerHTML = getPresetList().map(([id, label]) => `<button type="button" data-position-preset="${id}" aria-pressed="false">${label}</button>`).join(''); updatePresetState(); }
+  function updatePresetState() { $$('[data-position-preset]', els.presetContainer || document).forEach(button => { const active = currentSide().preset === button.dataset.positionPreset; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); }); }
+  function updateSideUi() { els.sideButtons.forEach(button => { const active = button.dataset.side === state.activeSide; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); }); els.sideStatuses.forEach(status => { const side = state.sides[status.dataset.sideStatus]; if (!side) return; status.textContent = side.file ? 'gatavs' : 'tukša'; status.hidden = Boolean(side.file); }); const side = currentSide(); if (els.activeSideLabel) els.activeSideLabel.textContent = SIDE_LABELS[state.activeSide]; if (els.fileName) els.fileName.textContent = side.file?.name || ''; if (els.fileActions) els.fileActions.hidden = !side.file; if (els.uploadZone) els.uploadZone.hidden = Boolean(side.file); renderPresetButtons(); updateMeasurementUi(); }
+  function renderDesign() { updatePrintArea(); constrainPosition(); drawDesignCanvas(); updateMeasurementUi(); updatePresetState(); }
+  async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
+  function stepComplete(step) { if (step === 1) return Boolean(state.size); if (step === 2) return anySideHasDesign(); return true; }
+  function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
+  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
+  function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
+  function finishFileLoad(sideKey) { enforcePrintLimit(sideKey); if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); } updateNavigation(); }
+  function loadFile(file) { const message = validateFile(file); if (message) return error('file', message); error('file'); const sideKey = state.activeSide; const side = state.sides[sideKey]; if (side.url) URL.revokeObjectURL(side.url); const fresh = createSideState(sideKey); Object.assign(side, fresh); side.file = file; side.url = URL.createObjectURL(file); const image = new Image(); image.onload = () => { side.image = image; side.naturalWidth = image.naturalWidth; side.naturalHeight = image.naturalHeight; finishFileLoad(sideKey); }; image.onerror = () => { if (file.type === 'application/pdf' || file.type === 'image/svg+xml') { side.vectorFallback = true; side.naturalWidth = 1; side.naturalHeight = 1; finishFileLoad(sideKey); return; } error('file', 'Attēlu neizdevās nolasīt. Izvēlies citu failu.'); }; image.src = side.url; }
 
-  function renderPresetButtons() {
-    if (!els.presetContainer) return;
-    els.presetContainer.innerHTML = getPresetList().map(([id, label]) => `<button type="button" data-position-preset="${id}" aria-pressed="false">${label}</button>`).join('');
-    updatePresetState();
-  }
-
-  function updatePresetState() {
-    $$('[data-position-preset]', els.presetContainer || document).forEach(button => {
-      const active = currentSide().preset === button.dataset.positionPreset;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-  }
-
-  function updateSideUi() {
-    els.sideButtons.forEach(button => {
-      const active = button.dataset.side === state.activeSide;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
-    els.sideStatuses.forEach(status => {
-      const side = state.sides[status.dataset.sideStatus];
-      if (!side) return;
-      status.textContent = side.file ? 'gatavs' : 'tukša';
-      status.hidden = Boolean(side.file);
-    });
-    const side = currentSide();
-    if (els.activeSideLabel) els.activeSideLabel.textContent = SIDE_LABELS[state.activeSide];
-    if (els.fileName) els.fileName.textContent = side.file?.name || '';
-    if (els.fileActions) els.fileActions.hidden = !side.file;
-    if (els.uploadZone) els.uploadZone.hidden = Boolean(side.file);
-    renderPresetButtons();
-    updateMeasurementUi();
-  }
-
-  function renderDesign() {
-    updatePrintArea();
-    constrainPosition();
-    drawDesignCanvas();
-    updateMeasurementUi();
-    updatePresetState();
-  }
-
-  async function updatePreview() {
-    updateSideUi();
-    await loadActiveSvg();
-    requestAnimationFrame(renderDesign);
-  }
-
-  function stepComplete(step) {
-    if (step === 1) return Boolean(state.size);
-    if (step === 2) return anySideHasDesign();
-    return true;
-  }
-
-  function updateNavigation() {
-    if (els.prev) els.prev.disabled = state.step === 1;
-    if (els.next) {
-      els.next.hidden = state.step === 3;
-      els.next.style.display = state.step === 3 ? 'none' : '';
-      els.next.disabled = !stepComplete(state.step);
-    }
-  }
-
-  function showStep(step) {
-    state.step = clamp(step, 1, 3);
-    els.panels.forEach(panel => {
-      const active = Number(panel.dataset.stepPanel) === state.step;
-      panel.hidden = !active;
-      panel.classList.toggle('is-active', active);
-    });
-    els.indicators.forEach(indicator => {
-      const active = Number(indicator.dataset.stepIndicator) === state.step;
-      indicator.classList.toggle('is-active', active);
-      if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current');
-    });
-    if (els.previewColumn) els.previewColumn.hidden = state.step === 3;
-    updateNavigation();
-    updateSideUi();
-    if (state.step === 3) updateSummary();
-    updateMobileLayout();
-  }
-
-  function validateFile(file) {
-    const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf'];
-    if (!file) return 'Izvēlies dizaina failu.';
-    if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.';
-    if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.';
-    return '';
-  }
-
-  function finishFileLoad(sideKey) {
-    enforcePrintLimit(sideKey);
-    if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); }
-    updateNavigation();
-  }
-
-  function loadFile(file) {
-    const message = validateFile(file);
-    if (message) return error('file', message);
-    error('file');
-    const sideKey = state.activeSide;
-    const side = state.sides[sideKey];
-    if (side.url) URL.revokeObjectURL(side.url);
-    const fresh = createSideState(sideKey);
-    Object.assign(side, fresh);
-    side.file = file;
-    side.url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      side.image = image;
-      side.naturalWidth = image.naturalWidth;
-      side.naturalHeight = image.naturalHeight;
-      finishFileLoad(sideKey);
-    };
-    image.onerror = () => {
-      if (file.type === 'application/pdf' || file.type === 'image/svg+xml') {
-        side.vectorFallback = true; side.naturalWidth = 1; side.naturalHeight = 1; finishFileLoad(sideKey); return;
-      }
-      error('file', 'Attēlu neizdevās nolasīt. Izvēlies citu failu.');
-    };
-    image.src = side.url;
-  }
-
-  els.colorButtons.forEach(button => button.addEventListener('click', () => {
-    state.color = normalizeColor(button.dataset.color);
-    setPressed(els.colorButtons, button);
-    updateSvgColor();
-    renderDesign();
-  }));
-
-  els.sizeButtons.forEach(button => button.addEventListener('click', () => {
-    state.size = button.dataset.size;
-    setPressed(els.sizeButtons, button);
-    error('size');
-    SIDE_KEYS.forEach(key => enforcePrintLimit(key));
-    renderDesign();
-    updateNavigation();
-  }));
-
-  els.sideButtons.forEach(button => button.addEventListener('click', async () => {
-    const key = button.dataset.side;
-    if (!SIDE_KEYS.includes(key)) return;
-    state.activeSide = key;
-    error('file');
-    await updatePreview();
-  }));
-
+  els.colorButtons.forEach(button => button.addEventListener('click', () => { state.color = normalizeColor(button.dataset.color); setPressed(els.colorButtons, button); updateSvgColor(); renderDesign(); }));
+  els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
+  els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; error('file'); await updatePreview(); }));
   if (els.designInput) els.designInput.addEventListener('change', () => loadFile(els.designInput.files?.[0]));
   if (els.replace) els.replace.addEventListener('click', () => els.designInput?.click());
-  if (els.remove) els.remove.addEventListener('click', () => {
-    const old = currentSide();
-    if (old.url) URL.revokeObjectURL(old.url);
-    state.sides[state.activeSide] = createSideState(state.activeSide);
-    if (els.designInput) els.designInput.value = '';
-    updateSideUi(); renderDesign(); updateNavigation();
-  });
-
-  if (els.uploadZone) {
-    ['dragenter', 'dragover'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.add('is-dragging'); }));
-    ['dragleave', 'drop'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.remove('is-dragging'); }));
-    els.uploadZone.addEventListener('drop', event => loadFile(event.dataTransfer?.files?.[0]));
-  }
-
-  function applyPreset(preset) {
-    const side = currentSide();
-    if (!side.file) return;
-    side.preset = preset;
-    if (preset === 'center') { side.x = 0.5; side.y = 0.5; }
-    if (preset === 'top') { side.x = 0.5; side.y = 0.27; }
-    if (preset === 'lower') { side.x = 0.5; side.y = 0.73; }
-    if (preset === 'left-chest') { side.scale = 0.32; side.x = 0.28; side.y = 0.28; }
-    if (preset === 'sleeve-top') { side.x = 0.5; side.y = 0.32; }
-    if (preset === 'sleeve-lower') { side.x = 0.5; side.y = 0.68; }
-    enforcePrintLimit(); constrainPosition(); renderDesign();
-  }
-
-  if (els.presetContainer) els.presetContainer.addEventListener('click', event => {
-    const button = event.target.closest('[data-position-preset]');
-    if (button) applyPreset(button.dataset.positionPreset);
-  });
-
-  els.scale.addEventListener('input', () => {
-    const side = currentSide();
-    side.scale = Number(els.scale.value) / 100;
-    side.preset = '';
-    enforcePrintLimit(); constrainPosition(); renderDesign();
-  });
-
+  if (els.remove) els.remove.addEventListener('click', () => { const old = currentSide(); if (old.url) URL.revokeObjectURL(old.url); state.sides[state.activeSide] = createSideState(state.activeSide); if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
+  if (els.uploadZone) { ['dragenter', 'dragover'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.add('is-dragging'); })); ['dragleave', 'drop'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.remove('is-dragging'); })); els.uploadZone.addEventListener('drop', event => loadFile(event.dataTransfer?.files?.[0])); }
+  function applyPreset(preset) { const side = currentSide(); if (!side.file) return; side.preset = preset; if (preset === 'center') { side.x = 0.5; side.y = 0.5; } if (preset === 'top') { side.x = 0.5; side.y = 0.27; } if (preset === 'lower') { side.x = 0.5; side.y = 0.73; } if (preset === 'left-chest') { side.scale = 0.32; side.x = 0.28; side.y = 0.28; } if (preset === 'sleeve-top') { side.x = 0.5; side.y = 0.32; } if (preset === 'sleeve-lower') { side.x = 0.5; side.y = 0.68; } enforcePrintLimit(); constrainPosition(); renderDesign(); }
+  if (els.presetContainer) els.presetContainer.addEventListener('click', event => { const button = event.target.closest('[data-position-preset]'); if (button) applyPreset(button.dataset.positionPreset); });
+  els.scale.addEventListener('input', () => { const side = currentSide(); side.scale = Number(els.scale.value) / 100; side.preset = ''; enforcePrintLimit(); constrainPosition(); renderDesign(); });
   let drag = null;
-  els.designCanvas.addEventListener('pointerdown', event => {
-    if (state.step !== 2 || !currentSide().file || currentSide().vectorFallback) return;
-    event.preventDefault(); drag = { pointerId: event.pointerId }; els.designCanvas.setPointerCapture(event.pointerId); currentSide().preset = '';
-  });
-  els.designCanvas.addEventListener('pointermove', event => {
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    const area = els.printArea.getBoundingClientRect();
-    const side = currentSide();
-    side.x = (event.clientX - area.left) / area.width;
-    side.y = (event.clientY - area.top) / area.height;
-    constrainPosition(); renderDesign();
-  });
+  els.designCanvas.addEventListener('pointerdown', event => { if (state.step !== 2 || !currentSide().file || currentSide().vectorFallback) return; event.preventDefault(); drag = { pointerId: event.pointerId }; els.designCanvas.setPointerCapture(event.pointerId); currentSide().preset = ''; });
+  els.designCanvas.addEventListener('pointermove', event => { if (!drag || drag.pointerId !== event.pointerId) return; const area = els.printArea.getBoundingClientRect(); const side = currentSide(); side.x = (event.clientX - area.left) / area.width; side.y = (event.clientY - area.top) / area.height; constrainPosition(); renderDesign(); });
   const endDrag = event => { if (drag?.pointerId === event.pointerId) drag = null; };
-  els.designCanvas.addEventListener('pointerup', endDrag);
-  els.designCanvas.addEventListener('pointercancel', endDrag);
-
+  els.designCanvas.addEventListener('pointerup', endDrag); els.designCanvas.addEventListener('pointercancel', endDrag);
   if (els.prev) els.prev.addEventListener('click', () => showStep(state.step - 1));
-  if (els.next) els.next.addEventListener('click', () => {
-    if (!stepComplete(state.step)) {
-      if (state.step === 1) error('size', 'Izvēlies krekla izmēru.');
-      if (state.step === 2) error('file', 'Pievieno dizainu vismaz vienai apdrukas pusei.');
-      return;
-    }
-    showStep(state.step + 1);
-  });
+  if (els.next) els.next.addEventListener('click', () => { if (!stepComplete(state.step)) { if (state.step === 1) error('size', 'Izvēlies krekla izmēru.'); if (state.step === 2) error('file', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); return; } showStep(state.step + 1); });
 
-  function inlineComputedSvgStyles(sourceSvg, cloneSvg) {
-    const sourceNodes = [sourceSvg, ...sourceSvg.querySelectorAll('*')];
-    const cloneNodes = [cloneSvg, ...cloneSvg.querySelectorAll('*')];
-    sourceNodes.forEach((sourceNode, index) => {
-      const cloneNode = cloneNodes[index];
-      if (!cloneNode) return;
-      const computed = getComputedStyle(sourceNode);
-      ['fill', 'stroke', 'stroke-width', 'opacity'].forEach(property => {
-        const value = computed.getPropertyValue(property);
-        if (value) cloneNode.setAttribute(property, value.trim());
-      });
-    });
-  }
-
-  async function prepareSerializedSvg(sideKey) {
-    const markup = await getSvgMarkup(sideKey);
-    const holder = document.createElement('div');
-    Object.assign(holder.style, { position: 'fixed', left: '-10000px', top: '0', width: '600px', height: '700px', pointerEvents: 'none' });
-    holder.innerHTML = markup;
-    document.body.appendChild(holder);
-    try {
-      const source = $('svg', holder);
-      if (!source) throw new Error('SVG nesatur <svg>.');
-      source.setAttribute('width', '600');
-      source.setAttribute('height', '700');
-      source.style.width = '600px';
-      source.style.height = '700px';
-      applySvgAppearance(source, sideKey);
-      const clone = source.cloneNode(true);
-      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-      clone.setAttribute('width', '600');
-      clone.setAttribute('height', '700');
-      clone.setAttribute('viewBox', source.getAttribute('viewBox') || '0 0 600 700');
-      inlineComputedSvgStyles(source, clone);
-      const parts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number);
-      const viewBox = parts.length === 4 && parts.every(Number.isFinite) ? { x: parts[0], y: parts[1], width: parts[2], height: parts[3] } : { x: 0, y: 0, width: 600, height: 700 };
-      return { svgString: new XMLSerializer().serializeToString(clone), viewBox };
-    } finally {
-      holder.remove();
-    }
-  }
-
-  async function svgToImage(sideKey) {
-    const { svgString, viewBox } = await prepareSerializedSvg(sideKey);
-    const image = new Image();
-    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`;
-    await image.decode();
-    if (!image.naturalWidth || !image.naturalHeight) throw new Error('Serializētais SVG ielādējās ar 0×0 izmēru.');
-    return { image, viewBox };
-  }
-
-  function drawMockupContent(ctx, canvas, sideKey, baseImage) {
-    const side = state.sides[sideKey];
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
-    const zone = getZone(sideKey);
-    if (!zone || !side.file) return;
-    const zoneX = zone.x * canvas.width;
-    const zoneY = zone.y * canvas.height;
-    const zoneW = zone.w * canvas.width;
-    const zoneH = zone.h * canvas.height;
-    if (side.vectorFallback || !side.image) {
-      ctx.save(); ctx.translate(zoneX, zoneY); drawVectorFallback(ctx, zoneW, zoneH); ctx.restore(); return;
-    }
-    const rect = getDesignRect(zoneW, zoneH, side);
-    if (rect) ctx.drawImage(side.image, zoneX + rect.x, zoneY + rect.y, rect.width, rect.height);
-  }
-
-  function positionLabel(side) {
-    const labels = { center: 'Centrā', 'left-chest': 'Krūšu kreisajā pusē', top: 'Augšā', lower: 'Zemāk', 'sleeve-top': 'Augšāk', 'sleeve-lower': 'Zemāk' };
-    return labels[side.preset] || `X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`;
-  }
-
-  function getOrderSummary() {
-    const color = colorById(state.color);
-    const summary = {
-      color: color.nosaukums,
-      size: state.size || '—',
-      sides: Object.fromEntries(SIDE_KEYS.map(sideKey => {
-        const side = state.sides[sideKey];
-        const metrics = printMetrics(sideKey);
-        return [sideKey, {
-          hasDesign: Boolean(side.file),
-          fileName: side.file?.name || 'Nav pievienots',
-          positionLabel: side.file ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—',
-          printSizeMm: !side.file ? '—' : side.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms'
-        }];
-      }))
-    };
-
-    Object.defineProperty(summary, 'meta', {
-      enumerable: false,
-      value: {
-        date: new Date().toISOString().slice(0, 10),
-        customerName: $('[data-customer-name]')?.value.trim() || '—',
-        customerContact: $('[data-customer-contact]')?.value.trim() || '—',
-        comment: $('[data-customer-comment]')?.value.trim() || ''
-      }
-    });
-
-    return summary;
-  }
-
-  function syncFormData() {
-    const summary = getOrderSummary();
-    const colorInput = $('[data-form-color]');
-    const sizeInput = $('[data-form-size]');
-    if (colorInput) colorInput.value = summary.color;
-    if (sizeInput) sizeInput.value = summary.size;
-    SIDE_KEYS.forEach(sideKey => {
-      const item = summary.sides[sideKey];
-      const fileInput = $(`[data-form-original-filename="${sideKey}"]`);
-      const positionInput = $(`[data-form-position="${sideKey}"]`);
-      const printInput = $(`[data-form-print-mm="${sideKey}"]`);
-      if (fileInput) fileInput.value = item.fileName;
-      if (positionInput) positionInput.value = item.positionLabel;
-      if (printInput) printInput.value = item.printSizeMm;
-    });
-  }
-
-  async function drawSummaryMockup(sideKey) {
-    const canvas = $(`[data-final-preview="${sideKey}"]`);
-    if (!canvas) return;
-    try {
-      const svgData = await svgToImage(sideKey);
-      canvas.width = 420;
-      canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width));
-      drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
-    } catch (cause) {
-      console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās.`, cause);
-    }
-  }
-
-  async function updateSummary() {
-    const summary = getOrderSummary();
-    const colorNode = $('[data-summary-color]');
-    const sizeNode = $('[data-summary-size]');
-    if (colorNode) colorNode.textContent = summary.color;
-    if (sizeNode) sizeNode.textContent = summary.size;
-    SIDE_KEYS.forEach(sideKey => {
-      const item = summary.sides[sideKey];
-      const fileNode = $(`[data-summary-file="${sideKey}"]`);
-      const positionNode = $(`[data-summary-position="${sideKey}"]`);
-      const printNode = $(`[data-summary-print-mm="${sideKey}"]`);
-      if (fileNode) fileNode.textContent = item.fileName;
-      if (positionNode) positionNode.textContent = item.positionLabel;
-      if (printNode) printNode.textContent = item.printSizeMm;
-    });
-    syncFormData();
-    updateWhatsApp(summary);
-    await Promise.all(SIDE_KEYS.map(drawSummaryMockup));
-  }
-
-  function updateWhatsApp(summary = getOrderSummary()) {
-    if (!els.whatsapp) return;
-    const lines = ['Sveiki! Vēlos PrintStich piedāvājumu savam krekla dizainam.', `Krekls: ${summary.color}`, `Izmērs: ${summary.size}`];
-    SIDE_KEYS.forEach(sideKey => {
-      const item = summary.sides[sideKey];
-      if (!item.hasDesign) return;
-      lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`);
-      lines.push(`Novietojums: ${item.positionLabel}`);
-      lines.push(`Drukas izmērs: ${item.printSizeMm}`);
-    });
-    els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`;
-  }
-
-  function canvasToBlob(canvas) {
-    return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG neizdevās izveidot.')), 'image/png'));
-  }
-
-  async function createSideMockupCanvas(sideKey, width) {
-    const svgData = await svgToImage(sideKey);
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width));
-    drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
-    return canvas;
-  }
-
-  function wrapText(ctx, text, maxWidth) {
-    const words = String(text).split(/\s+/);
-    const lines = [];
-    let line = '';
-    words.forEach(word => {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; } else line = test;
-    });
-    if (line) lines.push(line);
-    return lines;
-  }
-
-  function fitText(ctx, text, maxWidth) {
-    const value = String(text);
-    if (ctx.measureText(value).width <= maxWidth) return value;
-    let shortened = value;
-    while (shortened.length > 1 && ctx.measureText(`${shortened}…`).width > maxWidth) shortened = shortened.slice(0, -1);
-    return `${shortened}…`;
-  }
+  function inlineComputedSvgStyles(sourceSvg, cloneSvg) { const sourceNodes = [sourceSvg, ...sourceSvg.querySelectorAll('*')]; const cloneNodes = [cloneSvg, ...cloneSvg.querySelectorAll('*')]; sourceNodes.forEach((sourceNode, index) => { const cloneNode = cloneNodes[index]; if (!cloneNode) return; const computed = getComputedStyle(sourceNode); ['fill', 'stroke', 'stroke-width', 'opacity'].forEach(property => { const value = computed.getPropertyValue(property); if (value) cloneNode.setAttribute(property, value.trim()); }); }); }
+  async function prepareSerializedSvg(sideKey) { const markup = await getSvgMarkup(sideKey); const holder = document.createElement('div'); Object.assign(holder.style, { position: 'fixed', left: '-10000px', top: '0', width: '600px', height: '700px', pointerEvents: 'none' }); holder.innerHTML = markup; document.body.appendChild(holder); try { const source = $('svg', holder); if (!source) throw new Error('SVG nesatur <svg>.'); source.setAttribute('width', '600'); source.setAttribute('height', '700'); source.style.width = '600px'; source.style.height = '700px'; applySvgAppearance(source, sideKey); const clone = source.cloneNode(true); clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); clone.setAttribute('width', '600'); clone.setAttribute('height', '700'); clone.setAttribute('viewBox', source.getAttribute('viewBox') || '0 0 600 700'); inlineComputedSvgStyles(source, clone); const parts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number); const viewBox = parts.length === 4 && parts.every(Number.isFinite) ? { x: parts[0], y: parts[1], width: parts[2], height: parts[3] } : { x: 0, y: 0, width: 600, height: 700 }; return { svgString: new XMLSerializer().serializeToString(clone), viewBox }; } finally { holder.remove(); } }
+  async function svgToImage(sideKey) { const { svgString, viewBox } = await prepareSerializedSvg(sideKey); const image = new Image(); image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`; await image.decode(); if (!image.naturalWidth || !image.naturalHeight) throw new Error('Serializētais SVG ielādējās ar 0×0 izmēru.'); return { image, viewBox }; }
+  function drawMockupContent(ctx, canvas, sideKey, baseImage) { const side = state.sides[sideKey]; ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height); const zone = getZone(sideKey); if (!zone || !side.file) return; const zoneX = zone.x * canvas.width; const zoneY = zone.y * canvas.height; const zoneW = zone.w * canvas.width; const zoneH = zone.h * canvas.height; if (side.vectorFallback || !side.image) { ctx.save(); ctx.translate(zoneX, zoneY); drawVectorFallback(ctx, zoneW, zoneH); ctx.restore(); return; } const rect = getDesignRect(zoneW, zoneH, side); if (rect) ctx.drawImage(side.image, zoneX + rect.x, zoneY + rect.y, rect.width, rect.height); }
+  function positionLabel(side) { const labels = { center: 'Centrā', 'left-chest': 'Krūšu kreisajā pusē', top: 'Augšā', lower: 'Zemāk', 'sleeve-top': 'Augšāk', 'sleeve-lower': 'Zemāk' }; return labels[side.preset] || `X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`; }
+  function getOrderSummary() { const color = colorById(state.color); const summary = { color: color.nosaukums, size: state.size || '—', sides: Object.fromEntries(SIDE_KEYS.map(sideKey => { const side = state.sides[sideKey]; const metrics = printMetrics(sideKey); return [sideKey, { hasDesign: Boolean(side.file), fileName: side.file?.name || 'Nav pievienots', positionLabel: side.file ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—', printSizeMm: !side.file ? '—' : side.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms' }]; })) }; Object.defineProperty(summary, 'meta', { enumerable: false, value: { date: new Date().toISOString().slice(0, 10), customerName: $('[data-customer-name]')?.value.trim() || '—', customerContact: $('[data-customer-contact]')?.value.trim() || '—', comment: $('[data-customer-comment]')?.value.trim() || '' } }); return summary; }
+  function syncFormData() { const summary = getOrderSummary(); const colorInput = $('[data-form-color]'); const sizeInput = $('[data-form-size]'); if (colorInput) colorInput.value = summary.color; if (sizeInput) sizeInput.value = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileInput = $(`[data-form-original-filename="${sideKey}"]`); const positionInput = $(`[data-form-position="${sideKey}"]`); const printInput = $(`[data-form-print-mm="${sideKey}"]`); if (fileInput) fileInput.value = item.fileName; if (positionInput) positionInput.value = item.positionLabel; if (printInput) printInput.value = item.printSizeMm; }); }
+  async function drawSummaryMockup(sideKey) { const canvas = $(`[data-final-preview="${sideKey}"]`); if (!canvas) return; try { const svgData = await svgToImage(sideKey); canvas.width = 420; canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); } catch (cause) { console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās.`, cause); } }
+  async function updateSummary() { const summary = getOrderSummary(); const colorNode = $('[data-summary-color]'); const sizeNode = $('[data-summary-size]'); if (colorNode) colorNode.textContent = summary.color; if (sizeNode) sizeNode.textContent = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileNode = $(`[data-summary-file="${sideKey}"]`); const positionNode = $(`[data-summary-position="${sideKey}"]`); const printNode = $(`[data-summary-print-mm="${sideKey}"]`); if (fileNode) fileNode.textContent = item.fileName; if (positionNode) positionNode.textContent = item.positionLabel; if (printNode) printNode.textContent = item.printSizeMm; }); syncFormData(); updateWhatsApp(summary); await Promise.all(SIDE_KEYS.map(drawSummaryMockup)); }
+  function updateWhatsApp(summary = getOrderSummary()) { if (!els.whatsapp) return; const lines = ['Sveiki! Vēlos PrintStich piedāvājumu savam krekla dizainam.', `Krekls: ${summary.color}`, `Izmērs: ${summary.size}`]; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; if (!item.hasDesign) return; lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`); lines.push(`Novietojums: ${item.positionLabel}`); lines.push(`Drukas izmērs: ${item.printSizeMm}`); }); els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`; }
+  function canvasToBlob(canvas) { return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG neizdevās izveidot.')), 'image/png')); }
+  async function createSideMockupCanvas(sideKey, width) { const svgData = await svgToImage(sideKey); const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); return canvas; }
+  function wrapText(ctx, text, maxWidth) { const words = String(text).split(/\s+/); const lines = []; let line = ''; words.forEach(word => { const test = line ? `${line} ${word}` : word; if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; } else line = test; }); if (line) lines.push(line); return lines; }
+  function fitText(ctx, text, maxWidth) { const value = String(text); if (ctx.measureText(value).width <= maxWidth) return value; let shortened = value; while (shortened.length > 1 && ctx.measureText(`${shortened}…`).width > maxWidth) shortened = shortened.slice(0, -1); return `${shortened}…`; }
 
   async function renderWorksheetCanvas(width = 2000) {
-    const summary = getOrderSummary();
-    const meta = summary.meta;
-    const scale = width / 2000;
-    const padding = Math.round(70 * scale);
-    const gap = Math.round(56 * scale);
-    const headerHeight = Math.round(190 * scale);
-    const cellWidth = Math.floor((width - padding * 2 - gap) / 2);
-    const mockupWidth = Math.min(Math.round(890 * scale), cellWidth);
-    const mockupHeight = Math.round(mockupWidth * 7 / 6);
-    const labelHeight = Math.round(112 * scale);
-    const rows = Math.ceil(SIDE_KEYS.length / 2);
-    const gridHeight = rows * (mockupHeight + labelHeight) + Math.max(0, rows - 1) * gap;
-    const dividerGap = Math.round(42 * scale);
-    const tableRowHeight = Math.round(66 * scale);
-    const tableRows = 1 + SIDE_KEYS.length;
-    const tableHeight = tableRows * tableRowHeight;
-    const commentLineHeight = Math.round(36 * scale);
-    const measureCanvas = document.createElement('canvas');
-    const measureCtx = measureCanvas.getContext('2d');
-    measureCtx.font = `400 ${Math.round(26 * scale)}px sans-serif`;
-    const commentLines = meta.comment ? wrapText(measureCtx, meta.comment, width - padding * 2) : [];
-    const commentHeight = meta.comment ? Math.round(62 * scale) + commentLines.length * commentLineHeight : 0;
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = headerHeight + gridHeight + dividerGap * 2 + tableHeight + commentHeight + padding * 2;
-    const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.textBaseline = 'top';
-
-    ctx.fillStyle = '#1a1a1a';
-    ctx.font = `700 ${Math.round(46 * scale)}px sans-serif`;
-    ctx.fillText('PrintStich pasūtījuma pieprasījums', padding, padding);
-
-    ctx.fillStyle = '#666666';
-    ctx.font = `400 ${Math.round(27 * scale)}px sans-serif`;
-    const headerMeta = `${meta.date} · ${meta.customerName} · ${meta.customerContact}`;
-    ctx.fillText(fitText(ctx, headerMeta, width - padding * 2), padding, padding + Math.round(68 * scale));
-
-    const headerDividerY = padding + Math.round(125 * scale);
-    ctx.strokeStyle = '#dedede';
-    ctx.lineWidth = Math.max(1, Math.round(scale));
-    ctx.beginPath();
-    ctx.moveTo(padding, headerDividerY);
-    ctx.lineTo(width - padding, headerDividerY);
-    ctx.stroke();
-
-    for (let index = 0; index < SIDE_KEYS.length; index += 1) {
-      const sideKey = SIDE_KEYS[index];
-      const item = summary.sides[sideKey];
-      const row = Math.floor(index / 2);
-      const col = index % 2;
-      const x = padding + col * (cellWidth + gap) + Math.round((cellWidth - mockupWidth) / 2);
-      const y = headerHeight + row * (mockupHeight + labelHeight + gap);
-      const mockup = await createSideMockupCanvas(sideKey, mockupWidth);
-      ctx.drawImage(mockup, x, y, mockupWidth, mockupHeight);
-
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = `600 ${Math.round(28 * scale)}px sans-serif`;
-      const primaryLabel = item.hasDesign ? SIDE_LABELS[sideKey] : `${SIDE_LABELS[sideKey]} — bez apdrukas`;
-      ctx.fillText(primaryLabel, x + mockupWidth / 2, y + mockupHeight + Math.round(16 * scale));
-
-      if (item.hasDesign) {
-        ctx.fillStyle = '#666666';
-        ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
-        const detail = `${item.fileName} · ${item.printSizeMm}`;
-        ctx.fillText(fitText(ctx, detail, mockupWidth * 0.92), x + mockupWidth / 2, y + mockupHeight + Math.round(54 * scale));
-      }
-      ctx.textAlign = 'left';
-    }
-
-    const gridBottom = headerHeight + gridHeight;
-    const gridDividerY = gridBottom + dividerGap;
-    ctx.strokeStyle = '#dedede';
-    ctx.beginPath();
-    ctx.moveTo(padding, gridDividerY);
-    ctx.lineTo(width - padding, gridDividerY);
-    ctx.stroke();
-
-    const tableTop = gridDividerY + dividerGap;
-    const tableData = [
-      ['Krekls', `${summary.color} · ${summary.size}`],
-      ...SIDE_KEYS.map(sideKey => {
-        const item = summary.sides[sideKey];
-        return [SIDE_LABELS[sideKey], item.hasDesign ? `${item.positionLabel} · ${item.printSizeMm}` : 'bez apdrukas'];
-      })
-    ];
-
-    tableData.forEach(([label, value], index) => {
-      const y = tableTop + index * tableRowHeight;
-      ctx.fillStyle = '#666666';
-      ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
-      ctx.textAlign = 'left';
-      ctx.fillText(label, padding, y + Math.round(19 * scale));
-
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
-      ctx.textAlign = 'right';
-      ctx.fillText(fitText(ctx, value, width - padding * 2 - Math.round(360 * scale)), width - padding, y + Math.round(19 * scale));
-      ctx.textAlign = 'left';
-
-      if (index < tableData.length - 1) {
-        ctx.strokeStyle = '#e7e7e7';
-        ctx.beginPath();
-        ctx.moveTo(padding, y + tableRowHeight);
-        ctx.lineTo(width - padding, y + tableRowHeight);
-        ctx.stroke();
-      }
-    });
-
-    if (meta.comment) {
-      let commentY = tableTop + tableHeight + Math.round(44 * scale);
-      ctx.fillStyle = '#666666';
-      ctx.font = `600 ${Math.round(24 * scale)}px sans-serif`;
-      ctx.fillText('Komentārs', padding, commentY);
-      commentY += Math.round(38 * scale);
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = `400 ${Math.round(26 * scale)}px sans-serif`;
-      wrapText(ctx, meta.comment, width - padding * 2).forEach(line => {
-        ctx.fillText(line, padding, commentY);
-        commentY += commentLineHeight;
-      });
-    }
-
+    const summary = getOrderSummary(); const meta = summary.meta; const scale = width / 2000; const padding = Math.round(70 * scale); const gap = Math.round(56 * scale); const headerHeight = Math.round(190 * scale); const cellWidth = Math.floor((width - padding * 2 - gap) / 2); const mockupWidth = Math.min(Math.round(890 * scale), cellWidth); const mockupHeight = Math.round(mockupWidth * 7 / 6); const labelHeight = Math.round(112 * scale); const rows = Math.ceil(SIDE_KEYS.length / 2); const gridHeight = rows * (mockupHeight + labelHeight) + Math.max(0, rows - 1) * gap; const dividerGap = Math.round(42 * scale); const tableRowHeight = Math.round(66 * scale); const tableRows = 1 + SIDE_KEYS.length; const tableHeight = tableRows * tableRowHeight; const commentLineHeight = Math.round(36 * scale); const measureCanvas = document.createElement('canvas'); const measureCtx = measureCanvas.getContext('2d'); measureCtx.font = `400 ${Math.round(26 * scale)}px sans-serif`; const commentLines = meta.comment ? wrapText(measureCtx, meta.comment, width - padding * 2) : []; const commentHeight = meta.comment ? Math.round(62 * scale) + commentLines.length * commentLineHeight : 0; const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = headerHeight + gridHeight + dividerGap * 2 + tableHeight + commentHeight + padding * 2; const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.textBaseline = 'top'; ctx.fillStyle = '#1a1a1a'; ctx.font = `700 ${Math.round(46 * scale)}px sans-serif`; ctx.fillText('PrintStich pasūtījuma pieprasījums', padding, padding); ctx.fillStyle = '#666666'; ctx.font = `400 ${Math.round(27 * scale)}px sans-serif`; const headerMeta = `${meta.date} · ${meta.customerName} · ${meta.customerContact}`; ctx.fillText(fitText(ctx, headerMeta, width - padding * 2), padding, padding + Math.round(68 * scale)); const headerDividerY = padding + Math.round(125 * scale); ctx.strokeStyle = '#dedede'; ctx.lineWidth = Math.max(1, Math.round(scale)); ctx.beginPath(); ctx.moveTo(padding, headerDividerY); ctx.lineTo(width - padding, headerDividerY); ctx.stroke();
+    for (let index = 0; index < SIDE_KEYS.length; index += 1) { const sideKey = SIDE_KEYS[index]; const item = summary.sides[sideKey]; const row = Math.floor(index / 2); const col = index % 2; const x = padding + col * (cellWidth + gap) + Math.round((cellWidth - mockupWidth) / 2); const y = headerHeight + row * (mockupHeight + labelHeight + gap); const mockup = await createSideMockupCanvas(sideKey, mockupWidth); ctx.drawImage(mockup, x, y, mockupWidth, mockupHeight); ctx.textAlign = 'center'; ctx.fillStyle = '#1a1a1a'; ctx.font = `600 ${Math.round(28 * scale)}px sans-serif`; const primaryLabel = item.hasDesign ? SIDE_LABELS[sideKey] : `${SIDE_LABELS[sideKey]} — bez apdrukas`; ctx.fillText(primaryLabel, x + mockupWidth / 2, y + mockupHeight + Math.round(16 * scale)); if (item.hasDesign) { ctx.fillStyle = '#666666'; ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`; const detail = `${item.fileName} · ${item.printSizeMm}`; ctx.fillText(fitText(ctx, detail, mockupWidth * 0.92), x + mockupWidth / 2, y + mockupHeight + Math.round(54 * scale)); } ctx.textAlign = 'left'; }
+    const gridBottom = headerHeight + gridHeight; const gridDividerY = gridBottom + dividerGap; ctx.strokeStyle = '#dedede'; ctx.beginPath(); ctx.moveTo(padding, gridDividerY); ctx.lineTo(width - padding, gridDividerY); ctx.stroke(); const tableTop = gridDividerY + dividerGap; const tableData = [['Krekls', `${summary.color} · ${summary.size}`], ...SIDE_KEYS.map(sideKey => { const item = summary.sides[sideKey]; return [SIDE_LABELS[sideKey], item.hasDesign ? `${item.positionLabel} · ${item.printSizeMm}` : 'bez apdrukas']; })];
+    tableData.forEach(([label, value], index) => { const y = tableTop + index * tableRowHeight; ctx.fillStyle = '#666666'; ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`; ctx.textAlign = 'left'; ctx.fillText(label, padding, y + Math.round(19 * scale)); ctx.fillStyle = '#1a1a1a'; ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`; ctx.textAlign = 'right'; ctx.fillText(fitText(ctx, value, width - padding * 2 - Math.round(360 * scale)), width - padding, y + Math.round(19 * scale)); ctx.textAlign = 'left'; if (index < tableData.length - 1) { ctx.strokeStyle = '#e7e7e7'; ctx.beginPath(); ctx.moveTo(padding, y + tableRowHeight); ctx.lineTo(width - padding, y + tableRowHeight); ctx.stroke(); } });
+    if (meta.comment) { let commentY = tableTop + tableHeight + Math.round(44 * scale); ctx.fillStyle = '#666666'; ctx.font = `600 ${Math.round(24 * scale)}px sans-serif`; ctx.fillText('Komentārs', padding, commentY); commentY += Math.round(38 * scale); ctx.fillStyle = '#1a1a1a'; ctx.font = `400 ${Math.round(26 * scale)}px sans-serif`; wrapText(ctx, meta.comment, width - padding * 2).forEach(line => { ctx.fillText(line, padding, commentY); commentY += commentLineHeight; }); }
     return canvas;
   }
 
-  async function createWorksheetBlob(maxBytes = FORM_LIMIT) {
-    for (const width of [2000, 1700, 1450, 1200, 1000, 800]) {
-      const blob = await canvasToBlob(await renderWorksheetCanvas(width));
-      if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob;
-    }
-    throw new Error('Darba lapas PNG neizdevās samazināt līdz FormSubmit limitam.');
-  }
-
-  function syncOriginalAttachments() {
-    if (!els.originalAttachments) return false;
-    if (typeof DataTransfer === 'undefined') { error('form', 'Šis pārlūks nevar sagatavot pielikumus.'); return false; }
-    els.originalAttachments.innerHTML = '';
-    let attachmentIndex = 2;
-    SIDE_KEYS.forEach(sideKey => {
-      const side = state.sides[sideKey];
-      if (!side.file) return;
-      const input = document.createElement('input');
-      input.type = 'file'; input.name = `attachment${attachmentIndex}`; input.className = 'visually-hidden'; input.tabIndex = -1;
-      input.setAttribute('aria-hidden', 'true'); input.dataset.originalAttachment = sideKey;
-      const dt = new DataTransfer(); dt.items.add(side.file); input.files = dt.files;
-      els.originalAttachments.appendChild(input); attachmentIndex += 1;
-    });
-    return true;
-  }
-
-  async function prepareEmailAttachments() {
-    if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.');
-    if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.');
-    const originalsTotal = SIDE_KEYS.reduce((sum, key) => sum + (state.sides[key].file?.size || 0), 0);
-    const worksheetBudget = FORM_LIMIT - originalsTotal;
-    if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.');
-    const blob = await createWorksheetBlob(worksheetBudget);
-    const date = new Date().toISOString().slice(0, 10);
-    const file = new File([blob], `printstich-pasutijums-${date}.png`, { type: 'image/png' });
-    const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files;
-    if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.');
-    if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.');
-    return file;
-  }
-
+  async function createWorksheetBlob(maxBytes = FORM_LIMIT) { for (const width of [2000, 1700, 1450, 1200, 1000, 800]) { const blob = await canvasToBlob(await renderWorksheetCanvas(width)); if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob; } throw new Error('Darba lapas PNG neizdevās samazināt līdz FormSubmit limitam.'); }
+  function syncOriginalAttachments() { if (!els.originalAttachments) return false; if (typeof DataTransfer === 'undefined') { error('form', 'Šis pārlūks nevar sagatavot pielikumus.'); return false; } els.originalAttachments.innerHTML = ''; let attachmentIndex = 2; SIDE_KEYS.forEach(sideKey => { const side = state.sides[sideKey]; if (!side.file) return; const input = document.createElement('input'); input.type = 'file'; input.name = `attachment${attachmentIndex}`; input.className = 'visually-hidden'; input.tabIndex = -1; input.setAttribute('aria-hidden', 'true'); input.dataset.originalAttachment = sideKey; const dt = new DataTransfer(); dt.items.add(side.file); input.files = dt.files; els.originalAttachments.appendChild(input); attachmentIndex += 1; }); return true; }
+  async function prepareEmailAttachments() { if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.'); if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.'); const originalsTotal = SIDE_KEYS.reduce((sum, key) => sum + (state.sides[key].file?.size || 0), 0); const worksheetBudget = FORM_LIMIT - originalsTotal; if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.'); const blob = await createWorksheetBlob(worksheetBudget); const date = new Date().toISOString().slice(0, 10); const file = new File([blob], `printstich-pasutijums-${date}.png`, { type: 'image/png' }); const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files; if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.'); if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.'); return file; }
   const debugEnabled = new URLSearchParams(location.search).has('debug');
-  if (els.debugMockup) {
-    els.debugMockup.hidden = !debugEnabled;
-    if (debugEnabled) els.debugMockup.addEventListener('click', async () => {
-      error('form');
-      try {
-        const blob = await createWorksheetBlob(FORM_LIMIT);
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank', 'noopener');
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
-      } catch (cause) {
-        console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause);
-        error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
-      }
-    });
-  }
-
-  if (els.form) els.form.addEventListener('submit', async event => {
-    if (state.submitting) return;
-    event.preventDefault(); error('form');
-    const name = $('[data-customer-name]')?.value.trim() || '';
-    const contact = $('[data-customer-contact]')?.value.trim() || '';
-    if (!state.size) return error('form', 'Izvēlies krekla izmēru.');
-    if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.');
-    if (SIDE_KEYS.some(key => state.sides[key].file?.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.');
-    if (!name) return error('form', 'Ievadi savu vārdu.');
-    if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.');
-    syncFormData();
-    const submitButton = $('.customizer-submit', els.form);
-    if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Sagatavo nosūtīšanai...'; }
-    try {
-      await prepareEmailAttachments();
-      state.submitting = true;
-      els.form.submit();
-    } catch (cause) {
-      console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause);
-      error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
-      if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Nosūtīt savu dizainu'; }
-    }
-  });
-
-  function updateMobileLayout() {
-    const mobile = window.matchMedia('(max-width: 767px)').matches;
-    let hint = $('[data-mobile-drag-hint]');
-    if (!hint && els.previewCard) {
-      hint = document.createElement('p'); hint.className = 'customizer-preview-hint customizer-mobile-drag-hint'; hint.dataset.mobileDragHint = ''; hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu'; els.previewCard.appendChild(hint);
-    }
-    if (hint) hint.hidden = !(mobile && state.step === 2);
-    if (mobile && state.step !== 3) { els.preview.style.height = '45vh'; els.preview.style.maxHeight = '45vh'; }
-    else { els.preview.style.height = ''; els.preview.style.maxHeight = ''; }
-    requestAnimationFrame(renderDesign);
-  }
-
-  window.addEventListener('resize', updateMobileLayout);
-  renderPresetButtons();
-  updateSideUi();
-  showStep(1);
-  loadActiveSvg();
+  if (els.debugMockup) { els.debugMockup.hidden = !debugEnabled; if (debugEnabled) els.debugMockup.addEventListener('click', async () => { error('form'); try { const blob = await createWorksheetBlob(FORM_LIMIT); const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); } catch (cause) { console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause); error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); } }); }
+  if (els.form) els.form.addEventListener('submit', async event => { if (state.submitting) return; event.preventDefault(); error('form'); const name = $('[data-customer-name]')?.value.trim() || ''; const contact = $('[data-customer-contact]')?.value.trim() || ''; if (!state.size) return error('form', 'Izvēlies krekla izmēru.'); if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); if (SIDE_KEYS.some(key => state.sides[key].file?.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.'); if (!name) return error('form', 'Ievadi savu vārdu.'); if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.'); syncFormData(); const submitButton = $('.customizer-submit', els.form); if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Sagatavo nosūtīšanai...'; } try { await prepareEmailAttachments(); state.submitting = true; els.form.submit(); } catch (cause) { console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause); error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Nosūtīt savu dizainu'; } } });
+  function updateMobileLayout() { const mobile = window.matchMedia('(max-width: 767px)').matches; let hint = $('[data-mobile-drag-hint]'); if (!hint && els.previewCard) { hint = document.createElement('p'); hint.className = 'customizer-preview-hint customizer-mobile-drag-hint'; hint.dataset.mobileDragHint = ''; hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu'; els.previewCard.appendChild(hint); } if (hint) hint.hidden = !(mobile && state.step === 2); if (mobile && state.step !== 3) { els.preview.style.height = '45vh'; els.preview.style.maxHeight = '45vh'; } else { els.preview.style.height = ''; els.preview.style.maxHeight = ''; } requestAnimationFrame(renderDesign); }
+  window.addEventListener('resize', updateMobileLayout); renderPresetButtons(); updateSideUi(); showStep(1); loadActiveSvg();
 })();
