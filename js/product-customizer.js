@@ -76,7 +76,6 @@
     form: $('[data-customizer-form]'),
     originalAttachments: $('[data-original-attachments]'),
     worksheetInput: $('[data-worksheet-file]'),
-    success: $('[data-success-message]'),
     whatsapp: $('[data-whatsapp-link]'),
     debugMockup: $('#debugMockup')
   };
@@ -909,16 +908,6 @@
     }
   });
 
-  function showThankYouIfNeeded() {
-    if (window.location.hash !== '#paldies') return;
-    els.panels.forEach(panel => { panel.hidden = true; });
-    if (els.navigation) els.navigation.hidden = true;
-    if (els.previewColumn) els.previewColumn.hidden = true;
-    if (els.steps) els.steps.hidden = true;
-    if (els.sideSwitch) els.sideSwitch.hidden = true;
-    if (els.success) els.success.hidden = false;
-  }
-
   function updateMobileLayout() {
     const mobile = window.matchMedia('(max-width: 767px)').matches;
     let hint = $('[data-mobile-drag-hint]');
@@ -935,6 +924,5 @@
   renderPresetButtons();
   updateSideUi();
   showStep(1);
-  showThankYouIfNeeded();
   loadActiveSvg();
 })();
