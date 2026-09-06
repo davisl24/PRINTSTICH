@@ -666,7 +666,7 @@
 
   function getOrderSummary() {
     const color = colorById(state.color);
-    return {
+    const summary = {
       color: color.nosaukums,
       size: state.size || '—',
       sides: Object.fromEntries(SIDE_KEYS.map(sideKey => {
@@ -680,6 +680,18 @@
         }];
       }))
     };
+
+    Object.defineProperty(summary, 'meta', {
+      enumerable: false,
+      value: {
+        date: new Date().toISOString().slice(0, 10),
+        customerName: $('[data-customer-name]')?.value.trim() || '—',
+        customerContact: $('[data-customer-contact]')?.value.trim() || '—',
+        comment: $('[data-customer-comment]')?.value.trim() || ''
+      }
+    });
+
+    return summary;
   }
 
   function syncFormData() {
@@ -770,60 +782,141 @@
     return lines;
   }
 
+  function fitText(ctx, text, maxWidth) {
+    const value = String(text);
+    if (ctx.measureText(value).width <= maxWidth) return value;
+    let shortened = value;
+    while (shortened.length > 1 && ctx.measureText(`${shortened}…`).width > maxWidth) shortened = shortened.slice(0, -1);
+    return `${shortened}…`;
+  }
+
   async function renderWorksheetCanvas(width = 2000) {
     const summary = getOrderSummary();
+    const meta = summary.meta;
     const scale = width / 2000;
     const padding = Math.round(70 * scale);
-    const gap = Math.round(60 * scale);
+    const gap = Math.round(56 * scale);
     const headerHeight = Math.round(190 * scale);
     const cellWidth = Math.floor((width - padding * 2 - gap) / 2);
-    const mockupWidth = Math.min(Math.round(900 * scale), cellWidth);
+    const mockupWidth = Math.min(Math.round(890 * scale), cellWidth);
     const mockupHeight = Math.round(mockupWidth * 7 / 6);
-    const labelHeight = Math.round(70 * scale);
+    const labelHeight = Math.round(112 * scale);
     const rows = Math.ceil(SIDE_KEYS.length / 2);
     const gridHeight = rows * (mockupHeight + labelHeight) + Math.max(0, rows - 1) * gap;
-    const textLines = 2 + SIDE_KEYS.length * 4;
-    const textHeight = Math.round((textLines * 42 + 100) * scale);
+    const dividerGap = Math.round(42 * scale);
+    const tableRowHeight = Math.round(66 * scale);
+    const tableRows = 1 + SIDE_KEYS.length;
+    const tableHeight = tableRows * tableRowHeight;
+    const commentLineHeight = Math.round(36 * scale);
+    const measureCanvas = document.createElement('canvas');
+    const measureCtx = measureCanvas.getContext('2d');
+    measureCtx.font = `400 ${Math.round(26 * scale)}px sans-serif`;
+    const commentLines = meta.comment ? wrapText(measureCtx, meta.comment, width - padding * 2) : [];
+    const commentHeight = meta.comment ? Math.round(62 * scale) + commentLines.length * commentLineHeight : 0;
     const canvas = document.createElement('canvas');
     canvas.width = width;
-    canvas.height = headerHeight + gridHeight + textHeight + padding * 2;
+    canvas.height = headerHeight + gridHeight + dividerGap * 2 + tableHeight + commentHeight + padding * 2;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#1a1a1a'; ctx.textBaseline = 'top';
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.textBaseline = 'top';
+
+    ctx.fillStyle = '#1a1a1a';
     ctx.font = `700 ${Math.round(46 * scale)}px sans-serif`;
     ctx.fillText('PrintStich pasūtījuma pieprasījums', padding, padding);
-    ctx.font = `400 ${Math.round(28 * scale)}px sans-serif`;
-    ctx.fillText(new Date().toISOString().slice(0, 10), padding, padding + Math.round(65 * scale));
+
+    ctx.fillStyle = '#666666';
+    ctx.font = `400 ${Math.round(27 * scale)}px sans-serif`;
+    const headerMeta = `${meta.date} · ${meta.customerName} · ${meta.customerContact}`;
+    ctx.fillText(fitText(ctx, headerMeta, width - padding * 2), padding, padding + Math.round(68 * scale));
+
+    const headerDividerY = padding + Math.round(125 * scale);
+    ctx.strokeStyle = '#dedede';
+    ctx.lineWidth = Math.max(1, Math.round(scale));
+    ctx.beginPath();
+    ctx.moveTo(padding, headerDividerY);
+    ctx.lineTo(width - padding, headerDividerY);
+    ctx.stroke();
 
     for (let index = 0; index < SIDE_KEYS.length; index += 1) {
       const sideKey = SIDE_KEYS[index];
+      const item = summary.sides[sideKey];
       const row = Math.floor(index / 2);
       const col = index % 2;
       const x = padding + col * (cellWidth + gap) + Math.round((cellWidth - mockupWidth) / 2);
       const y = headerHeight + row * (mockupHeight + labelHeight + gap);
       const mockup = await createSideMockupCanvas(sideKey, mockupWidth);
       ctx.drawImage(mockup, x, y, mockupWidth, mockupHeight);
-      ctx.font = `600 ${Math.round(28 * scale)}px sans-serif`;
+
       ctx.textAlign = 'center';
-      const suffix = summary.sides[sideKey].hasDesign ? '' : ' — bez apdrukas';
       ctx.fillStyle = '#1a1a1a';
-      ctx.fillText(`${SIDE_LABELS[sideKey]}${suffix}`, x + mockupWidth / 2, y + mockupHeight + Math.round(18 * scale));
+      ctx.font = `600 ${Math.round(28 * scale)}px sans-serif`;
+      const primaryLabel = item.hasDesign ? SIDE_LABELS[sideKey] : `${SIDE_LABELS[sideKey]} — bez apdrukas`;
+      ctx.fillText(primaryLabel, x + mockupWidth / 2, y + mockupHeight + Math.round(16 * scale));
+
+      if (item.hasDesign) {
+        ctx.fillStyle = '#666666';
+        ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
+        const detail = `${item.fileName} · ${item.printSizeMm}`;
+        ctx.fillText(fitText(ctx, detail, mockupWidth * 0.92), x + mockupWidth / 2, y + mockupHeight + Math.round(54 * scale));
+      }
       ctx.textAlign = 'left';
     }
 
-    let textY = headerHeight + gridHeight + Math.round(45 * scale);
-    ctx.font = `400 ${Math.round(28 * scale)}px sans-serif`;
-    const lineHeight = Math.round(42 * scale);
-    const drawLine = text => wrapText(ctx, text, width - padding * 2).forEach(line => { ctx.fillText(line, padding, textY); textY += lineHeight; });
-    drawLine(`Krāsa: ${summary.color}`);
-    drawLine(`Izmērs: ${summary.size}`);
-    SIDE_KEYS.forEach(sideKey => {
-      const item = summary.sides[sideKey];
-      drawLine(`${SIDE_LABELS[sideKey]} — fails: ${item.fileName}`);
-      drawLine(`${SIDE_LABELS[sideKey]} — novietojums: ${item.positionLabel}`);
-      drawLine(`${SIDE_LABELS[sideKey]} — drukas izmērs: ${item.printSizeMm}`);
-      drawLine('');
+    const gridBottom = headerHeight + gridHeight;
+    const gridDividerY = gridBottom + dividerGap;
+    ctx.strokeStyle = '#dedede';
+    ctx.beginPath();
+    ctx.moveTo(padding, gridDividerY);
+    ctx.lineTo(width - padding, gridDividerY);
+    ctx.stroke();
+
+    const tableTop = gridDividerY + dividerGap;
+    const tableData = [
+      ['Krekls', `${summary.color} · ${summary.size}`],
+      ...SIDE_KEYS.map(sideKey => {
+        const item = summary.sides[sideKey];
+        return [SIDE_LABELS[sideKey], item.hasDesign ? `${item.positionLabel} · ${item.printSizeMm}` : 'bez apdrukas'];
+      })
+    ];
+
+    tableData.forEach(([label, value], index) => {
+      const y = tableTop + index * tableRowHeight;
+      ctx.fillStyle = '#666666';
+      ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText(label, padding, y + Math.round(19 * scale));
+
+      ctx.fillStyle = '#1a1a1a';
+      ctx.font = `400 ${Math.round(24 * scale)}px sans-serif`;
+      ctx.textAlign = 'right';
+      ctx.fillText(fitText(ctx, value, width - padding * 2 - Math.round(360 * scale)), width - padding, y + Math.round(19 * scale));
+      ctx.textAlign = 'left';
+
+      if (index < tableData.length - 1) {
+        ctx.strokeStyle = '#e7e7e7';
+        ctx.beginPath();
+        ctx.moveTo(padding, y + tableRowHeight);
+        ctx.lineTo(width - padding, y + tableRowHeight);
+        ctx.stroke();
+      }
     });
+
+    if (meta.comment) {
+      let commentY = tableTop + tableHeight + Math.round(44 * scale);
+      ctx.fillStyle = '#666666';
+      ctx.font = `600 ${Math.round(24 * scale)}px sans-serif`;
+      ctx.fillText('Komentārs', padding, commentY);
+      commentY += Math.round(38 * scale);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.font = `400 ${Math.round(26 * scale)}px sans-serif`;
+      wrapText(ctx, meta.comment, width - padding * 2).forEach(line => {
+        ctx.fillText(line, padding, commentY);
+        commentY += commentLineHeight;
+      });
+    }
+
     return canvas;
   }
 
