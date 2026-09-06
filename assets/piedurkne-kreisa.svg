@@ -1,35 +1,30 @@
 <svg id="ps-sleeve-left" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
   <rect width="600" height="700" fill="#F7F7F5"/>
 
-  <!-- Izolēta T-krekla kreisā piedurkne: izliekta pleca galva, sašaurinājums un taisna apakšmala. -->
+  <!-- Plakani izklāta kreisā piedurkne: labās piedurknes spoguļattēls. -->
   <path class="shirt-body"
-    d="M182 151
-       C224 119 277 102 334 106
-       C377 109 414 126 440 154
-       C466 183 481 222 486 264
-       L449 532
-       C405 544 357 550 308 550
-       C257 550 210 543 166 531
-       L119 264
-       C126 219 146 178 182 151 Z"
+    d="M145 265
+       C165 150 235 95 300 95
+       C365 95 435 150 455 265
+       L435 500
+       L165 500
+       Z"
     fill="#FFFFFF"
     stroke="#C9C6BF"
     stroke-width="6"
     stroke-linejoin="round"/>
 
-  <!-- Pleca/roku izgriezuma šuve. -->
+  <!-- Divas plānas paralēlas apakšmalas šuves. -->
   <path
-    d="M182 151 C224 119 277 102 334 106 C377 109 414 126 440 154"
+    d="M166 476 L434 476"
     fill="none"
     stroke="#C9C6BF"
-    stroke-width="7"
+    stroke-width="3"
     stroke-linecap="round"/>
-
-  <!-- Piedurknes apakšmalas šuve. -->
   <path
-    d="M166 531 C210 543 257 550 308 550 C357 550 405 544 449 532"
+    d="M165 486 L435 486"
     fill="none"
     stroke="#C9C6BF"
-    stroke-width="7"
+    stroke-width="3"
     stroke-linecap="round"/>
 </svg>
