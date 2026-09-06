@@ -1,8 +1,30 @@
 <svg id="ps-sleeve-right" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
   <rect width="600" height="700" fill="#F7F7F5"/>
+
+  <!-- Plakani izklāta labā piedurkne: apaļa piedurknes galva, taisnas malas un plakana apakšmala. -->
   <path class="shirt-body"
-    d="M185 130 L430 130 L475 235 L415 545 L170 545 L130 215 Z"
-    fill="#ffffff" stroke="#c9c6bf" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M185 130 L430 130" fill="none" stroke="#c9c6bf" stroke-width="8" stroke-linecap="round"/>
-  <path d="M170 545 L415 545" fill="none" stroke="#c9c6bf" stroke-width="7" stroke-linecap="round"/>
+    d="M145 265
+       C165 150 235 95 300 95
+       C365 95 435 150 455 265
+       L435 500
+       L165 500
+       Z"
+    fill="#FFFFFF"
+    stroke="#C9C6BF"
+    stroke-width="6"
+    stroke-linejoin="round"/>
+
+  <!-- Divas plānas paralēlas apakšmalas šuves. -->
+  <path
+    d="M166 476 L434 476"
+    fill="none"
+    stroke="#C9C6BF"
+    stroke-width="3"
+    stroke-linecap="round"/>
+  <path
+    d="M165 486 L435 486"
+    fill="none"
+    stroke="#C9C6BF"
+    stroke-width="3"
+    stroke-linecap="round"/>
 </svg>
