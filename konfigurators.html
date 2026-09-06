@@ -48,12 +48,8 @@
         </ol>
 
         <div class="customizer-side-switch" data-side-switch aria-label="Apdrukas puse">
-          <button class="is-active" type="button" data-side="front" aria-pressed="true">
-            <span>Priekša</span><small data-side-status="front">tukša</small>
-          </button>
-          <button type="button" data-side="back" aria-pressed="false">
-            <span>Aizmugure</span><small data-side-status="back">tukša</small>
-          </button>
+          <button class="is-active" type="button" data-side="front" aria-pressed="true"><span>Priekša</span><small data-side-status="front">tukša</small></button>
+          <button type="button" data-side="back" aria-pressed="false"><span>Aizmugure</span><small data-side-status="back">tukša</small></button>
         </div>
 
         <div class="customizer-layout">
@@ -61,13 +57,8 @@
             <div class="customizer-preview-card" data-preview-card>
               <div class="customizer-preview" data-preview>
                 <img class="customizer-shirt" src="assets/images/mokapi/krekls-balts-prieksa.jpg" alt="" data-shirt-image hidden>
-                <div class="customizer-mockup-placeholder" data-mockup-placeholder hidden>
-                  <strong>Krekla priekšskatījums</strong>
-                  <span>Krekla SVG vēl nav ielādēts.</span>
-                </div>
-                <div class="customizer-print-area" data-print-area aria-label="Apdrukas laukums">
-                  <img class="customizer-design" alt="Augšupielādētā dizaina priekšskatījums" data-design-image hidden>
-                </div>
+                <div class="customizer-mockup-placeholder" data-mockup-placeholder hidden><strong>Krekla priekšskatījums</strong><span>Krekla SVG vēl nav ielādēts.</span></div>
+                <div class="customizer-print-area" data-print-area aria-label="Apdrukas laukums"><img class="customizer-design" alt="Augšupielādētā dizaina priekšskatījums" data-design-image hidden></div>
               </div>
               <p class="customizer-preview-hint" data-preview-hint>Apdrukas laukums ir atzīmēts ar smalku līniju.</p>
             </div>
@@ -75,181 +66,61 @@
 
           <div class="customizer-controls" data-customizer-controls>
             <section class="customizer-step-panel is-active" data-step-panel="1" aria-labelledby="step-one-title">
-              <p class="step-kicker">01 / 03</p>
-              <h2 id="step-one-title">Izvēlies kreklu</h2>
-
-              <fieldset class="customizer-fieldset">
-                <legend>Krāsa</legend>
-                <div class="swatch-group" data-color-options>
-                  <button class="color-swatch is-active" type="button" data-color="white" aria-pressed="true"><span class="swatch swatch-white" aria-hidden="true"></span>Balta</button>
-                  <button class="color-swatch" type="button" data-color="black" aria-pressed="false"><span class="swatch swatch-black" aria-hidden="true"></span>Melna</button>
-                </div>
-              </fieldset>
-
-              <fieldset class="customizer-fieldset">
-                <legend>Izmērs</legend>
-                <div class="size-options" data-size-options>
-                  <button type="button" data-size="S" aria-pressed="false">S</button>
-                  <button type="button" data-size="M" aria-pressed="false">M</button>
-                  <button type="button" data-size="L" aria-pressed="false">L</button>
-                  <button type="button" data-size="XL" aria-pressed="false">XL</button>
-                  <button type="button" data-size="XXL" aria-pressed="false">XXL</button>
-                </div>
-                <p class="customizer-error" data-error="size" role="status"></p>
-              </fieldset>
+              <p class="step-kicker">01 / 03</p><h2 id="step-one-title">Izvēlies kreklu</h2>
+              <fieldset class="customizer-fieldset"><legend>Krāsa</legend><div class="swatch-group" data-color-options><button class="color-swatch is-active" type="button" data-color="white" aria-pressed="true"><span class="swatch swatch-white" aria-hidden="true"></span>Balta</button><button class="color-swatch" type="button" data-color="black" aria-pressed="false"><span class="swatch swatch-black" aria-hidden="true"></span>Melna</button></div></fieldset>
+              <fieldset class="customizer-fieldset"><legend>Izmērs</legend><div class="size-options" data-size-options><button type="button" data-size="S" aria-pressed="false">S</button><button type="button" data-size="M" aria-pressed="false">M</button><button type="button" data-size="L" aria-pressed="false">L</button><button type="button" data-size="XL" aria-pressed="false">XL</button><button type="button" data-size="XXL" aria-pressed="false">XXL</button></div><p class="customizer-error" data-error="size" role="status"></p></fieldset>
             </section>
 
             <section class="customizer-step-panel" data-step-panel="2" aria-labelledby="step-two-title" hidden>
-              <p class="step-kicker">02 / 03</p>
-              <h2 id="step-two-title">Pievieno un novieto dizainu</h2>
-              <p>Katram krekla sānam vari pievienot savu failu. Pārslēdz pusi virs priekšskatījuma.</p>
-
+              <p class="step-kicker">02 / 03</p><h2 id="step-two-title">Pievieno un novieto dizainu</h2><p>Katram krekla sānam vari pievienot savu failu. Pārslēdz pusi virs priekšskatījuma.</p>
               <div class="customizer-side-file" data-side-file-state>
                 <p class="customizer-side-file-label"><strong data-active-side-label>Priekša</strong></p>
-                <div class="upload-zone" data-upload-zone>
-                  <input class="visually-hidden" type="file" id="clientFile" accept="image/png,image/jpeg,image/webp,image/svg+xml,application/pdf" data-design-input>
-                  <label class="upload-zone-label" for="clientFile">
-                    <span class="upload-icon" aria-hidden="true">↑</span>
-                    <strong data-upload-action-label>Pievienot dizainu</strong>
-                    <span>PNG, JPG, WebP, SVG vai PDF līdz 8 MB</span>
-                  </label>
-                </div>
-                <div class="customizer-file-actions" data-file-actions hidden>
-                  <p class="upload-file-name" data-file-name aria-live="polite"></p>
-                  <button class="button button-ghost" type="button" data-replace-design>Nomainīt failu</button>
-                  <button class="text-action" type="button" data-remove-design>Noņemt</button>
-                </div>
+                <div class="upload-zone" data-upload-zone><input class="visually-hidden" type="file" id="clientFile" accept="image/png,image/jpeg,image/webp,image/svg+xml,application/pdf" data-design-input><label class="upload-zone-label" for="clientFile"><span class="upload-icon" aria-hidden="true">↑</span><strong data-upload-action-label>Pievienot dizainu</strong><span>PNG, JPG, WebP, SVG vai PDF līdz 8 MB</span></label></div>
+                <div class="customizer-file-actions" data-file-actions hidden><p class="upload-file-name" data-file-name aria-live="polite"></p><button class="button button-ghost" type="button" data-replace-design>Nomainīt failu</button><button class="text-action" type="button" data-remove-design>Noņemt</button></div>
                 <p class="customizer-error" data-error="file" role="status"></p>
               </div>
-
-              <div class="position-presets" data-position-presets aria-label="Ātrā dizaina novietošana">
-                <button class="is-active" type="button" data-position-preset="center" aria-pressed="true">Centrā</button>
-                <button type="button" data-position-preset="left-chest" aria-pressed="false">Krūšu kreisajā pusē</button>
-                <button type="button" data-position-preset="top" aria-pressed="false">Augšā</button>
-                <button type="button" data-position-preset="lower" aria-pressed="false">Zemāk</button>
-              </div>
-
-              <div class="scale-control">
-                <label for="design-scale">Dizaina izmērs</label>
-                <input type="range" id="design-scale" min="20" max="100" value="50" step="1" data-scale-input>
-              </div>
-              <div class="print-size-info">
-                <p data-print-size>Drukas izmērs: —</p>
-                <p class="customizer-error print-limit-warning" data-print-limit-warning aria-live="polite"></p>
-                <p class="customizer-error dpi-warning" data-dpi-warning aria-live="polite"></p>
-              </div>
+              <div class="position-presets" data-position-presets aria-label="Ātrā dizaina novietošana"><button class="is-active" type="button" data-position-preset="center" aria-pressed="true">Centrā</button><button type="button" data-position-preset="left-chest" aria-pressed="false">Krūšu kreisajā pusē</button><button type="button" data-position-preset="top" aria-pressed="false">Augšā</button><button type="button" data-position-preset="lower" aria-pressed="false">Zemāk</button></div>
+              <div class="scale-control"><label for="design-scale">Dizaina izmērs</label><input type="range" id="design-scale" min="20" max="100" value="50" step="1" data-scale-input></div>
+              <div class="print-size-info"><p data-print-size>Drukas izmērs: —</p><p class="customizer-error print-limit-warning" data-print-limit-warning aria-live="polite"></p><p class="customizer-error dpi-warning" data-dpi-warning aria-live="polite"></p></div>
             </section>
 
             <section class="customizer-step-panel" data-step-panel="3" aria-labelledby="step-three-title" hidden>
-              <p class="step-kicker">03 / 03</p>
-              <h2 id="step-three-title">Nosūti savu variantu</h2>
-
+              <p class="step-kicker">03 / 03</p><h2 id="step-three-title">Nosūti savu variantu</h2>
               <div class="customizer-summary" aria-labelledby="summary-title">
                 <h3 id="summary-title">Tavs krekls</h3>
                 <div class="customizer-summary-mockups">
-                  <figure data-summary-side-card="front">
-                    <canvas class="customizer-final-preview" data-final-preview="front" aria-label="Priekšpuses gala priekšskatījums"></canvas>
-                    <figcaption>Priekša</figcaption>
-                  </figure>
-                  <figure data-summary-side-card="back">
-                    <canvas class="customizer-final-preview" data-final-preview="back" aria-label="Aizmugures gala priekšskatījums"></canvas>
-                    <figcaption>Aizmugure</figcaption>
-                  </figure>
+                  <figure data-summary-side-card="front"><canvas class="customizer-final-preview" data-final-preview="front" aria-label="Priekšpuses gala priekšskatījums"></canvas><figcaption>Priekša</figcaption></figure>
+                  <figure data-summary-side-card="back"><canvas class="customizer-final-preview" data-final-preview="back" aria-label="Aizmugures gala priekšskatījums"></canvas><figcaption>Aizmugure</figcaption></figure>
                 </div>
-
-                <dl class="customizer-summary-base">
-                  <div><dt>Krāsa</dt><dd data-summary-color>Balta</dd></div>
-                  <div><dt>Izmērs</dt><dd data-summary-size>—</dd></div>
-                </dl>
-
+                <dl class="customizer-summary-base"><div><dt>Krāsa</dt><dd data-summary-color>Balta</dd></div><div><dt>Izmērs</dt><dd data-summary-size>—</dd></div></dl>
                 <div class="customizer-summary-sides">
-                  <section data-summary-parameters="front">
-                    <h4>Priekša</h4>
-                    <dl>
-                      <div><dt>Fails</dt><dd data-summary-file="front">Nav pievienots</dd></div>
-                      <div><dt>Novietojums</dt><dd data-summary-position="front">—</dd></div>
-                      <div><dt>Drukas izmērs</dt><dd data-summary-print-mm="front">—</dd></div>
-                    </dl>
-                  </section>
-                  <section data-summary-parameters="back">
-                    <h4>Aizmugure</h4>
-                    <dl>
-                      <div><dt>Fails</dt><dd data-summary-file="back">Nav pievienots</dd></div>
-                      <div><dt>Novietojums</dt><dd data-summary-position="back">—</dd></div>
-                      <div><dt>Drukas izmērs</dt><dd data-summary-print-mm="back">—</dd></div>
-                    </dl>
-                  </section>
+                  <section data-summary-parameters="front"><h4>Priekša</h4><dl><div><dt>Fails</dt><dd data-summary-file="front">Nav pievienots</dd></div><div><dt>Novietojums</dt><dd data-summary-position="front">—</dd></div><div><dt>Drukas izmērs</dt><dd data-summary-print-mm="front">—</dd></div></dl></section>
+                  <section data-summary-parameters="back"><h4>Aizmugure</h4><dl><div><dt>Fails</dt><dd data-summary-file="back">Nav pievienots</dd></div><div><dt>Novietojums</dt><dd data-summary-position="back">—</dd></div><div><dt>Drukas izmērs</dt><dd data-summary-print-mm="back">—</dd></div></dl></section>
                 </div>
               </div>
 
               <form class="customizer-form" action="https://formsubmit.co/davislocs135@gmail.com" method="POST" enctype="multipart/form-data" data-customizer-form novalidate>
-                <input type="hidden" name="_subject" value="Jauns PrintStich krekla dizaina pieprasījums">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="https://printstich.vercel.app/konfigurators.html#paldies">
-                <input class="form-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-                <input type="hidden" name="Krāsa" data-form-color>
-                <input type="hidden" name="Izmērs" data-form-size>
-
-                <input type="hidden" name="Priekša — novietojums" data-form-position="front">
-                <input type="hidden" name="Priekša — drukas izmērs mm" data-form-print-mm="front">
-                <input type="hidden" name="Priekša — faila nosaukums" data-form-original-filename="front">
-                <input type="hidden" name="Priekša — X %" data-form-position-x="front">
-                <input type="hidden" name="Priekša — Y %" data-form-position-y="front">
-                <input type="hidden" name="Priekša — mērogs" data-form-scale="front">
-
-                <input type="hidden" name="Aizmugure — novietojums" data-form-position="back">
-                <input type="hidden" name="Aizmugure — drukas izmērs mm" data-form-print-mm="back">
-                <input type="hidden" name="Aizmugure — faila nosaukums" data-form-original-filename="back">
-                <input type="hidden" name="Aizmugure — X %" data-form-position-x="back">
-                <input type="hidden" name="Aizmugure — Y %" data-form-position-y="back">
-                <input type="hidden" name="Aizmugure — mērogs" data-form-scale="back">
-
-                <input class="visually-hidden" type="file" id="mockupFileFront" name="attachment" tabindex="-1" aria-hidden="true" data-mockup-file="front">
-                <input class="visually-hidden" type="file" id="mockupFileBack" name="attachment" tabindex="-1" aria-hidden="true" data-mockup-file="back">
+                <input type="hidden" name="_subject" value="Jauns PrintStich krekla dizaina pieprasījums"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" value="https://printstich.vercel.app/konfigurators.html#paldies"><input class="form-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <input type="hidden" name="krasa" data-form-color><input type="hidden" name="izmers" data-form-size>
+                <input type="hidden" name="prieksa_fails" data-form-original-filename="front"><input type="hidden" name="prieksa_novietojums" data-form-position="front"><input type="hidden" name="prieksa_drukas_izmers_mm" data-form-print-mm="front">
+                <input type="hidden" name="aizmugure_fails" data-form-original-filename="back"><input type="hidden" name="aizmugure_novietojums" data-form-position="back"><input type="hidden" name="aizmugure_drukas_izmers_mm" data-form-print-mm="back">
+                <input class="visually-hidden" type="file" id="worksheetFile" name="attachment" tabindex="-1" aria-hidden="true" data-worksheet-file>
                 <div data-original-attachments></div>
-
-                <div class="customizer-form-fields">
-                  <label><span>Vārds *</span><input type="text" name="Vārds" autocomplete="name" required data-customer-name></label>
-                  <label><span>Telefons vai e-pasts *</span><input type="text" name="Kontakts" autocomplete="email" required data-customer-contact></label>
-                  <label class="field-full"><span>Papildu komentārs</span><textarea name="Komentārs" rows="4" data-customer-comment></textarea></label>
-                </div>
-                <p class="customizer-error" data-error="form" role="status"></p>
-                <button class="button customizer-submit" type="submit">Nosūtīt savu dizainu</button>
-                <button class="button button-ghost" type="button" id="debugMockup" data-debug-mockup>Debug mockup</button>
+                <div class="customizer-form-fields"><label><span>Vārds *</span><input type="text" name="vards" autocomplete="name" required data-customer-name></label><label><span>Telefons vai e-pasts *</span><input type="text" name="kontakts" autocomplete="email" required data-customer-contact></label><label class="field-full"><span>Papildu komentārs</span><textarea name="komentars" rows="4" data-customer-comment></textarea></label></div>
+                <p class="customizer-error" data-error="form" role="status"></p><button class="button customizer-submit" type="submit">Nosūtīt savu dizainu</button><button class="button button-ghost" type="button" id="debugMockup" data-debug-mockup hidden>Debug mockup</button>
               </form>
               <a class="customizer-whatsapp" href="https://wa.me/37127333112" target="_blank" rel="noopener noreferrer" data-whatsapp-link>Vai raksti uz WhatsApp →</a>
             </section>
 
-            <div class="customizer-navigation" data-step-navigation>
-              <button class="button button-ghost" type="button" data-prev-step disabled>Atpakaļ</button>
-              <button class="button" type="button" data-next-step disabled>Tālāk</button>
-            </div>
-
-            <div class="customizer-success" data-success-message hidden>
-              <p class="eyebrow">Pieprasījums nosūtīts</p>
-              <h2>Paldies! Sazināsimies ar tevi.</h2>
-              <p>PrintStich saņēma tavu konfigurāciju un dizaina failus.</p>
-              <a class="button" href="index.html">Atgriezties sākumlapā</a>
-            </div>
+            <div class="customizer-navigation" data-step-navigation><button class="button button-ghost" type="button" data-prev-step disabled>Atpakaļ</button><button class="button" type="button" data-next-step disabled>Tālāk</button></div>
+            <div class="customizer-success" data-success-message hidden><p class="eyebrow">Pieprasījums nosūtīts</p><h2>Paldies! Sazināsimies ar tevi.</h2><p>PrintStich saņēma tavu konfigurāciju un dizaina failus.</p><a class="button" href="index.html">Atgriezties sākumlapā</a></div>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand"><a class="brand" href="index.html" aria-label="PrintStich sākumlapa"><img class="brand-logo" src="assets/images/logo-white.png" alt="PrintStich logo" width="64" height="64" loading="lazy"><span class="brand-name">PrintStich</span></a><p>Druka un dizains Limbažos — no idejas līdz gatavam rezultātam.</p></div>
-      <div><h3>Kontakti</h3><a href="tel:+37127333112">+371 27 333 112</a><a href="mailto:printstich@inbox.lv">printstich@inbox.lv</a><p>Cēsu iela 20, Limbaži, LV-4001</p></div>
-      <div><h3>Seko</h3><a href="https://www.instagram.com/printstich/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/profile.php?id=61590085437483" target="_blank" rel="noopener noreferrer">Facebook</a></div>
-    </div>
-    <div class="container footer-bottom"><p>© 2026 PrintStich. Visas tiesības aizsargātas.</p></div>
-  </footer>
-
-  <script src="js/produkti-data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/product-customizer.js"></script>
+  <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a class="brand" href="index.html" aria-label="PrintStich sākumlapa"><img class="brand-logo" src="assets/images/logo-white.png" alt="PrintStich logo" width="64" height="64" loading="lazy"><span class="brand-name">PrintStich</span></a><p>Druka un dizains Limbažos — no idejas līdz gatavam rezultātam.</p></div><div><h3>Kontakti</h3><a href="tel:+37127333112">+371 27 333 112</a><a href="mailto:printstich@inbox.lv">printstich@inbox.lv</a><p>Cēsu iela 20, Limbaži, LV-4001</p></div><div><h3>Seko</h3><a href="https://www.instagram.com/printstich/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/profile.php?id=61590085437483" target="_blank" rel="noopener noreferrer">Facebook</a></div></div><div class="container footer-bottom"><p>© 2026 PrintStich. Visas tiesības aizsargātas.</p></div></footer>
+  <script src="js/produkti-data.js"></script><script src="js/main.js"></script><script src="js/product-customizer.js"></script>
 </body>
 </html>

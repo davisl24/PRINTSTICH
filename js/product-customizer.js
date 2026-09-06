@@ -10,25 +10,26 @@
   const MB = 1024 * 1024;
   const FORM_LIMIT = 10 * MB;
   const MAX_CLIENT_FILE_SIZE = 8 * MB;
-  const MAX_MOCKUP_FILE_SIZE = 1 * MB;
   const MIN_VALID_MOCKUP_SIZE = 5000;
   const SIDE_KEYS = ['front', 'back'];
   const SIDE_TO_PRODUCT = { front: 'prieksa', back: 'aizmugure' };
   const SIDE_LABELS = { front: 'Priekša', back: 'Aizmugure' };
-  const MOCKUP_NAMES = { front: 'mockup-prieksa.png', back: 'mockup-aizmugure.png' };
+  const FORM_PREFIX = { front: 'prieksa', back: 'aizmugure' };
 
   const els = {
     panels: $$('[data-step-panel]'),
     indicators: $$('[data-step-indicator]'),
+    steps: $('[data-steps]'),
     prev: $('[data-prev-step]'),
     next: $('[data-next-step]'),
     navigation: $('[data-step-navigation]'),
+    sideSwitch: $('[data-side-switch]'),
     preview: $('[data-preview]'),
     previewCard: $('[data-preview-card]'),
-    previewColumn: $('.customizer-preview-column'),
-    shirt: $('[data-shirt-image]'),
+    previewColumn: $('[data-editor-preview]'),
     placeholder: $('[data-mockup-placeholder]'),
     printArea: $('[data-print-area]'),
+    previewHint: $('[data-preview-hint]'),
     legacyDesign: $('[data-design-image]'),
     colorButtons: $$('[data-color]'),
     sizeButtons: $$('[data-size]'),
@@ -41,35 +42,20 @@
     replace: $('[data-replace-design]'),
     remove: $('[data-remove-design]'),
     activeSideLabel: $('[data-active-side-label]'),
-    uploadActionLabel: $('[data-upload-action-label]'),
     scale: $('[data-scale-input]'),
     presetButtons: $$('[data-position-preset]'),
+    printSize: $('[data-print-size]'),
+    printLimitWarning: $('[data-print-limit-warning]'),
+    dpiWarning: $('[data-dpi-warning]'),
     form: $('[data-customizer-form]'),
     originalAttachments: $('[data-original-attachments]'),
-    mockupInputs: {
-      front: $('[data-mockup-file="front"]'),
-      back: $('[data-mockup-file="back"]')
-    },
+    worksheetInput: $('[data-worksheet-file]'),
     success: $('[data-success-message]'),
-    summaryCanvases: {
-      front: $('[data-final-preview="front"]'),
-      back: $('[data-final-preview="back"]')
-    },
-    summaryCards: {
-      front: $('[data-summary-side-card="front"]'),
-      back: $('[data-summary-side-card="back"]')
-    },
     whatsapp: $('[data-whatsapp-link]'),
     debugMockup: $('#debugMockup')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
-
-  if (els.shirt) {
-    els.shirt.hidden = true;
-    els.shirt.removeAttribute('src');
-    els.shirt.alt = '';
-  }
 
   const normalizeColor = value => ({ white: 'balts', black: 'melns', blue: 'zils' }[value] || value || 'balts');
   const colorById = id => product.krasas.find(color => color.id === normalizeColor(id)) || product.krasas[0];
@@ -83,7 +69,7 @@
     naturalHeight: 0,
     x: 0.5,
     y: 0.5,
-    scale: 1,
+    scale: 0.5,
     preset: 'center',
     vectorFallback: false
   });
@@ -96,13 +82,11 @@
     svgLoaded: false,
     svgRoot: null,
     submitting: false,
-    sides: {
-      front: createSideState(),
-      back: createSideState()
-    }
+    sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState()]))
   };
 
   const currentSide = () => state.sides[state.activeSide];
+  const anySideHasDesign = () => SIDE_KEYS.some(key => Boolean(state.sides[key].file));
   const error = (name, message = '') => {
     const node = $(`[data-error="${name}"]`);
     if (node) node.textContent = message;
@@ -111,82 +95,43 @@
   function ensureColorButtons() {
     const group = $('[data-color-options]');
     if (!group) return;
-
     product.krasas.forEach(color => {
-      const existing = $$('[data-color]', group).find(button => normalizeColor(button.dataset.color) === color.id);
-      if (existing) {
-        existing.dataset.color = color.id;
-        const swatch = $('.swatch', existing);
-        if (swatch) swatch.style.backgroundColor = color.hex;
-        const textNode = [...existing.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
-        if (textNode) textNode.textContent = color.nosaukums;
-        return;
+      let button = $$('[data-color]', group).find(item => normalizeColor(item.dataset.color) === color.id);
+      if (!button) {
+        button = document.createElement('button');
+        button.className = 'color-swatch';
+        button.type = 'button';
+        button.dataset.color = color.id;
+        button.setAttribute('aria-pressed', 'false');
+        button.innerHTML = `<span class="swatch" aria-hidden="true"></span>${color.nosaukums}`;
+        group.appendChild(button);
       }
-
-      const button = document.createElement('button');
-      button.className = 'color-swatch';
-      button.type = 'button';
       button.dataset.color = color.id;
-      button.setAttribute('aria-pressed', 'false');
-      button.innerHTML = `<span class="swatch" aria-hidden="true" style="background:${color.hex}"></span>${color.nosaukums}`;
-      group.appendChild(button);
+      const swatch = $('.swatch', button);
+      if (swatch) swatch.style.backgroundColor = color.hex;
+      const textNode = [...button.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+      if (textNode) textNode.textContent = color.nosaukums;
     });
-
     els.colorButtons = $$('[data-color]');
   }
-
-  function ensureMeasurementUi() {
-    const scaleControl = els.scale.closest('.scale-control') || els.scale.parentElement;
-    if (!scaleControl || $('[data-print-size]')) return;
-
-    const info = document.createElement('div');
-    info.className = 'print-size-info';
-    info.innerHTML = '<p data-print-size>Drukas izmērs: —</p><p class="customizer-error print-limit-warning" data-print-limit-warning aria-live="polite"></p><p class="customizer-error dpi-warning" data-dpi-warning aria-live="polite"></p>';
-    scaleControl.insertAdjacentElement('afterend', info);
-  }
-
-  function ensureMobileHint() {
-    if (!els.previewCard || $('[data-mobile-drag-hint]')) return;
-    const hint = document.createElement('p');
-    hint.className = 'customizer-preview-hint customizer-mobile-drag-hint';
-    hint.dataset.mobileDragHint = '';
-    hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu';
-    hint.hidden = true;
-    els.previewCard.appendChild(hint);
-  }
-
-  ensureColorButtons();
-  ensureMeasurementUi();
-  ensureMobileHint();
-
-  els.printSize = $('[data-print-size]');
-  els.printLimitWarning = $('[data-print-limit-warning]');
-  els.dpiWarning = $('[data-dpi-warning]');
-  els.mobileDragHint = $('[data-mobile-drag-hint]');
 
   function ensureDesignCanvas() {
     let canvas = $('[data-design-canvas]', els.printArea);
     if (canvas) return canvas;
-
     canvas = document.createElement('canvas');
     canvas.className = 'customizer-design-canvas';
     canvas.dataset.designCanvas = '';
     canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums');
     Object.assign(canvas.style, {
-      position: 'absolute',
-      inset: '0',
-      width: '100%',
-      height: '100%',
-      display: 'block',
-      touchAction: 'none',
-      cursor: 'grab'
+      position: 'absolute', inset: '0', width: '100%', height: '100%',
+      display: 'block', touchAction: 'none', cursor: 'grab'
     });
-
     if (els.legacyDesign) els.legacyDesign.hidden = true;
     els.printArea.appendChild(canvas);
     return canvas;
   }
 
+  ensureColorButtons();
   els.designCanvas = ensureDesignCanvas();
 
   function setPressed(buttons, activeButton) {
@@ -208,16 +153,13 @@
 
   function getDesignRect(zoneWidth, zoneHeight, side = currentSide()) {
     if (!side.naturalWidth || !side.naturalHeight) return null;
-
     const aspect = side.naturalWidth / side.naturalHeight;
     let width = zoneWidth * side.scale;
     let height = width / aspect;
-
     if (height > zoneHeight * side.scale) {
       height = zoneHeight * side.scale;
       width = height * aspect;
     }
-
     return {
       width,
       height,
@@ -237,7 +179,6 @@
     const virtual = getVirtualZoneSize(sideKey);
     const rect = getDesignRect(virtual.width, virtual.height, side);
     if (!rect) return;
-
     const halfX = rect.width / (2 * virtual.width);
     const halfY = rect.height / (2 * virtual.height);
     side.x = clamp(side.x, halfX, 1 - halfX);
@@ -248,19 +189,13 @@
     const side = state.sides[sideKey];
     const mmArea = getPhysicalArea(sideKey);
     if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return null;
-
     const virtual = getVirtualZoneSize(sideKey);
     const rect = getDesignRect(virtual.width, virtual.height, side);
     if (!rect) return null;
-
     const widthMm = (rect.width / virtual.width) * mmArea.w;
     const heightMm = (rect.height / virtual.height) * mmArea.h;
     const dpi = widthMm > 0 ? (side.naturalWidth / widthMm) * 25.4 : 0;
-
     return {
-      widthMm,
-      heightMm,
-      dpi,
       widthRounded: Math.round(widthMm),
       heightRounded: Math.round(heightMm),
       dpiRounded: Math.round(dpi)
@@ -271,29 +206,23 @@
     const side = state.sides[sideKey];
     const mmArea = getPhysicalArea(sideKey);
     if (!side.file || !mmArea || side.vectorFallback || !side.naturalWidth || !side.naturalHeight) return 1;
-
     const virtual = getVirtualZoneSize(sideKey);
     const max = product.maxDrukaMm;
-
     for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) {
-      const testSide = { ...side, scale: candidate };
-      const rect = getDesignRect(virtual.width, virtual.height, testSide);
+      const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate });
       if (!rect) return 1;
       const widthMm = (rect.width / virtual.width) * mmArea.w;
       const heightMm = (rect.height / virtual.height) * mmArea.h;
       if (widthMm <= max.w && heightMm <= max.h) return candidate;
     }
-
     return 0.05;
   }
 
   function enforcePrintLimit(sideKey = state.activeSide, showMessage = false) {
     const side = state.sides[sideKey];
     if (!side.file || !state.size || side.vectorFallback) return false;
-
     const allowed = maxAllowedScale(sideKey);
     if (side.scale <= allowed + 0.0001) return false;
-
     side.scale = allowed;
     if (showMessage && sideKey === state.activeSide && els.printLimitWarning) {
       els.printLimitWarning.textContent = `Šis izmērs pārsniedz maksimālo drukas laukumu (${product.maxDrukaMm.w} × ${product.maxDrukaMm.h} mm). Dizains automātiski samazināts.`;
@@ -304,85 +233,69 @@
   function updatePrintArea() {
     const zone = getZone();
     if (!zone) return;
+    const dark = ['melns', 'zils'].includes(state.color);
+    const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85';
     Object.assign(els.printArea.style, {
-      left: `${zone.x * 100}%`,
-      top: `${zone.y * 100}%`,
-      width: `${zone.w * 100}%`,
-      height: `${zone.h * 100}%`
+      left: `${zone.x * 100}%`, top: `${zone.y * 100}%`,
+      width: `${zone.w * 100}%`, height: `${zone.h * 100}%`,
+      borderColor: guideColor
     });
-  }
-
-  function updatePlaceholder() {
-    if (els.placeholder) els.placeholder.hidden = state.svgLoaded;
+    if (els.previewHint) els.previewHint.style.color = guideColor;
   }
 
   function updateSvgColor() {
     if (!state.svgRoot) return;
     const color = colorById(state.color);
     state.svgRoot.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
-    const dark = color.id === 'melns' || color.id === 'zils';
-
+    const dark = ['melns', 'zils'].includes(color.id);
     state.svgRoot.querySelectorAll('[stroke]').forEach(node => {
       if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || '';
       if (dark) node.setAttribute('stroke', '#D9DEE8');
       else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf');
       else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke);
     });
+    updatePrintArea();
   }
 
-  function updateSvgSide() {
-    if (!state.svgRoot) return;
-    const front = state.svgRoot.querySelector('#shirt-front');
-    const back = state.svgRoot.querySelector('#shirt-back');
-    if (front) front.style.display = state.activeSide === 'front' ? 'block' : 'none';
-    if (back) back.style.display = state.activeSide === 'back' ? 'block' : 'none';
+  function updateSvgSide(sideKey = state.activeSide, root = state.svgRoot) {
+    if (!root) return;
+    const front = root.querySelector('#shirt-front');
+    const back = root.querySelector('#shirt-back');
+    if (front) front.style.display = sideKey === 'front' ? 'block' : 'none';
+    if (back) back.style.display = sideKey === 'back' ? 'block' : 'none';
   }
 
   async function loadShirtSvg() {
     try {
       const response = await fetch(product.svg, { cache: 'no-cache' });
-      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const markup = await response.text();
-
       let host = $('[data-shirt-svg-host]');
       if (!host) {
         host = document.createElement('div');
         host.className = 'customizer-shirt-svg';
         host.dataset.shirtSvgHost = '';
-        Object.assign(host.style, {
-          position: 'absolute',
-          inset: '0',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none'
-        });
+        Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' });
         els.preview.insertBefore(host, els.printArea);
       }
-
       host.innerHTML = markup;
       const svg = $('svg', host);
-      if (!svg) throw new Error('assets/krekls.svg nesatur <svg> elementu.');
-
+      if (!svg) throw new Error('assets/krekls.svg nesatur <svg>.');
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');
       svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
       Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' });
-
       state.svgRoot = svg;
       state.svgLoaded = true;
+      if (els.placeholder) els.placeholder.hidden = true;
       updateSvgColor();
       updateSvgSide();
-      updatePlaceholder();
-      updatePrintArea();
-      requestAnimationFrame(renderDesign);
-    } catch (svgError) {
+      renderDesign();
+    } catch (cause) {
       state.svgLoaded = false;
       state.svgRoot = null;
-      updatePlaceholder();
-      console.error('PrintStich konfigurators: krekla SVG neizdevās ielādēt no assets/krekls.svg.', svgError);
+      if (els.placeholder) els.placeholder.hidden = false;
+      console.error('PrintStich konfigurators: krekla SVG neizdevās ielādēt.', cause);
     }
   }
 
@@ -394,7 +307,7 @@
     ctx.strokeRect(1, 1, width - 2, height - 2);
     ctx.setLineDash([]);
     ctx.fillStyle = '#53615d';
-    ctx.font = '600 14px Manrope, Arial, sans-serif';
+    ctx.font = '600 14px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('vektora fails pielikumā', width / 2, height / 2);
@@ -402,49 +315,34 @@
   }
 
   function drawDesignCanvas() {
-    const canvas = els.designCanvas;
     const side = currentSide();
-    const rect = els.printArea.getBoundingClientRect();
-    if (!canvas || !rect.width || !rect.height) return;
-
+    const area = els.printArea.getBoundingClientRect();
+    const canvas = els.designCanvas;
+    if (!area.width || !area.height) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const pixelWidth = Math.max(1, Math.round(rect.width * dpr));
-    const pixelHeight = Math.max(1, Math.round(rect.height * dpr));
-    if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
-    if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
-
+    canvas.width = Math.max(1, Math.round(area.width * dpr));
+    canvas.height = Math.max(1, Math.round(area.height * dpr));
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
+    ctx.clearRect(0, 0, area.width, area.height);
     if (!side.file) return;
     if (side.vectorFallback) {
-      drawVectorFallback(ctx, rect.width, rect.height);
+      drawVectorFallback(ctx, area.width, area.height);
       return;
     }
     if (!side.image) return;
-
-    const designRect = getDesignRect(rect.width, rect.height, side);
-    if (!designRect) return;
-    ctx.drawImage(side.image, designRect.x, designRect.y, designRect.width, designRect.height);
+    const rect = getDesignRect(area.width, area.height, side);
+    if (!rect) return;
+    ctx.drawImage(side.image, rect.x, rect.y, rect.width, rect.height);
   }
 
   function updateMeasurementUi() {
     const side = currentSide();
     const metrics = printMetrics();
-
-    if (!side.file || side.vectorFallback || !metrics) {
-      if (els.printSize) els.printSize.textContent = side.file && side.vectorFallback ? 'Drukas izmērs: vektora fails' : 'Drukas izmērs: —';
-      if (els.dpiWarning) els.dpiWarning.textContent = '';
-      return;
-    }
-
-    if (els.printSize) els.printSize.textContent = `Drukas izmērs: ${metrics.widthRounded} × ${metrics.heightRounded} mm`;
-    if (els.dpiWarning) {
-      els.dpiWarning.textContent = metrics.dpi < 150
-        ? `Faila izšķirtspēja šim izmēram ir zema (aptuveni ${metrics.dpiRounded} DPI). Druka var izskatīties izplūdusi. Ieteicams vismaz 150 DPI.`
-        : '';
-    }
+    if (els.printSize) els.printSize.textContent = metrics ? `Drukas izmērs: ${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Drukas izmērs: —';
+    if (els.dpiWarning) els.dpiWarning.textContent = metrics && metrics.dpiRounded < 150 ? `Faila izšķirtspēja šim izmēram ir zema (aptuveni ${metrics.dpiRounded} DPI).` : '';
+    els.scale.value = String(Math.round(side.scale * 100));
+    els.scale.max = String(Math.max(20, Math.floor(maxAllowedScale() * 100)));
   }
 
   function updatePresetState() {
@@ -457,54 +355,39 @@
 
   function updateSideUi() {
     els.sideButtons.forEach(button => {
-      const key = button.dataset.side;
-      const active = key === state.activeSide;
+      const active = button.dataset.side === state.activeSide;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
-
     els.sideStatuses.forEach(status => {
       const side = state.sides[status.dataset.sideStatus];
       if (!side) return;
       status.textContent = side.file ? 'gatavs' : 'tukša';
       status.hidden = Boolean(side.file);
     });
-
     const side = currentSide();
     if (els.activeSideLabel) els.activeSideLabel.textContent = SIDE_LABELS[state.activeSide];
-    if (els.fileName) els.fileName.textContent = side.file ? side.file.name : '';
+    if (els.fileName) els.fileName.textContent = side.file?.name || '';
     if (els.fileActions) els.fileActions.hidden = !side.file;
     if (els.uploadZone) els.uploadZone.hidden = Boolean(side.file);
-    if (els.uploadActionLabel) els.uploadActionLabel.textContent = side.file ? 'Nomainīt failu' : 'Pievienot dizainu';
-
-    els.scale.value = String(Math.round(side.scale * 100));
-    els.scale.max = String(Math.max(20, Math.floor(maxAllowedScale() * 100)));
-    updatePresetState();
     updateMeasurementUi();
+    updatePresetState();
   }
 
   function renderDesign() {
+    updateSvgSide();
     updatePrintArea();
-    const side = currentSide();
-
-    if (side.file && !side.vectorFallback) {
-      enforcePrintLimit(state.activeSide, false);
-      constrainPosition(state.activeSide);
-    }
-
-    updateSideUi();
+    constrainPosition();
     drawDesignCanvas();
+    updateMeasurementUi();
+    updatePresetState();
   }
 
   function updatePreview() {
     updateSvgColor();
     updateSvgSide();
-    updatePrintArea();
+    updateSideUi();
     requestAnimationFrame(renderDesign);
-  }
-
-  function anySideHasDesign() {
-    return SIDE_KEYS.some(key => Boolean(state.sides[key].file));
   }
 
   function stepComplete(step) {
@@ -524,28 +407,72 @@
 
   function showStep(step) {
     state.step = clamp(step, 1, 3);
-
     els.panels.forEach(panel => {
       const active = Number(panel.dataset.stepPanel) === state.step;
       panel.hidden = !active;
       panel.classList.toggle('is-active', active);
     });
-
     els.indicators.forEach(indicator => {
       const active = Number(indicator.dataset.stepIndicator) === state.step;
       indicator.classList.toggle('is-active', active);
       if (active) indicator.setAttribute('aria-current', 'step');
       else indicator.removeAttribute('aria-current');
     });
-
-    const showEditorPreview = state.step !== 3;
-    if (els.previewColumn) els.previewColumn.hidden = !showEditorPreview;
-    if (els.designCanvas) els.designCanvas.style.pointerEvents = state.step === 2 ? 'auto' : 'none';
-    els.printArea.style.borderColor = state.step === 2 ? '' : 'transparent';
-
+    if (els.previewColumn) els.previewColumn.hidden = state.step === 3;
     updateNavigation();
     updateSideUi();
     if (state.step === 3) updateSummary();
+    updateMobileLayout();
+  }
+
+  function validateFile(file) {
+    const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf'];
+    if (!file) return 'Izvēlies dizaina failu.';
+    if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.';
+    if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.';
+    return '';
+  }
+
+  function finishFileLoad(sideKey) {
+    enforcePrintLimit(sideKey);
+    if (state.activeSide === sideKey) {
+      updateSideUi();
+      renderDesign();
+    }
+    updateNavigation();
+  }
+
+  function loadFile(file) {
+    const message = validateFile(file);
+    if (message) {
+      error('file', message);
+      return;
+    }
+    error('file');
+    const sideKey = state.activeSide;
+    const side = state.sides[sideKey];
+    if (side.url) URL.revokeObjectURL(side.url);
+    Object.assign(side, createSideState());
+    side.file = file;
+    side.url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      side.image = image;
+      side.naturalWidth = image.naturalWidth;
+      side.naturalHeight = image.naturalHeight;
+      finishFileLoad(sideKey);
+    };
+    image.onerror = () => {
+      if (file.type === 'application/pdf' || file.type === 'image/svg+xml') {
+        side.vectorFallback = true;
+        side.naturalWidth = 1;
+        side.naturalHeight = 1;
+        finishFileLoad(sideKey);
+        return;
+      }
+      error('file', 'Attēlu neizdevās nolasīt. Izvēlies citu failu.');
+    };
+    image.src = side.url;
   }
 
   els.colorButtons.forEach(button => button.addEventListener('click', () => {
@@ -556,9 +483,9 @@
 
   els.sizeButtons.forEach(button => button.addEventListener('click', () => {
     state.size = button.dataset.size;
-    error('size');
     setPressed(els.sizeButtons, button);
-    SIDE_KEYS.forEach(key => enforcePrintLimit(key, false));
+    error('size');
+    SIDE_KEYS.forEach(key => enforcePrintLimit(key));
     renderDesign();
     updateNavigation();
   }));
@@ -569,85 +496,17 @@
     state.activeSide = key;
     error('file');
     updatePreview();
-    updateNavigation();
   }));
 
-  function validateFile(file) {
-    const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf'];
-    if (!file) return 'Izvēlies dizaina failu.';
-    if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.';
-    if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.';
-    return '';
-  }
-
-  function scrollToPreviewAfterUpload() {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    requestAnimationFrame(() => els.preview.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' }));
-  }
-
-  function finishFileLoad(sideKey, file) {
-    enforcePrintLimit(sideKey, false);
-    constrainPosition(sideKey);
-    updateSideUi();
-    renderDesign();
+  if (els.designInput) els.designInput.addEventListener('change', () => loadFile(els.designInput.files?.[0]));
+  if (els.replace) els.replace.addEventListener('click', () => els.designInput?.click());
+  if (els.remove) els.remove.addEventListener('click', () => {
+    const old = currentSide();
+    if (old.url) URL.revokeObjectURL(old.url);
+    state.sides[state.activeSide] = createSideState();
+    if (els.designInput) els.designInput.value = '';
+    updatePreview();
     updateNavigation();
-    scrollToPreviewAfterUpload();
-  }
-
-  function loadFile(file) {
-    const message = validateFile(file);
-    if (message) {
-      error('file', message);
-      return;
-    }
-
-    error('file');
-    const sideKey = state.activeSide;
-    const side = state.sides[sideKey];
-    if (side.url) URL.revokeObjectURL(side.url);
-
-    side.file = file;
-    side.url = URL.createObjectURL(file);
-    side.image = null;
-    side.naturalWidth = 0;
-    side.naturalHeight = 0;
-    side.x = 0.5;
-    side.y = 0.5;
-    side.scale = 1;
-    side.preset = 'center';
-    side.vectorFallback = false;
-
-    const image = new Image();
-    image.onload = () => {
-      side.image = image;
-      side.naturalWidth = image.naturalWidth;
-      side.naturalHeight = image.naturalHeight;
-      finishFileLoad(sideKey, file);
-    };
-    image.onerror = () => {
-      if (file.type === 'application/pdf' || file.type === 'image/svg+xml') {
-        side.vectorFallback = true;
-        side.naturalWidth = 1;
-        side.naturalHeight = 1;
-        finishFileLoad(sideKey, file);
-        return;
-      }
-      side.file = null;
-      side.image = null;
-      URL.revokeObjectURL(side.url);
-      side.url = '';
-      error('file', 'Attēlu neizdevās nolasīt. Izvēlies citu failu.');
-      updateSideUi();
-      renderDesign();
-      updateNavigation();
-    };
-    image.src = side.url;
-  }
-
-  if (els.designInput) els.designInput.addEventListener('change', () => {
-    const file = els.designInput.files?.[0];
-    if (file) loadFile(file);
-    els.designInput.value = '';
   });
 
   if (els.uploadZone) {
@@ -659,97 +518,50 @@
       event.preventDefault();
       els.uploadZone.classList.remove('is-dragging');
     }));
-    els.uploadZone.addEventListener('drop', event => {
-      const file = event.dataTransfer?.files?.[0];
-      if (file) loadFile(file);
-    });
+    els.uploadZone.addEventListener('drop', event => loadFile(event.dataTransfer?.files?.[0]));
   }
-
-  if (els.replace && els.designInput) {
-    els.replace.addEventListener('click', () => els.designInput.click());
-  }
-
-  if (els.remove) {
-    els.remove.addEventListener('click', () => {
-      const side = currentSide();
-      if (side.url) URL.revokeObjectURL(side.url);
-      state.sides[state.activeSide] = createSideState();
-      error('file');
-      updateSideUi();
-      renderDesign();
-      updateNavigation();
-    });
-  }
-
-  els.scale.addEventListener('input', () => {
-    const side = currentSide();
-    side.scale = Number(els.scale.value) / 100;
-    side.preset = '';
-    const exceeded = enforcePrintLimit(state.activeSide, false);
-    if (els.printLimitWarning) {
-      els.printLimitWarning.textContent = exceeded
-        ? `Šis izmērs pārsniedz maksimālo drukas laukumu (${product.maxDrukaMm.w} × ${product.maxDrukaMm.h} mm). Samazini dizainu.`
-        : '';
-    }
-    constrainPosition(state.activeSide);
-    renderDesign();
-  });
 
   function applyPreset(preset) {
     const side = currentSide();
     if (!side.file) return;
-
     side.preset = preset;
-    if (preset === 'center') {
-      side.x = 0.5;
-      side.y = 0.5;
-    } else if (preset === 'top') {
-      side.x = 0.5;
-      side.y = 0.27;
-    } else if (preset === 'lower') {
-      side.x = 0.5;
-      side.y = 0.73;
-    } else if (preset === 'left-chest') {
-      const mmArea = getPhysicalArea();
-      side.scale = mmArea ? clamp(90 / mmArea.w, 0.05, 1) : 0.32;
-      side.x = 0.28;
-      side.y = 0.28;
-    }
-
-    enforcePrintLimit(state.activeSide, false);
-    constrainPosition(state.activeSide);
+    if (preset === 'center') { side.x = 0.5; side.y = 0.5; }
+    if (preset === 'top') { side.x = 0.5; side.y = 0.27; }
+    if (preset === 'lower') { side.x = 0.5; side.y = 0.73; }
+    if (preset === 'left-chest') { side.scale = 0.32; side.x = 0.28; side.y = 0.28; }
+    enforcePrintLimit();
+    constrainPosition();
     renderDesign();
   }
 
   els.presetButtons.forEach(button => button.addEventListener('click', () => applyPreset(button.dataset.positionPreset)));
+  els.scale.addEventListener('input', () => {
+    const side = currentSide();
+    side.scale = Number(els.scale.value) / 100;
+    side.preset = '';
+    enforcePrintLimit();
+    constrainPosition();
+    renderDesign();
+  });
 
   let drag = null;
   els.designCanvas.addEventListener('pointerdown', event => {
-    const side = currentSide();
-    if (!side.file || state.step !== 2 || side.vectorFallback) return;
+    if (state.step !== 2 || !currentSide().file || currentSide().vectorFallback) return;
     event.preventDefault();
-    els.designCanvas.setPointerCapture(event.pointerId);
-    els.designCanvas.style.cursor = 'grabbing';
     drag = { pointerId: event.pointerId };
-    side.preset = '';
-    updatePresetState();
+    els.designCanvas.setPointerCapture(event.pointerId);
+    currentSide().preset = '';
   });
-
   els.designCanvas.addEventListener('pointermove', event => {
     if (!drag || drag.pointerId !== event.pointerId) return;
     const area = els.printArea.getBoundingClientRect();
     const side = currentSide();
     side.x = (event.clientX - area.left) / area.width;
     side.y = (event.clientY - area.top) / area.height;
-    constrainPosition(state.activeSide);
+    constrainPosition();
     renderDesign();
   });
-
-  const endDrag = event => {
-    if (drag?.pointerId !== event.pointerId) return;
-    drag = null;
-    els.designCanvas.style.cursor = 'grab';
-  };
+  const endDrag = event => { if (drag?.pointerId === event.pointerId) drag = null; };
   els.designCanvas.addEventListener('pointerup', endDrag);
   els.designCanvas.addEventListener('pointercancel', endDrag);
 
@@ -766,7 +578,6 @@
   function inlineComputedSvgStyles(sourceSvg, cloneSvg) {
     const sourceNodes = [sourceSvg, ...sourceSvg.querySelectorAll('*')];
     const cloneNodes = [cloneSvg, ...cloneSvg.querySelectorAll('*')];
-
     sourceNodes.forEach((sourceNode, index) => {
       const cloneNode = cloneNodes[index];
       if (!cloneNode) return;
@@ -780,37 +591,24 @@
 
   function prepareSerializedSvg(sideKey) {
     if (!state.svgRoot) throw new Error('Krekla SVG nav ielādēts.');
-
     updateSvgColor();
+    updateSvgSide(sideKey);
     const sourceRect = state.svgRoot.getBoundingClientRect();
     const clone = state.svgRoot.cloneNode(true);
+    updateSvgSide(sideKey, clone);
     const existingViewBox = state.svgRoot.getAttribute('viewBox');
-    const fallbackWidth = sourceRect.width || state.svgRoot.viewBox?.baseVal?.width || 600;
-    const fallbackHeight = sourceRect.height || state.svgRoot.viewBox?.baseVal?.height || 700;
-    const width = Math.max(1, Math.round(fallbackWidth));
-    const height = Math.max(1, Math.round(fallbackHeight));
-
+    const width = Math.max(1, Math.round(sourceRect.width || state.svgRoot.viewBox?.baseVal?.width || 600));
+    const height = Math.max(1, Math.round(sourceRect.height || state.svgRoot.viewBox?.baseVal?.height || 700));
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     clone.setAttribute('width', String(width));
     clone.setAttribute('height', String(height));
     clone.setAttribute('viewBox', existingViewBox || `0 0 ${width} ${height}`);
-
     inlineComputedSvgStyles(state.svgRoot, clone);
-
-    const front = clone.querySelector('#shirt-front');
-    const back = clone.querySelector('#shirt-back');
-    if (front) front.style.display = sideKey === 'front' ? 'block' : 'none';
-    if (back) back.style.display = sideKey === 'back' ? 'block' : 'none';
-
-    const viewBoxParts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number);
-    const viewBox = viewBoxParts.length === 4 && viewBoxParts.every(Number.isFinite)
-      ? { x: viewBoxParts[0], y: viewBoxParts[1], width: viewBoxParts[2], height: viewBoxParts[3] }
+    const parts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number);
+    const viewBox = parts.length === 4 && parts.every(Number.isFinite)
+      ? { x: parts[0], y: parts[1], width: parts[2], height: parts[3] }
       : { x: 0, y: 0, width, height };
-
-    return {
-      svgString: new XMLSerializer().serializeToString(clone),
-      viewBox
-    };
+    return { svgString: new XMLSerializer().serializeToString(clone), viewBox };
   }
 
   async function svgToImage(sideKey) {
@@ -824,20 +622,16 @@
 
   function drawMockupContent(ctx, canvas, sideKey, shirtImage) {
     const side = state.sides[sideKey];
-    const zone = getZone(sideKey);
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(shirtImage, 0, 0, canvas.width, canvas.height);
-
-    if (!side.file || !zone) return;
-
+    const zone = getZone(sideKey);
+    if (!zone || !side.file) return;
     const zoneX = zone.x * canvas.width;
     const zoneY = zone.y * canvas.height;
     const zoneW = zone.w * canvas.width;
     const zoneH = zone.h * canvas.height;
-
     if (side.vectorFallback || !side.image) {
       ctx.save();
       ctx.translate(zoneX, zoneY);
@@ -845,65 +639,9 @@
       ctx.restore();
       return;
     }
-
     const designRect = getDesignRect(zoneW, zoneH, side);
     if (!designRect) return;
     ctx.drawImage(side.image, zoneX + designRect.x, zoneY + designRect.y, designRect.width, designRect.height);
-  }
-
-  function canvasToBlob(canvas) {
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG mockapu neizdevās izveidot.')), 'image/png');
-    });
-  }
-
-  function validateMockupBlob(blob, cause = null) {
-    if (blob && blob.size >= MIN_VALID_MOCKUP_SIZE) return blob;
-    const validationError = new Error('Neizdevās sagatavot attēlu, mēģini vēlreiz');
-    console.error('PrintStich konfigurators: mockapa validācija neizdevās.', cause || new Error(`PNG izmērs: ${blob?.size || 0} baiti`));
-    throw validationError;
-  }
-
-  async function createMockupBlob(sideKey, maxBytes = MAX_MOCKUP_FILE_SIZE, startWidth = 1000) {
-    let svgData;
-    try {
-      svgData = await svgToImage(sideKey);
-    } catch (cause) {
-      console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} SVG renderēšana mockapam neizdevās.`, cause);
-      throw new Error('Neizdevās sagatavot attēlu, mēģini vēlreiz');
-    }
-
-    let width = startWidth;
-    while (width >= 400) {
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width));
-      drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
-      const blob = validateMockupBlob(await canvasToBlob(canvas));
-      if (blob.size <= maxBytes || width === 400) return blob;
-      width = Math.max(400, Math.round(width * 0.82));
-    }
-
-    throw new Error('Mockapa PNG neizdevās samazināt līdz atļautajam izmēram.');
-  }
-
-  async function drawSummaryMockup(sideKey) {
-    const canvas = els.summaryCanvases[sideKey];
-    if (!canvas) return;
-
-    try {
-      const svgData = await svgToImage(sideKey);
-      canvas.width = 420;
-      canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width));
-      drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
-    } catch (previewError) {
-      console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās izveidot.`, previewError);
-      const ctx = canvas.getContext('2d');
-      canvas.width = 420;
-      canvas.height = 490;
-      ctx.fillStyle = '#f7f7f5';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
   }
 
   function positionLabel(side) {
@@ -911,158 +649,253 @@
     return labels[side.preset] || `X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`;
   }
 
-  function syncFormData() {
+  function getOrderSummary() {
     const color = colorById(state.color);
+    return {
+      color: color.nosaukums,
+      size: state.size || '—',
+      sides: Object.fromEntries(SIDE_KEYS.map(sideKey => {
+        const side = state.sides[sideKey];
+        const metrics = printMetrics(sideKey);
+        return [sideKey, {
+          hasDesign: Boolean(side.file),
+          fileName: side.file?.name || 'Nav pievienots',
+          positionLabel: side.file ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—',
+          printSizeMm: !side.file ? '—' : side.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms'
+        }];
+      }))
+    };
+  }
+
+  function syncFormData() {
+    const summary = getOrderSummary();
     const colorInput = $('[data-form-color]');
     const sizeInput = $('[data-form-size]');
-    if (colorInput) colorInput.value = color.nosaukums;
-    if (sizeInput) sizeInput.value = state.size;
-
+    if (colorInput) colorInput.value = summary.color;
+    if (sizeInput) sizeInput.value = summary.size;
     SIDE_KEYS.forEach(sideKey => {
-      const side = state.sides[sideKey];
-      const metrics = printMetrics(sideKey);
+      const sideSummary = summary.sides[sideKey];
+      const fileInput = $(`[data-form-original-filename="${sideKey}"]`);
       const positionInput = $(`[data-form-position="${sideKey}"]`);
       const printInput = $(`[data-form-print-mm="${sideKey}"]`);
-      const filenameInput = $(`[data-form-original-filename="${sideKey}"]`);
-
-      if (positionInput) positionInput.value = side.file ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : 'Nav dizaina';
-      if (printInput) printInput.value = !side.file ? 'Nav dizaina' : side.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms';
-      if (filenameInput) filenameInput.value = side.file?.name || 'Nav faila';
+      if (fileInput) fileInput.value = sideSummary.fileName;
+      if (positionInput) positionInput.value = sideSummary.positionLabel;
+      if (printInput) printInput.value = sideSummary.printSizeMm;
     });
   }
 
-  function clearGeneratedOriginalInputs() {
-    if (!els.originalAttachments) return;
-    els.originalAttachments.innerHTML = '';
+  async function drawSummaryMockup(sideKey) {
+    const canvas = $(`[data-final-preview="${sideKey}"]`);
+    if (!canvas) return;
+    try {
+      const svgData = await svgToImage(sideKey);
+      canvas.width = 420;
+      canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width));
+      drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
+    } catch (cause) {
+      console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās.`, cause);
+    }
+  }
+
+  async function updateSummary() {
+    const summary = getOrderSummary();
+    const colorNode = $('[data-summary-color]');
+    const sizeNode = $('[data-summary-size]');
+    if (colorNode) colorNode.textContent = summary.color;
+    if (sizeNode) sizeNode.textContent = summary.size;
+    SIDE_KEYS.forEach(sideKey => {
+      const sideSummary = summary.sides[sideKey];
+      const fileNode = $(`[data-summary-file="${sideKey}"]`);
+      const positionNode = $(`[data-summary-position="${sideKey}"]`);
+      const printNode = $(`[data-summary-print-mm="${sideKey}"]`);
+      if (fileNode) fileNode.textContent = sideSummary.fileName;
+      if (positionNode) positionNode.textContent = sideSummary.positionLabel;
+      if (printNode) printNode.textContent = sideSummary.printSizeMm;
+    });
+    syncFormData();
+    updateWhatsApp(summary);
+    await Promise.all(SIDE_KEYS.map(drawSummaryMockup));
+  }
+
+  function updateWhatsApp(summary = getOrderSummary()) {
+    if (!els.whatsapp) return;
+    const lines = [`Sveiki! Vēlos PrintStich piedāvājumu savam krekla dizainam.`, `Krekls: ${summary.color}`, `Izmērs: ${summary.size}`];
+    SIDE_KEYS.forEach(sideKey => {
+      const item = summary.sides[sideKey];
+      if (!item.hasDesign) return;
+      lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`);
+      lines.push(`Novietojums: ${item.positionLabel}`);
+      lines.push(`Drukas izmērs: ${item.printSizeMm}`);
+    });
+    els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`;
+  }
+
+  function canvasToBlob(canvas) {
+    return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG neizdevās izveidot.')), 'image/png'));
+  }
+
+  async function createSideMockupCanvas(sideKey, width) {
+    const svgData = await svgToImage(sideKey);
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width));
+    drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image);
+    return canvas;
+  }
+
+  function wrapText(ctx, text, maxWidth) {
+    const words = String(text).split(/\s+/);
+    const lines = [];
+    let line = '';
+    words.forEach(word => {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  async function renderWorksheetCanvas(width = 2000) {
+    const summary = getOrderSummary();
+    const scale = width / 2000;
+    const padding = Math.round(70 * scale);
+    const gap = Math.round(60 * scale);
+    const headerHeight = Math.round(190 * scale);
+    const cellWidth = Math.floor((width - padding * 2 - gap) / 2);
+    const mockupWidth = Math.min(Math.round(900 * scale), cellWidth);
+    const mockupHeight = Math.round(mockupWidth * 7 / 6);
+    const labelHeight = Math.round(70 * scale);
+    const rows = Math.ceil(SIDE_KEYS.length / 2);
+    const gridHeight = rows * (mockupHeight + labelHeight) + Math.max(0, rows - 1) * gap;
+    const textLines = 2 + SIDE_KEYS.length * 4;
+    const textHeight = Math.round((textLines * 42 + 100) * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = headerHeight + gridHeight + textHeight + padding * 2;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.textBaseline = 'top';
+    ctx.font = `700 ${Math.round(46 * scale)}px sans-serif`;
+    ctx.fillText('PrintStich pasūtījuma pieprasījums', padding, padding);
+    ctx.font = `400 ${Math.round(28 * scale)}px sans-serif`;
+    const date = new Date().toISOString().slice(0, 10);
+    ctx.fillText(date, padding, padding + Math.round(65 * scale));
+
+    for (let index = 0; index < SIDE_KEYS.length; index += 1) {
+      const sideKey = SIDE_KEYS[index];
+      const row = Math.floor(index / 2);
+      const col = index % 2;
+      const x = padding + col * (cellWidth + gap) + Math.round((cellWidth - mockupWidth) / 2);
+      const y = headerHeight + row * (mockupHeight + labelHeight + gap);
+      const mockup = await createSideMockupCanvas(sideKey, mockupWidth);
+      ctx.drawImage(mockup, x, y, mockupWidth, mockupHeight);
+      ctx.font = `600 ${Math.round(28 * scale)}px sans-serif`;
+      ctx.textAlign = 'center';
+      const suffix = summary.sides[sideKey].hasDesign ? '' : ' — bez apdrukas';
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillText(`${SIDE_LABELS[sideKey]}${suffix}`, x + mockupWidth / 2, y + mockupHeight + Math.round(18 * scale));
+      ctx.textAlign = 'left';
+    }
+
+    let textY = headerHeight + gridHeight + Math.round(45 * scale);
+    ctx.font = `400 ${Math.round(28 * scale)}px sans-serif`;
+    const lineHeight = Math.round(42 * scale);
+    const drawLine = text => {
+      wrapText(ctx, text, width - padding * 2).forEach(line => {
+        ctx.fillText(line, padding, textY);
+        textY += lineHeight;
+      });
+    };
+    drawLine(`Krāsa: ${summary.color}`);
+    drawLine(`Izmērs: ${summary.size}`);
+    SIDE_KEYS.forEach(sideKey => {
+      const item = summary.sides[sideKey];
+      drawLine(`${SIDE_LABELS[sideKey]} — fails: ${item.fileName}`);
+      drawLine(`${SIDE_LABELS[sideKey]} — novietojums: ${item.positionLabel}`);
+      drawLine(`${SIDE_LABELS[sideKey]} — drukas izmērs: ${item.printSizeMm}`);
+      drawLine('');
+    });
+    return canvas;
+  }
+
+  async function createWorksheetBlob(maxBytes = FORM_LIMIT) {
+    for (const width of [2000, 1700, 1450, 1200, 1000, 800]) {
+      const canvas = await renderWorksheetCanvas(width);
+      const blob = await canvasToBlob(canvas);
+      if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob;
+    }
+    throw new Error('Darba lapas PNG neizdevās samazināt līdz FormSubmit limitam.');
   }
 
   function syncOriginalAttachments() {
     if (!els.originalAttachments) return false;
     if (typeof DataTransfer === 'undefined') {
-      error('form', 'Šis pārlūks nevar sagatavot pielikumus. Lūdzu, izmanto jaunāko Chrome, Safari vai Firefox.');
+      error('form', 'Šis pārlūks nevar sagatavot pielikumus.');
       return false;
     }
-
-    clearGeneratedOriginalInputs();
-
+    els.originalAttachments.innerHTML = '';
+    let attachmentIndex = 2;
     SIDE_KEYS.forEach(sideKey => {
       const side = state.sides[sideKey];
       if (!side.file) return;
       const input = document.createElement('input');
       input.type = 'file';
-      input.name = 'attachment';
+      input.name = `attachment${attachmentIndex}`;
       input.className = 'visually-hidden';
       input.tabIndex = -1;
       input.setAttribute('aria-hidden', 'true');
       input.dataset.originalAttachment = sideKey;
-      const transfer = new DataTransfer();
-      transfer.items.add(side.file);
-      input.files = transfer.files;
+      const dt = new DataTransfer();
+      dt.items.add(side.file);
+      input.files = dt.files;
       els.originalAttachments.appendChild(input);
+      attachmentIndex += 1;
     });
-
     return true;
   }
 
-  function setMockupInput(sideKey, blob) {
-    const input = els.mockupInputs[sideKey];
-    if (!input) throw new Error(`${SIDE_LABELS[sideKey]} mockup file input nav atrasts.`);
+  async function prepareEmailAttachments() {
+    if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.');
     if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.');
-
-    const file = new File([blob], MOCKUP_NAMES[sideKey], { type: 'image/png' });
-    const transfer = new DataTransfer();
-    transfer.items.add(file);
-    input.files = transfer.files;
+    const originalsTotal = SIDE_KEYS.reduce((sum, key) => sum + (state.sides[key].file?.size || 0), 0);
+    const worksheetBudget = FORM_LIMIT - originalsTotal;
+    if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.');
+    const blob = await createWorksheetBlob(worksheetBudget);
+    const date = new Date().toISOString().slice(0, 10);
+    const file = new File([blob], `printstich-pasutijums-${date}.png`, { type: 'image/png' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    els.worksheetInput.files = dt.files;
+    if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.');
+    const total = originalsTotal + file.size;
+    if (total > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.');
     return file;
   }
 
-  async function prepareEmailAttachments() {
-    const designedSides = SIDE_KEYS.filter(key => state.sides[key].file);
-    const originalsTotal = designedSides.reduce((sum, key) => sum + state.sides[key].file.size, 0);
-
-    if (originalsTotal >= FORM_LIMIT - designedSides.length * MIN_VALID_MOCKUP_SIZE) {
-      throw new Error('Oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam. Samazini failu izmērus un mēģini vēlreiz.');
-    }
-
-    let remainingBudget = FORM_LIMIT - originalsTotal;
-    const mockupFiles = [];
-
-    for (let index = 0; index < designedSides.length; index += 1) {
-      const sideKey = designedSides[index];
-      const mockupsLeft = designedSides.length - index;
-      const perMockupBudget = Math.min(MAX_MOCKUP_FILE_SIZE, Math.floor(remainingBudget / mockupsLeft));
-      if (perMockupBudget < MIN_VALID_MOCKUP_SIZE) {
-        throw new Error('Nepietiek vietas mockapu pielikumiem 10 MB FormSubmit limitā.');
-      }
-
-      const blob = await createMockupBlob(sideKey, perMockupBudget, 1000);
-      if (blob.size > perMockupBudget) {
-        throw new Error('Mockapa izmēru neizdevās samazināt līdz FormSubmit limitam.');
-      }
-      const file = setMockupInput(sideKey, blob);
-      mockupFiles.push(file);
-      remainingBudget -= file.size;
-    }
-
-    SIDE_KEYS.filter(key => !state.sides[key].file).forEach(key => {
-      const input = els.mockupInputs[key];
-      if (input) input.value = '';
-    });
-
-    if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot nosūtīšanai.');
-
-    const finalTotal = originalsTotal + mockupFiles.reduce((sum, file) => sum + file.size, 0);
-    if (finalTotal > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz FormSubmit 10 MB limitu.');
-    return mockupFiles;
-  }
-
-  function updateWhatsApp() {
-    if (!els.whatsapp) return;
-    const color = colorById(state.color);
-    const lines = [
-      'Sveiki! Vēlos PrintStich piedāvājumu savam krekla dizainam.',
-      `Krekls: ${color.nosaukums}`,
-      `Izmērs: ${state.size}`
-    ];
-
-    SIDE_KEYS.forEach(sideKey => {
-      const side = state.sides[sideKey];
-      if (!side.file) return;
-      const metrics = printMetrics(sideKey);
-      lines.push(`${SIDE_LABELS[sideKey]}: ${side.file.name}`);
-      lines.push(`Pozīcija: ${positionLabel(side)}, X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`);
-      if (metrics) lines.push(`Drukas izmērs: ${metrics.widthRounded} × ${metrics.heightRounded} mm`);
-    });
-
-    els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`;
-  }
-
-  async function updateSummary() {
-    const color = colorById(state.color);
-    const summaryColor = $('[data-summary-color]');
-    const summarySize = $('[data-summary-size]');
-    if (summaryColor) summaryColor.textContent = color.nosaukums;
-    if (summarySize) summarySize.textContent = state.size || '—';
-
-    syncFormData();
-    updateWhatsApp();
-    await Promise.all(SIDE_KEYS.map(drawSummaryMockup));
-  }
-
+  const debugEnabled = new URLSearchParams(location.search).has('debug');
   if (els.debugMockup) {
-    els.debugMockup.addEventListener('click', async () => {
-      error('form');
-      try {
-        const sideKey = state.activeSide;
-        const blob = validateMockupBlob(await createMockupBlob(sideKey));
-        const url = URL.createObjectURL(blob);
-        window.open(url, '_blank', 'noopener');
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
-      } catch (debugError) {
-        console.error('PrintStich konfigurators: debug mockupu neizdevās izveidot.', debugError);
-        error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
-      }
-    });
+    els.debugMockup.hidden = !debugEnabled;
+    if (debugEnabled) {
+      els.debugMockup.addEventListener('click', async () => {
+        error('form');
+        try {
+          const blob = await createWorksheetBlob(FORM_LIMIT);
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank', 'noopener');
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
+        } catch (cause) {
+          console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause);
+          error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
+        }
+      });
+    }
   }
 
   if (els.form) {
@@ -1070,49 +903,24 @@
       if (state.submitting) return;
       event.preventDefault();
       error('form');
-
       const name = $('[data-customer-name]')?.value.trim() || '';
       const contact = $('[data-customer-contact]')?.value.trim() || '';
-
-      if (!state.size) {
-        error('form', 'Izvēlies krekla izmēru.');
-        return;
-      }
-      if (!anySideHasDesign()) {
-        error('form', 'Pievieno dizainu vismaz vienai krekla pusei.');
-        return;
-      }
-      if (SIDE_KEYS.some(key => state.sides[key].file?.size > MAX_CLIENT_FILE_SIZE)) {
-        error('form', 'Kāds no failiem ir par lielu. Maksimālais viena klienta faila izmērs ir 8 MB.');
-        return;
-      }
-      if (!name) {
-        error('form', 'Ievadi savu vārdu.');
-        return;
-      }
-      if (!contact) {
-        error('form', 'Ievadi telefonu vai e-pastu.');
-        return;
-      }
-
+      if (!state.size) return error('form', 'Izvēlies krekla izmēru.');
+      if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai krekla pusei.');
+      if (SIDE_KEYS.some(key => state.sides[key].file?.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.');
+      if (!name) return error('form', 'Ievadi savu vārdu.');
+      if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.');
       syncFormData();
       const submitButton = $('.customizer-submit', els.form);
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Sagatavo nosūtīšanai...';
-      }
-
+      if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Sagatavo nosūtīšanai...'; }
       try {
         await prepareEmailAttachments();
         state.submitting = true;
         els.form.submit();
-      } catch (submitError) {
-        console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', submitError);
-        error('form', submitError.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Nosūtīt savu dizainu';
-        }
+      } catch (cause) {
+        console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause);
+        error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
+        if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Nosūtīt savu dizainu'; }
       }
     });
   }
@@ -1122,12 +930,22 @@
     els.panels.forEach(panel => { panel.hidden = true; });
     if (els.navigation) els.navigation.hidden = true;
     if (els.previewColumn) els.previewColumn.hidden = true;
+    if (els.steps) els.steps.hidden = true;
+    if (els.sideSwitch) els.sideSwitch.hidden = true;
     if (els.success) els.success.hidden = false;
   }
 
   function updateMobileLayout() {
     const mobile = window.matchMedia('(max-width: 767px)').matches;
-    if (els.mobileDragHint) els.mobileDragHint.hidden = !(mobile && state.step === 2);
+    let hint = $('[data-mobile-drag-hint]');
+    if (!hint && els.previewCard) {
+      hint = document.createElement('p');
+      hint.className = 'customizer-preview-hint customizer-mobile-drag-hint';
+      hint.dataset.mobileDragHint = '';
+      hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu';
+      els.previewCard.appendChild(hint);
+    }
+    if (hint) hint.hidden = !(mobile && state.step === 2);
     if (mobile && state.step !== 3) {
       els.preview.style.height = '45vh';
       els.preview.style.maxHeight = '45vh';
@@ -1139,7 +957,6 @@
   }
 
   window.addEventListener('resize', updateMobileLayout);
-  updateMobileLayout();
   updatePreview();
   showStep(1);
   showThankYouIfNeeded();
