@@ -252,6 +252,100 @@
     });
   };
 
+  const initCustomizerPrintAreaSync = () => {
+    const preview = document.querySelector('[data-preview]');
+    const printArea = document.querySelector('[data-print-area]');
+    const sideButtons = [...document.querySelectorAll('[data-side]')];
+    const product = window.PRINTSTICH_PRODUCTS?.tshirt;
+    if (!preview || !printArea || !product) return;
+
+    const sideMap = {
+      front: 'prieksa',
+      back: 'aizmugure',
+      sleeveLeft: 'sleeveLeft',
+      sleeveRight: 'sleeveRight'
+    };
+
+    let syncing = false;
+    let frame = 0;
+
+    const getActiveSide = () => (
+      sideButtons.find((button) => button.getAttribute('aria-pressed') === 'true')?.dataset.side || 'front'
+    );
+
+    const getRenderedSvgBounds = () => {
+      const svg = preview.querySelector('[data-shirt-svg-host] svg');
+      if (!svg) return null;
+
+      const svgBox = svg.getBoundingClientRect();
+      const wrapBox = preview.getBoundingClientRect();
+      if (!svgBox.width || !svgBox.height || !wrapBox.width || !wrapBox.height) return null;
+
+      const viewBox = svg.viewBox?.baseVal;
+      let width = svgBox.width;
+      let height = svgBox.height;
+      let left = svgBox.left - wrapBox.left;
+      let top = svgBox.top - wrapBox.top;
+
+      if (viewBox?.width && viewBox?.height) {
+        const scale = Math.min(svgBox.width / viewBox.width, svgBox.height / viewBox.height);
+        width = viewBox.width * scale;
+        height = viewBox.height * scale;
+        left += (svgBox.width - width) / 2;
+        top += (svgBox.height - height) / 2;
+      }
+
+      return { left, top, width, height };
+    };
+
+    const sync = () => {
+      frame = 0;
+      const bounds = getRenderedSvgBounds();
+      const sideKey = sideMap[getActiveSide()];
+      const zone = product.drukasZona?.[sideKey];
+      if (!bounds || !zone) return;
+
+      const next = {
+        left: `${bounds.left + zone.x * bounds.width}px`,
+        top: `${bounds.top + zone.y * bounds.height}px`,
+        width: `${zone.w * bounds.width}px`,
+        height: `${zone.h * bounds.height}px`
+      };
+
+      if (
+        printArea.style.left === next.left &&
+        printArea.style.top === next.top &&
+        printArea.style.width === next.width &&
+        printArea.style.height === next.height
+      ) return;
+
+      syncing = true;
+      Object.assign(printArea.style, next);
+      syncing = false;
+    };
+
+    const scheduleSync = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(sync);
+    };
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(scheduleSync);
+      resizeObserver.observe(preview);
+    }
+
+    const previewObserver = new MutationObserver(scheduleSync);
+    previewObserver.observe(preview, { childList: true, subtree: true });
+
+    const areaObserver = new MutationObserver(() => {
+      if (!syncing) scheduleSync();
+    });
+    areaObserver.observe(printArea, { attributes: true, attributeFilter: ['style'] });
+
+    sideButtons.forEach((button) => button.addEventListener('click', scheduleSync));
+    scheduleSync();
+  };
+
   setHeaderState();
   initMenu();
   initPortfolioFilters();
@@ -259,6 +353,7 @@
   initDividers();
   initScrollTop();
   initForm();
+  initCustomizerPrintAreaSync();
 
   window.addEventListener('scroll', () => {
     setHeaderState();

@@ -25,8 +25,8 @@
       drukasZona: {
         prieksa: { x: 0.350, y: 0.343, w: 0.300, h: 0.343 },
         aizmugure: { x: 0.333, y: 0.307, w: 0.333, h: 0.407 },
-        sleeveLeft: { x: 0.300, y: 0.300, w: 0.400, h: 0.350 },
-        sleeveRight: { x: 0.300, y: 0.300, w: 0.400, h: 0.350 }
+        sleeveLeft: { x: 0.358, y: 0.471, w: 0.283, h: 0.243 },
+        sleeveRight: { x: 0.358, y: 0.471, w: 0.283, h: 0.243 }
       },
       drukasLaukumsMm: {
         prieksa: {
