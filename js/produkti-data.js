@@ -32,17 +32,19 @@
         front: { x: 0.333, y: 0.300, w: 0.334, h: 0.343 },
         back: { x: 0.325, y: 0.271, w: 0.350, h: 0.400 }
       },
+      // Pagaidu A3 drukas laukums visiem izmēriem un abām pusēm.
+      // Precīzas atšķirības pievienosim pēc PrintStich preses/platnes izmēru apstiprināšanas.
       drukasLaukumsMm: {
         front: {
-          S: { w: 240, h: 320 },
-          M: { w: 260, h: 350 },
-          L: { w: 280, h: 380 },
-          XL: { w: 300, h: 400 },
-          XXL: { w: 320, h: 420 }
+          S: { w: 297, h: 420 },
+          M: { w: 297, h: 420 },
+          L: { w: 297, h: 420 },
+          XL: { w: 297, h: 420 },
+          XXL: { w: 297, h: 420 }
         },
         back: {
-          S: { w: 260, h: 360 },
-          M: { w: 280, h: 390 },
+          S: { w: 297, h: 420 },
+          M: { w: 297, h: 420 },
           L: { w: 297, h: 420 },
           XL: { w: 297, h: 420 },
           XXL: { w: 297, h: 420 }
