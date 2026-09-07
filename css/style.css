@@ -72,7 +72,7 @@ p:last-child { margin-bottom: 0; }
 .hero { position: relative; display: flex; align-items: center; min-height: min(88vh, 720px); margin: 0; padding-block: 3rem; overflow: hidden; }
 .hero-shell { position: static; width: min(calc(100% - 40px), var(--container)); margin-inline: auto; }
 .hero-copy { position: relative; z-index: 1; max-width: 46%; }
-.hero-copy h1 { max-width: 10.5ch; margin-bottom: 1.15rem; color: #0b2f28; font-size: clamp(3rem,5vw,4.85rem); line-height: .98; text-wrap: balance; }
+.hero-copy h1 { max-width: 10.5ch; margin-bottom: 1.3rem; color: #0b2f28; font-size: clamp(3rem,5vw,4.85rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.08; text-wrap: balance; }
 .hero-copy .eyebrow { color: #123f37; }
 .hero-lead { margin-bottom: 1.55rem; color: #0b2f28; opacity: .75; font-size: clamp(1rem,1.25vw,1.17rem); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
@@ -197,7 +197,7 @@ p:last-child { margin-bottom: 0; }
   .hero { min-height: 600px; padding-block: 3rem; }
   .hero-shell { width: min(calc(100% - 32px), var(--container)); }
   .hero-copy { max-width: 20rem; }
-  .hero-copy h1 { max-width: 11ch; margin-bottom: var(--space-sm); font-size: clamp(2.3rem,10vw,3.15rem); line-height: .98; text-wrap: balance; }
+  .hero-copy h1 { max-width: 11ch; margin-bottom: var(--space-sm); font-size: clamp(2.3rem,10vw,3.15rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.06; text-wrap: balance; }
   .hero-lead { max-width: 19rem; margin-bottom: var(--space-md); font-size: .9rem; line-height: 1.45; }
   .hero-actions { width: 100%; max-width: none; flex-direction: column; align-items: flex-start; gap: .75rem; }
   .hero-actions .button { width: auto; min-height: 48px; padding: .75rem 1.15rem; }
