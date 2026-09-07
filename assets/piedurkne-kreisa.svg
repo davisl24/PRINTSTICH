@@ -1,30 +1,16 @@
-<svg id="ps-sleeve-left" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
-  <rect width="600" height="700" fill="#F7F7F5"/>
-
-  <!-- Plakani izklāta kreisā piedurkne: labās piedurknes spoguļattēls. -->
-  <path class="shirt-body"
-    d="M145 265
-       C165 150 235 95 300 95
-       C365 95 435 150 455 265
-       L435 500
-       L165 500
-       Z"
-    fill="#FFFFFF"
-    stroke="#C9C6BF"
-    stroke-width="6"
-    stroke-linejoin="round"/>
-
-  <!-- Divas plānas paralēlas apakšmalas šuves. -->
-  <path
-    d="M166 476 L434 476"
-    fill="none"
-    stroke="#C9C6BF"
-    stroke-width="3"
-    stroke-linecap="round"/>
-  <path
-    d="M165 486 L435 486"
-    fill="none"
-    stroke="#C9C6BF"
-    stroke-width="3"
-    stroke-linecap="round"/>
+<svg id="ps-sleeve-left" viewBox="0 0 600 700"
+     xmlns="http://www.w3.org/2000/svg">
+  <g id="sleeve-left">
+    <path class="shirt-body"
+      d="M70 585 L70 390 C72 272 150 178 300 175
+         C450 178 528 272 530 390 L530 585 Z"
+      fill="#FFFFFF" stroke="#C9C6BF"
+      stroke-width="6" stroke-linejoin="round"/>
+    <path class="shirt-seam" d="M76 546 L524 546"
+      fill="none" stroke="#C9C6BF" stroke-width="3"
+      stroke-linecap="round"/>
+    <path class="shirt-seam" d="M74 562 L526 562"
+      fill="none" stroke="#C9C6BF" stroke-width="3"
+      stroke-linecap="round"/>
+  </g>
 </svg>

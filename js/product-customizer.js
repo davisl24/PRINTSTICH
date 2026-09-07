@@ -76,11 +76,43 @@
   function maxAllowedScale(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const mmArea = getPhysicalArea(sideKey); if (!asset || !mmArea || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return 1; const virtual = getVirtualZoneSize(sideKey); const max = getMaxPrintMm(sideKey); for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) { const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate }, asset); if (!rect) return 1; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; if (widthMm <= max.w && heightMm <= max.h) return candidate; } return 0.05; }
   function enforcePrintLimit() { return false; }
 
-  function updatePrintArea() { const zone = getZone(); if (!zone) return; const dark = ['melns', 'zils'].includes(state.color); const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85'; Object.assign(els.printArea.style, { left: `${zone.x * 100}%`, top: `${zone.y * 100}%`, width: `${zone.w * 100}%`, height: `${zone.h * 100}%`, borderColor: guideColor }); if (els.previewHint) els.previewHint.style.color = guideColor; }
+  function getSvgRenderBox() {
+    const svg = state.svgRoot;
+    if (!svg) return null;
+    const host = els.preview.getBoundingClientRect();
+    const box = svg.getBoundingClientRect();
+    const vb = svg.viewBox?.baseVal;
+    if (!vb?.width || !vb?.height) return null;
+    const scale = Math.min(box.width / vb.width, box.height / vb.height);
+    const w = vb.width * scale;
+    const h = vb.height * scale;
+    return {
+      left: box.left - host.left + (box.width - w) / 2,
+      top: box.top - host.top + (box.height - h) / 2,
+      width: w,
+      height: h
+    };
+  }
+
+  function updatePrintArea() {
+    const zone = getZone();
+    const render = getSvgRenderBox();
+    if (!zone || !render) return;
+    const dark = ['melns', 'zils'].includes(state.color);
+    const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85';
+    Object.assign(els.printArea.style, {
+      left: `${render.left + zone.x * render.width}px`,
+      top: `${render.top + zone.y * render.height}px`,
+      width: `${zone.w * render.width}px`,
+      height: `${zone.h * render.height}px`,
+      borderColor: guideColor
+    });
+    if (els.previewHint) els.previewHint.style.color = guideColor;
+  }
   function applySvgAppearance(root, sideKey) { if (!root) return; const color = colorById(state.color); root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex)); const dark = ['melns', 'zils'].includes(color.id); root.querySelectorAll('[stroke]').forEach(node => { if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || ''; if (dark) node.setAttribute('stroke', '#D9DEE8'); else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf'); else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke); }); Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => { const group = root.querySelector(selector); if (group) group.style.display = key === sideKey ? 'block' : 'none'; }); }
   function updateSvgColor() { applySvgAppearance(state.svgRoot, state.activeSide); updatePrintArea(); }
   async function getSvgMarkup(sideKey) { const path = getSvgPath(sideKey); if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`); if (svgMarkupCache.has(path)) return svgMarkupCache.get(path); const response = await fetch(path, { cache: 'no-cache' }); if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`); const markup = await response.text(); svgMarkupCache.set(path, markup); return markup; }
-  async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
+  async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); updatePrintArea(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
   function drawVectorFallback(ctx, width, height) { ctx.save(); ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2); ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore(); }
   function drawDesignCanvas() { const side = currentSide(); const asset = currentAsset(); const area = els.printArea.getBoundingClientRect(); const canvas = els.designCanvas; if (!area.width || !area.height) return; const dpr = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.max(1, Math.round(area.width * dpr)); canvas.height = Math.max(1, Math.round(area.height * dpr)); const ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, area.width, area.height); if (!asset) return; if (asset.vectorFallback) return drawVectorFallback(ctx, area.width, area.height); if (!asset.image) return; const rect = getDesignRect(area.width, area.height, side, asset); if (!rect) return; ctx.drawImage(asset.image, rect.x, rect.y, rect.width, rect.height); }
 
@@ -200,5 +232,12 @@
   if (els.debugMockup) { els.debugMockup.hidden = !debugEnabled; if (debugEnabled) els.debugMockup.addEventListener('click', async () => { error('form'); try { const blob = await createWorksheetBlob(FORM_LIMIT); const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); } catch (cause) { console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause); error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); } }); }
   if (els.form) els.form.addEventListener('submit', async event => { if (state.submitting) return; event.preventDefault(); error('form'); const name = $('[data-customer-name]')?.value.trim() || ''; const contact = $('[data-customer-contact]')?.value.trim() || ''; if (!state.size) return error('form', 'Izvēlies krekla izmēru.'); if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); if (state.library.some(item => item.file.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.'); if (originalsTotalSize() >= ORIGINALS_TOTAL_LIMIT) return error('form', 'Oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); if (!name) return error('form', 'Ievadi savu vārdu.'); if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.'); syncFormData(); const submitButton = $('.customizer-submit', els.form); if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Sagatavo nosūtīšanai...'; } try { await prepareEmailAttachments(); state.submitting = true; els.form.submit(); } catch (cause) { console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause); error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Nosūtīt savu dizainu'; } } });
   function updateMobileLayout() { const mobile = window.matchMedia('(max-width: 767px)').matches; let hint = $('[data-mobile-drag-hint]'); if (!hint && els.previewCard) { hint = document.createElement('p'); hint.className = 'customizer-preview-hint customizer-mobile-drag-hint'; hint.dataset.mobileDragHint = ''; hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu'; els.previewCard.appendChild(hint); } if (hint) hint.hidden = !(mobile && state.step === 2); if (mobile && state.step !== 3) { els.preview.style.height = '45vh'; els.preview.style.maxHeight = '45vh'; } else { els.preview.style.height = ''; els.preview.style.maxHeight = ''; } requestAnimationFrame(renderDesign); }
+  if ('ResizeObserver' in window) {
+    const previewResizeObserver = new ResizeObserver(() => {
+      updatePrintArea();
+      renderDesign();
+    });
+    previewResizeObserver.observe(els.preview);
+  }
   window.addEventListener('resize', updateMobileLayout); renderPresetButtons(); updateSideUi(); showStep(1); loadActiveSvg();
 })();
