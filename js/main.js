@@ -25,19 +25,25 @@
     scrollTopButton.classList.toggle('is-visible', window.scrollY > 400);
   };
 
-  const closeMenu = () => {
+  const closeMenu = ({ returnFocus = true } = {}) => {
     if (!menuToggle || !nav) return;
+    const wasOpen = nav.classList.contains('is-open');
     menuToggle.setAttribute('aria-expanded', 'false');
     nav.classList.remove('is-open');
     document.body.classList.remove('menu-open');
+    if (wasOpen && returnFocus) menuToggle.focus();
   };
 
   const toggleMenu = () => {
     if (!menuToggle || !nav) return;
     const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', String(!isOpen));
-    nav.classList.toggle('is-open', !isOpen);
-    document.body.classList.toggle('menu-open', !isOpen);
+    if (isOpen) {
+      closeMenu();
+      return;
+    }
+    menuToggle.setAttribute('aria-expanded', 'true');
+    nav.classList.add('is-open');
+    document.body.classList.add('menu-open');
   };
 
   const initMenu = () => {
@@ -46,15 +52,24 @@
     menuToggle.addEventListener('click', toggleMenu);
 
     nav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMenu);
+      link.addEventListener('click', () => closeMenu());
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!nav.classList.contains('is-open')) return;
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (nav.contains(target) || menuToggle.contains(target)) return;
+      closeMenu();
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeMenu();
+      if (event.key !== 'Escape' || !nav.classList.contains('is-open')) return;
+      closeMenu();
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) closeMenu();
+      if (window.innerWidth >= 768) closeMenu({ returnFocus: false });
     });
   };
 
