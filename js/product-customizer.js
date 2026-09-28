@@ -296,5 +296,19 @@
     });
     previewResizeObserver.observe(els.preview);
   }
-  window.addEventListener('resize', updateMobileLayout); renderPresetButtons(); updateSideUi(); showStep(1); loadActiveSvg();
+  window.addEventListener('resize', updateMobileLayout);
+  renderPresetButtons();
+  updateSideUi();
+  showStep(1);
+
+  // Initial preview must be rendered only after the page layout is visible.
+  // Loading the SVG before the first layout pass could leave the preview blank
+  // until the user changed side/product and triggered another render.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(async () => {
+      await loadActiveSvg();
+      updatePrintArea();
+      renderDesign();
+    });
+  });
 })();
