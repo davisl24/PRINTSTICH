@@ -1,94 +1,95 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" role="img" aria-label="Hūdija priekšpuse un aizmugure">
   <g id="shirt-front">
-    <!-- Body and long sleeves, based on the supplied product reference -->
-    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="3.2" stroke-linejoin="round"
-      d="M205 191
-         L258 174
-         C271 184 285 190 300 190
-         C315 190 329 184 342 174
-         L395 191
-         C411 196 420 207 430 222
-         L492 319
-         C497 327 497 334 493 342
-         L454 412
-         C449 420 443 425 435 429
-         L411 441
-         L389 404
-         L389 557
-         L211 557
-         L211 404
-         L189 441
-         L165 429
-         C157 425 151 420 146 412
-         L107 342
-         C103 334 103 327 108 319
-         L170 222
-         C180 207 189 196 205 191 Z"/>
-    <!-- Hood, front -->
-    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="3.2" stroke-linejoin="round"
-      d="M258 174
-         L258 136
-         C258 92 275 64 300 53
-         C325 64 342 92 342 136
-         L342 174
-         C330 183 316 188 300 188
-         C284 188 270 183 258 174 Z"/>
+    <!-- Reference-matched pullover hoodie silhouette -->
+    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="2.6" stroke-linejoin="round"
+      d="M188 202
+         L250 184
+         C265 194 282 199 300 199
+         C318 199 335 194 350 184
+         L412 202
+         C427 207 438 218 447 233
+         L496 319
+         C502 330 501 340 495 351
+         L454 421
+         C448 431 439 439 428 444
+         L397 458
+         L382 428
+         L382 557
+         L218 557
+         L218 428
+         L203 458
+         L172 444
+         C161 439 152 431 146 421
+         L105 351
+         C99 340 98 330 104 319
+         L153 233
+         C162 218 173 207 188 202 Z"/>
+    <!-- shoulder / sleeve seams -->
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.2"
+      d="M188 202 L201 321 M412 202 L399 321"/>
+    <!-- cuffs -->
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.2"
+      d="M172 444 L203 458 M428 444 L397 458"/>
+    <!-- front hood, wide and rounded like reference -->
+    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="2.6" stroke-linejoin="round"
+      d="M250 184
+         L250 144
+         C250 102 270 76 300 66
+         C330 76 350 102 350 144
+         L350 184
+         C334 195 317 200 300 200
+         C283 200 266 195 250 184 Z"/>
+    <!-- hood opening -->
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.2"
+      d="M250 158 C270 151 286 139 300 119 C314 139 330 151 350 158"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="2" d="M300 67 V119"/>
+    <!-- drawstrings -->
+    <path fill="none" stroke="#b9b7b1" stroke-width="2" stroke-linecap="round"
+      d="M287 190 V236 M313 190 V236"/>
+    <!-- kangaroo pocket -->
     <path fill="none" stroke="#b9b7b1" stroke-width="2.5" stroke-linejoin="round"
-      d="M258 151 C276 141 288 128 300 111 C312 128 324 141 342 151
-         M300 54 V111"/>
-    <!-- Hood opening / collar -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.6" d="M258 174 C276 197 324 197 342 174"/>
-    <!-- Drawcords -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.4" stroke-linecap="round"
-      d="M287 185 V239 M313 185 V239"/>
-    <!-- Sleeve seam and cuffs -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.5"
-      d="M205 191 L218 308 M395 191 L382 308
-         M165 429 L189 441 M435 429 L411 441"/>
-    <!-- Kangaroo pocket -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" stroke-linejoin="round"
-      d="M255 425 H345 L370 502 L342 520 H258 L230 502 Z"/>
-    <!-- Ribbed hem -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.7" d="M211 531 H389"/>
+      d="M257 424 H343 L369 501 L340 520 H260 L231 501 Z"/>
+    <!-- ribbed hem -->
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.3" d="M218 531 H382"/>
   </g>
 
   <g id="shirt-back" style="display:none">
-    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="3.2" stroke-linejoin="round"
-      d="M205 191
-         L258 174
-         C271 184 285 190 300 190
-         C315 190 329 184 342 174
-         L395 191
-         C411 196 420 207 430 222
-         L492 319
-         C497 327 497 334 493 342
-         L454 412
-         C449 420 443 425 435 429
-         L411 441
-         L389 404
-         L389 557
-         L211 557
-         L211 404
-         L189 441
-         L165 429
-         C157 425 151 420 146 412
-         L107 342
-         C103 334 103 327 108 319
-         L170 222
-         C180 207 189 196 205 191 Z"/>
-    <!-- Hood, back -->
-    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="3.2" stroke-linejoin="round"
-      d="M258 174
-         L258 124
-         C258 87 276 62 300 53
-         C324 62 342 87 342 124
-         L342 174
-         C329 184 315 189 300 189
-         C285 189 271 184 258 174 Z"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.4" d="M300 54 V189"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.5"
-      d="M205 191 L218 308 M395 191 L382 308
-         M165 429 L189 441 M435 429 L411 441"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="2.7" d="M211 531 H389"/>
+    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="2.6" stroke-linejoin="round"
+      d="M188 202
+         L250 184
+         C265 194 282 199 300 199
+         C318 199 335 194 350 184
+         L412 202
+         C427 207 438 218 447 233
+         L496 319
+         C502 330 501 340 495 351
+         L454 421
+         C448 431 439 439 428 444
+         L397 458
+         L382 428
+         L382 557
+         L218 557
+         L218 428
+         L203 458
+         L172 444
+         C161 439 152 431 146 421
+         L105 351
+         C99 340 98 330 104 319
+         L153 233
+         C162 218 173 207 188 202 Z"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.2"
+      d="M188 202 L201 321 M412 202 L399 321
+         M172 444 L203 458 M428 444 L397 458"/>
+    <!-- back hood: broad cap with center seam -->
+    <path class="shirt-body" fill="#fff" stroke="#b9b7b1" stroke-width="2.6" stroke-linejoin="round"
+      d="M250 184
+         L250 139
+         C250 101 271 77 300 67
+         C329 77 350 101 350 139
+         L350 184
+         C334 193 317 198 300 198
+         C283 198 266 193 250 184 Z"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="2" d="M300 68 V198"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="2.3" d="M218 531 H382"/>
   </g>
 </svg>
