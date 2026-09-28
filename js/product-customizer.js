@@ -165,7 +165,44 @@
     });
     if (els.previewHint) els.previewHint.style.color = guideColor;
   }
-  function applySvgAppearance(root, sideKey) { if (!root) return; const color = colorById(state.color); root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex)); const dark = ['melns', 'zils'].includes(color.id); root.querySelectorAll('[stroke]').forEach(node => { if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || ''; if (dark) node.setAttribute('stroke', '#D9DEE8'); else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf'); else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke); }); Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => { const group = root.querySelector(selector); if (group) group.style.display = key === sideKey ? 'block' : 'none'; }); }
+  function applySvgAppearance(root, sideKey) {
+    if (!root) return;
+    const color = colorById(state.color);
+    const dark = ['melns', 'zils'].includes(color.id);
+    const outlineColor = dark ? '#D9DEE8' : '#3A3B3A';
+
+    root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
+
+    // Uploaded VTracer garment SVGs are made from many filled anti-alias shapes
+    // rather than clean strokes. Keep their original path geometry, but remove
+    // near-white/background trace shapes and normalize actual contour shapes.
+    if (state.svgPath?.includes('hudijs-')) {
+      root.querySelectorAll('path[fill]').forEach(node => {
+        if (!node.dataset.originalFill) node.dataset.originalFill = node.getAttribute('fill') || '';
+        const fill = node.dataset.originalFill;
+        const match = fill.match(/^#([0-9a-f]{6})$/i);
+        if (!match) return;
+        const hex = match[1];
+        const r = parseInt(hex.slice(0, 2), 16);
+        const g = parseInt(hex.slice(2, 4), 16);
+        const b = parseInt(hex.slice(4, 6), 16);
+        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        node.setAttribute('fill', luminance > 232 ? 'transparent' : outlineColor);
+      });
+    }
+
+    root.querySelectorAll('[stroke]').forEach(node => {
+      if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || '';
+      if (dark) node.setAttribute('stroke', '#D9DEE8');
+      else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf');
+      else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke);
+    });
+
+    Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => {
+      const group = root.querySelector(selector);
+      if (group) group.style.display = key === sideKey ? 'block' : 'none';
+    });
+  }
   function updateSvgColor() { applySvgAppearance(state.svgRoot, state.activeSide); updatePrintArea(); }
   async function getSvgMarkup(sideKey) { const path = getSvgPath(sideKey); if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`); if (svgMarkupCache.has(path)) return svgMarkupCache.get(path); const response = await fetch(path, { cache: 'no-cache' }); if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`); const markup = await response.text(); svgMarkupCache.set(path, markup); return markup; }
   async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); if (!svg.getAttribute('viewBox')) { const sourceWidth = parseFloat(svg.getAttribute('width')) || 600; const sourceHeight = parseFloat(svg.getAttribute('height')) || 700; svg.setAttribute('viewBox', `0 0 ${sourceWidth} ${sourceHeight}`); } svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); updatePrintArea(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
