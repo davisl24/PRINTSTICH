@@ -91,10 +91,27 @@
       gramaza: '320 g/m²',
       kopšana: 'Mazgāt līdz 40 °C',
       avots: 'https://shop.malfini.com/cz/en/product/cape-413?color=44',
-      krasas: [],
+      svg: 'assets/hudijs.svg',
+      sleeveSvgs: {
+        sleeveLeft: 'assets/piedurkne-kreisa.svg',
+        sleeveRight: 'assets/piedurkne-laba.svg'
+      },
+      krasas: [
+        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
+        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A' },
+        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
+      ],
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
       piezimeParIzmeriem: '4XL un 5XL pieejamība ir atkarīga no izvēlētās krāsas.',
-      status: 'Sagatavots pieslēgšanai konfiguratoram'
+      puses: commonSides,
+      drukasZona: {
+        prieksa: { x: 0.350, y: 0.330, w: 0.300, h: 0.250 },
+        aizmugure: { x: 0.333, y: 0.300, w: 0.333, h: 0.390 },
+        sleeveLeft: commonZones.sleeveLeft,
+        sleeveRight: commonZones.sleeveRight
+      },
+      drukasLaukumsMm: commonPrintAreas,
+      maxDrukaMm: { w: 297, h: 420 }
     },
 
     sweatshirt: {
