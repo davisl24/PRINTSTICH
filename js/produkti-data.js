@@ -91,10 +91,16 @@
       gramaza: '320 g/m²',
       kopšana: 'Mazgāt līdz 40 °C',
       avots: 'https://shop.malfini.com/cz/en/product/cape-413?color=44',
-      svg: 'assets/hudijs.svg',
+      svg: 'assets/hudijs-prieksa.svg',
+      viewSvgs: {
+        front: 'assets/hudijs-prieksa.svg',
+        back: 'assets/hudijs-aizmugure.svg',
+        sleeveLeft: 'assets/hudijs-piedurkne.svg',
+        sleeveRight: 'assets/hudijs-piedurkne.svg'
+      },
       sleeveSvgs: {
-        sleeveLeft: 'assets/piedurkne-kreisa.svg',
-        sleeveRight: 'assets/piedurkne-laba.svg'
+        sleeveLeft: 'assets/hudijs-piedurkne.svg',
+        sleeveRight: 'assets/hudijs-piedurkne.svg'
       },
       krasas: [
         { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
