@@ -1,65 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" role="img" aria-label="Hūdija priekšpuse un aizmugure">
   <g id="shirt-front">
-    <!-- Cape-style hoodie: long sleeves, hood at neckline, kangaroo pocket -->
-    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" stroke-linejoin="round"
-      d="M205 178
-         C228 158 250 150 267 146
-         C278 154 289 158 300 158
-         C311 158 322 154 333 146
-         C350 150 372 158 395 178
-         L472 235
-         L425 320
-         L385 291
-         L385 574
-         L215 574
-         L215 291
-         L175 320
-         L128 235
-         Z"/>
-    <!-- Hood rising naturally behind neckline -->
-    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" stroke-linejoin="round"
-      d="M267 146
-         C270 104 282 79 300 66
-         C318 79 330 104 333 146
-         C324 161 313 170 300 170
-         C287 170 276 161 267 146 Z"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" stroke-linecap="round"
-      d="M286 166 L286 238 M314 166 L314 238"/>
-    <!-- Kangaroo pocket -->
-    <path fill="none" stroke="#b9b7b1" stroke-width="4" stroke-linejoin="round"
-      d="M251 410
-         C264 395 336 395 349 410
-         L366 486
-         L234 486 Z"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M215 545 H385"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M175 320 L195 331 M425 320 L405 331"/>
+    <path class="shirt-body" fill="#fff" stroke="#aeb3bd" stroke-width="3.5" stroke-linejoin="round" d="M209 196 257 178c13 11 27 16 43 16s30-5 43-16l48 18 78 112-43 31-41-70v287H215V269l-41 70-43-31 78-112Z"/>
+    <path class="shirt-body" fill="#fff" stroke="#aeb3bd" stroke-width="3.5" stroke-linejoin="round" d="M257 178c-2-47 9-78 43-97 34 19 45 50 43 97-13 18-27 28-43 28s-30-10-43-28Z"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="3" stroke-linejoin="round" d="M257 178c13-17 27-28 43-34 16 6 30 17 43 34M300 144v60"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="2.5" stroke-linecap="round" d="M286 198v57m28-57v57"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="3" stroke-linejoin="round" d="M254 421h92l24 75-29 18h-82l-29-18 24-75Z"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="3" d="M215 530h170M174 339l20 12M426 339l-20 12"/>
   </g>
-
   <g id="shirt-back" style="display:none">
-    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" stroke-linejoin="round"
-      d="M205 178
-         C228 158 250 150 267 146
-         C278 154 289 158 300 158
-         C311 158 322 154 333 146
-         C350 150 372 158 395 178
-         L472 235
-         L425 320
-         L385 291
-         L385 574
-         L215 574
-         L215 291
-         L175 320
-         L128 235
-         Z"/>
-    <!-- Hood viewed from the back -->
-    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" stroke-linejoin="round"
-      d="M263 151
-         C267 105 280 78 300 64
-         C320 78 333 105 337 151
-         C326 174 314 187 300 190
-         C286 187 274 174 263 151 Z"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M300 66 V186"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M215 545 H385"/>
-    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M175 320 L195 331 M425 320 L405 331"/>
+    <path class="shirt-body" fill="#fff" stroke="#aeb3bd" stroke-width="3.5" stroke-linejoin="round" d="M209 196 257 178c13 11 27 16 43 16s30-5 43-16l48 18 78 112-43 31-41-70v287H215V269l-41 70-43-31 78-112Z"/>
+    <path class="shirt-body" fill="#fff" stroke="#aeb3bd" stroke-width="3.5" stroke-linejoin="round" d="M257 178v-53c0-35 17-62 43-75 26 13 43 40 43 75v53c-14 9-28 13-43 13s-29-4-43-13Z"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="2.5" d="M300 51v140"/>
+    <path fill="none" stroke="#aeb3bd" stroke-width="3" d="M215 530h170M174 339l20 12M426 339l-20 12"/>
   </g>
 </svg>
