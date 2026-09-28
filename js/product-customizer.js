@@ -173,21 +173,36 @@
 
     root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
 
-    // Uploaded VTracer garment SVGs are made from many filled anti-alias shapes
-    // rather than clean strokes. Keep their original path geometry, but remove
-    // near-white/background trace shapes and normalize actual contour shapes.
+    // Hoodie assets are exact VTracer traces from the approved references.
+    // Keep every original contour/path, but render them in the same visual
+    // language as the T-shirt: solid garment color + clean contrasting details.
     if (state.svgPath?.includes('hudijs-')) {
-      root.querySelectorAll('path[fill]').forEach(node => {
+      const tracedPaths = [...root.querySelectorAll('path[fill]')];
+      tracedPaths.forEach((node, index) => {
         if (!node.dataset.originalFill) node.dataset.originalFill = node.getAttribute('fill') || '';
         const fill = node.dataset.originalFill;
         const match = fill.match(/^#([0-9a-f]{6})$/i);
         if (!match) return;
+
+        // VTracer's first path is the full image/background rectangle.
+        if (index === 0) {
+          node.setAttribute('fill', 'transparent');
+          return;
+        }
+
         const hex = match[1];
         const r = parseInt(hex.slice(0, 2), 16);
         const g = parseInt(hex.slice(2, 4), 16);
         const b = parseInt(hex.slice(4, 6), 16);
         const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        node.setAttribute('fill', luminance > 232 ? 'transparent' : outlineColor);
+
+        if (luminance > 220) {
+          node.setAttribute('fill', color.hex);
+        } else if (luminance > 155) {
+          node.setAttribute('fill', dark ? '#AEB8C8' : '#C9C6BF');
+        } else {
+          node.setAttribute('fill', outlineColor);
+        }
       });
     }
 
