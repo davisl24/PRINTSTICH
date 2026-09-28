@@ -86,12 +86,24 @@
     state.productId = productId;
     state.size = '';
     state.color = candidate.krasas?.[0]?.id || '';
+
+    // Every product opens on its front view immediately.
+    // This also forces a fresh SVG load when switching products,
+    // even when the previous active side was already "front".
+    state.activeSide = 'front';
+    state.svgLoaded = false;
+    state.svgRoot = null;
+    state.svgPath = '';
+
     setPressed(els.productButtons, button);
     renderSizeButtons();
     ensureColorButtons();
+    updateSideUi();
     if (productReadyForCustomizer(candidate)) {
       error('size');
-      await updatePreview();
+      await loadActiveSvg();
+      updateNavigation();
+      renderDesign();
     } else {
       error('size', `${candidate.nosaukums} ${candidate.modelis} ir pievienots produktu klāstam. Priekšskatījuma makets vēl tiek gatavots.`);
       const host = $('[data-shirt-svg-host]');
