@@ -304,11 +304,13 @@
   // Initial preview must be rendered only after the page layout is visible.
   // Loading the SVG before the first layout pass could leave the preview blank
   // until the user changed side/product and triggered another render.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(async () => {
-      await loadActiveSvg();
-      updatePrintArea();
-      renderDesign();
-    });
-  });
+  // Do not rely on the first animation frame for the initial garment.
+  // Local/static pages can finish their first paint before the async fetch
+  // returns, so explicitly select and render the default product on startup.
+  const initialProductButton = els.productButtons.find(button => button.dataset.product === state.productId) || els.productButtons[0];
+  if (initialProductButton) {
+    selectProduct(initialProductButton.dataset.product, initialProductButton);
+  } else {
+    loadActiveSvg();
+  }
 })();
