@@ -106,7 +106,7 @@
       puses: commonSides,
       drukasZona: {
         prieksa: { x: 0.350, y: 0.330, w: 0.300, h: 0.250 },
-        aizmugure: { x: 0.350, y: 0.315, w: 0.300, h: 0.330 },
+        aizmugure: { x: 0.345, y: 0.335, w: 0.310, h: 0.270 },
         sleeveLeft: commonZones.sleeveLeft,
         sleeveRight: commonZones.sleeveRight
       },
