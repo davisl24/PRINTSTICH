@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" role="img" aria-label="Hūdija priekšpuse un aizmugure">
+  <g id="shirt-front">
+    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" d="M202 151c23-20 57-31 98-31s75 11 98 31l92 54-51 105-55-25v294H216V285l-55 25-51-105 92-54z"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="4" d="M247 139c7 52 99 52 106 0M258 151c8 31 76 31 84 0"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="4" d="M247 139c-28 25-40 58-37 98 31-12 61-19 90-19s59 7 90 19c3-40-9-73-37-98"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="3" d="M284 220v61m32-61v61"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="4" d="M250 395c17-18 83-18 100 0l18 83H232l18-83zM216 547h168"/>
+  </g>
+  <g id="shirt-back" style="display:none">
+    <path class="shirt-body" fill="#ffffff" stroke="#b9b7b1" stroke-width="4" d="M202 151c23-20 57-31 98-31s75 11 98 31l92 54-51 105-55-25v294H216V285l-55 25-51-105 92-54z"/>
+    <path fill="none" stroke="#b9b7b1" stroke-width="4" d="M247 139c-28 25-40 58-37 98 31-12 61-19 90-19s59 7 90 19c3-40-9-73-37-98M247 139c7 52 99 52 106 0M216 547h168"/>
+  </g>
+</svg>
