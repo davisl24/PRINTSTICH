@@ -514,7 +514,15 @@
     return canvas;
   }
 
-  async function createWorksheetBlob(maxBytes = FORM_LIMIT) { for (const width of [2000, 1700, 1450, 1200, 1000, 800]) { const blob = await canvasToBlob(await renderWorksheetCanvas(width)); if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob; } throw new Error('Darba lapas PNG neizdevās samazināt līdz FormSubmit limitam.'); }
+  async function createWorksheetBlob(maxBytes = FORM_LIMIT) {
+    // Demo/production submit: start from a practical e-mail size instead of
+    // rendering multiple very large canvases first.
+    for (const width of [1200, 900, 700]) {
+      const blob = await canvasToBlob(await renderWorksheetCanvas(width));
+      if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob;
+    }
+    throw new Error('Darba lapas PNG neizdevās sagatavot FormSubmit limitam.');
+  }
   function syncOriginalAttachments() { if (!els.originalAttachments) return false; if (typeof DataTransfer === 'undefined') { error('form', 'Šis pārlūks nevar sagatavot pielikumus.'); return false; } els.originalAttachments.innerHTML = ''; let attachmentIndex = 2; usedOriginalItems().forEach(item => { const input = document.createElement('input'); input.type = 'file'; input.name = `attachment${attachmentIndex}`; input.className = 'visually-hidden'; input.tabIndex = -1; input.setAttribute('aria-hidden', 'true'); input.dataset.originalAttachment = item.id; const dt = new DataTransfer(); dt.items.add(item.file); input.files = dt.files; els.originalAttachments.appendChild(input); attachmentIndex += 1; }); return true; }
   async function prepareEmailAttachments() { if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.'); if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.'); const originalsTotal = usedOriginalsTotalSize(); if (originalsTotal >= ORIGINALS_TOTAL_LIMIT) throw new Error('Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); const worksheetBudget = FORM_LIMIT - originalsTotal; if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Izmantoto oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.'); const blob = await createWorksheetBlob(worksheetBudget); const date = new Date().toISOString().slice(0, 10); const file = new File([blob], `printstich-pasutijums-${date}.png`, { type: 'image/png' }); const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files; if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.'); if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.'); return file; }
   const debugEnabled = new URLSearchParams(location.search).has('debug');
@@ -561,8 +569,8 @@
         return;
       }
 
-      if (els.formNext) {
-        els.formNext.value = new URL('paldies.html', window.location.href).href;
+      if (els.formNext && !els.formNext.value) {
+        els.formNext.value = 'https://printstich.vercel.app/paldies.html';
       }
 
       state.submitting = true;
