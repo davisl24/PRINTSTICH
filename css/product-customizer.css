@@ -324,6 +324,60 @@
 
 
 @media (min-width: 769px) {
+  /* Keep all four print-side controls in one horizontal row on desktop. */
+  .customizer-side-switch {
+    display: flex;
+    flex-wrap: nowrap;
+    width: min(100%, 900px);
+    gap: .55rem;
+  }
+  .customizer-side-switch button {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  /* Step 1: compact product selection so more of the flow fits in one viewport. */
+  [data-step-panel="1"] h2 {
+    margin-bottom: .45rem;
+  }
+  [data-step-panel="1"] .customizer-fieldset {
+    padding-top: .8rem;
+  }
+  [data-step-panel="1"] .customizer-fieldset + .customizer-fieldset {
+    margin-top: .7rem;
+  }
+  [data-step-panel="1"] .customizer-fieldset legend {
+    margin-bottom: .45rem;
+  }
+  [data-step-panel="1"] .customizer-product-info {
+    margin-top: .65rem;
+    padding: .8rem;
+  }
+  [data-step-panel="1"] .customizer-product-info > p {
+    margin-top: .4rem;
+    line-height: 1.45;
+  }
+  [data-step-panel="1"] .customizer-product-stats {
+    gap: .45rem;
+    margin-top: .65rem;
+  }
+  [data-step-panel="1"] .customizer-product-stats .product-stat {
+    padding: .6rem .7rem;
+  }
+  [data-step-panel="1"] .swatch-group,
+  [data-step-panel="1"] .size-options {
+    gap: .45rem;
+  }
+  [data-step-panel="1"] .color-swatch,
+  [data-step-panel="1"] .size-options button {
+    min-height: 40px;
+  }
+  .customizer-controls:has([data-step-panel="1"].is-active) .customizer-navigation {
+    margin-top: 1rem;
+    padding-top: .85rem;
+  }
+
   /* Step 2: compact editor layout so the full workflow fits in one desktop viewport. */
   [data-step-panel="2"] h2 { margin-bottom: .45rem; }
   [data-step-panel="2"] > p:not(.step-kicker):not(.customizer-error) {
