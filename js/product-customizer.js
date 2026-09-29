@@ -154,7 +154,17 @@
   function getPhysicalArea(sideKey = state.activeSide) { if (!state.size) return null; return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null; }
   function getDesignRect(zoneWidth, zoneHeight, side = currentSide(), asset = currentAsset()) { if (!asset || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return null; const aspect = asset.image.naturalWidth / asset.image.naturalHeight; let width = zoneWidth * side.scale; let height = width / aspect; if (height > zoneHeight * side.scale) { height = zoneHeight * side.scale; width = height * aspect; } return { width, height, x: side.x * zoneWidth - width / 2, y: side.y * zoneHeight - height / 2 }; }
   function getVirtualZoneSize(sideKey) { const zone = getZone(sideKey); return { width: zone.w * 600, height: zone.h * 700 }; }
-  function constrainPosition(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); if (!asset || asset.vectorFallback) return; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side, asset); if (!rect) return; const halfX = rect.width / (2 * virtual.width); const halfY = rect.height / (2 * virtual.height); side.x = halfX >= 0.5 ? 0.5 : clamp(side.x, halfX, 1 - halfX); side.y = halfY >= 0.5 ? 0.5 : clamp(side.y, halfY, 1 - halfY); }
+  function constrainPosition(sideKey = state.activeSide) {
+    const side = state.sides[sideKey];
+    const asset = getSideAsset(sideKey);
+    if (!asset || asset.vectorFallback) return;
+
+    // Allow the design to be dragged all the way to every edge of the print area.
+    // The print-area container clips anything that goes outside, which also lets
+    // users compensate for transparent/blank margins inside uploaded artwork.
+    side.x = clamp(side.x, 0, 1);
+    side.y = clamp(side.y, 0, 1);
+  }
   function printMetrics(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const mmArea = getPhysicalArea(sideKey); if (!asset || !mmArea || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return null; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side, asset); if (!rect) return null; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; const dpi = widthMm > 0 ? (asset.image.naturalWidth / widthMm) * 25.4 : 0; return { widthRounded: Math.round(widthMm), heightRounded: Math.round(heightMm), dpiRounded: Math.round(dpi) }; }
   function maxAllowedScale(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const mmArea = getPhysicalArea(sideKey); if (!asset || !mmArea || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return 1; const virtual = getVirtualZoneSize(sideKey); const max = getMaxPrintMm(sideKey); for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) { const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate }, asset); if (!rect) return 1; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; if (widthMm <= max.w && heightMm <= max.h) return candidate; } return 0.05; }
   function enforcePrintLimit() { return false; }
