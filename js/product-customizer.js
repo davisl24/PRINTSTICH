@@ -307,7 +307,38 @@
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
   function stepComplete(step) { if (step === 1) return Boolean(state.size) && productReadyForCustomizer(product); if (step === 2) return anySideHasDesign(); return true; }
   function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
-  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
+  function showStep(step) {
+    state.step = clamp(step, 1, 3);
+
+    els.panels.forEach(panel => {
+      const active = Number(panel.dataset.stepPanel) === state.step;
+      panel.hidden = !active;
+      panel.classList.toggle('is-active', active);
+    });
+
+    els.indicators.forEach(indicator => {
+      const active = Number(indicator.dataset.stepIndicator) === state.step;
+      indicator.classList.toggle('is-active', active);
+      if (active) indicator.setAttribute('aria-current', 'step');
+      else indicator.removeAttribute('aria-current');
+    });
+
+    if (els.previewColumn) els.previewColumn.hidden = state.step === 3;
+
+    // Keep the side switch completely separate from the rest of the step logic.
+    // Author CSS defines display on this element, so use inline display instead of
+    // relying on the HTML hidden attribute.
+    if (els.sideSwitch) {
+      els.sideSwitch.hidden = false;
+      els.sideSwitch.style.display = state.step === 3 ? 'none' : '';
+    }
+
+    updateNavigation();
+    updateSideUi();
+
+    if (state.step === 3) updateSummary();
+    updateMobileLayout();
+  }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
   function findLibraryDuplicate(file) { return state.library.find(item => item.name === file.name && item.file.size === file.size) || null; }
   function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); } updateNavigation(); }
@@ -338,7 +369,40 @@
 
   els.colorButtons.forEach(button => button.addEventListener('click', () => { state.color = normalizeColor(button.dataset.color); setPressed(els.colorButtons, button); updateSvgColor(); renderDesign(); }));
   els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
-  els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; error('file'); await updatePreview(); }));
+  async function openEditorSide(sideKey) {
+    if (!SIDE_KEYS.includes(sideKey)) return;
+
+    state.activeSide = sideKey;
+    error('file');
+
+    // Step change and side change are handled in one place so the review screen
+    // can safely return to the exact editor view without touching product state.
+    if (state.step !== 2) showStep(2);
+
+    await updatePreview();
+  }
+
+  els.sideButtons.forEach(button => button.addEventListener('click', () => {
+    openEditorSide(button.dataset.side);
+  }));
+
+  $('[data-summary-side-card]').forEach(card => {
+    const sideKey = card.dataset.summarySideCard;
+    if (!SIDE_KEYS.includes(sideKey)) return;
+
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `Rediģēt: ${SIDE_LABELS[sideKey]}`);
+
+    const open = () => openEditorSide(sideKey);
+
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      open();
+    });
+  });
   if (els.designInput) els.designInput.addEventListener('change', () => { const file = els.designInput.files?.[0]; loadFile(file); els.designInput.value = ''; });
   if (els.replace) els.replace.addEventListener('click', () => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); els.designInput?.click(); });
   if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
