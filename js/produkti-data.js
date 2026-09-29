@@ -54,6 +54,33 @@
     ])
   );
 
+
+  // Printify reference sizes supplied for the crewneck sweatshirt.
+  // Front and back: 4500 × 5100 px @ 300 DPI.
+  // Sleeves: 1181 × 4134 px @ 300 DPI.
+  const sweatshirtPrintAreaPx = {
+    prieksa: { w: 4500, h: 5100 },
+    aizmugure: { w: 4500, h: 5100 },
+    sleeveLeft: { w: 1181, h: 4134 },
+    sleeveRight: { w: 1181, h: 4134 }
+  };
+
+  const sweatshirtPrintAreaMm = {
+    prieksa: { w: 381.0, h: 431.8 },
+    aizmugure: { w: 381.0, h: 431.8 },
+    sleeveLeft: { w: 100.0, h: 350.0 },
+    sleeveRight: { w: 100.0, h: 350.0 }
+  };
+
+  const sweatshirtPrintAreaBySize = Object.fromEntries(
+    Object.entries(sweatshirtPrintAreaMm).map(([side, area]) => [
+      side,
+      Object.fromEntries(
+        ['S', 'M', 'L', 'XL', '2XL', '3XL'].map(size => [size, { ...area }])
+      )
+    ])
+  );
+
   const commonSides = {
     prieksa: 'Priekšpuse',
     aizmugure: 'Aizmugure',
@@ -168,9 +195,38 @@
       gramaza: '280 g/m²',
       kopšana: 'Mazgāt līdz 40 °C',
       avots: 'https://shop.malfini.com/cz/en/product/crew-426?color=21',
-      krasas: [],
+      svg: 'assets/dzemperis-prieksa.svg',
+      viewSvgs: {
+        front: 'assets/dzemperis-prieksa.svg',
+        back: 'assets/dzemperis-aizmugure.svg',
+        sleeveLeft: 'assets/dzemperis-piedurkne.svg',
+        sleeveRight: 'assets/dzemperis-piedurkne.svg'
+      },
+      sleeveSvgs: {
+        sleeveLeft: 'assets/dzemperis-piedurkne.svg',
+        sleeveRight: 'assets/dzemperis-piedurkne.svg'
+      },
+      krasas: [
+        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
+        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A' },
+        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
+      ],
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
-      status: 'Sagatavots pieslēgšanai konfiguratoram'
+      puses: commonSides,
+      drukasZona: {
+        prieksa: { x: 0.340, y: 0.315, w: 0.320, h: 0.380 },
+        aizmugure: { x: 0.340, y: 0.300, w: 0.320, h: 0.390 },
+        sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 },
+        sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 }
+      },
+      drukasLaukumsPx: sweatshirtPrintAreaPx,
+      drukasLaukumsMm: sweatshirtPrintAreaBySize,
+      maxDrukaMm: {
+        prieksa: sweatshirtPrintAreaMm.prieksa,
+        aizmugure: sweatshirtPrintAreaMm.aizmugure,
+        sleeveLeft: sweatshirtPrintAreaMm.sleeveLeft,
+        sleeveRight: sweatshirtPrintAreaMm.sleeveRight
+      }
     }
   };
 })();
