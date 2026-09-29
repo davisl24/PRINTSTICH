@@ -337,6 +337,7 @@
   .customizer-steps li { min-width: 0; min-height: 46px; padding-right: .35rem; font-size: .74rem; }
   .customizer-layout { display: flex; flex-direction: column; gap: var(--space-md); }
   .customizer-preview-column, .customizer-controls { width: 100%; }
+  .customizer-controls { margin-bottom: 32px; }
   .customizer-preview-card { position: static; }
   .customizer-side-switch { width: 100%; margin-bottom: .65rem; }
   .customizer-side-switch button { min-height: 44px; padding-inline: .65rem; }
