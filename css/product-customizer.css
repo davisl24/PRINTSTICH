@@ -88,7 +88,6 @@
 .customizer-side-switch button.is-active small { color: rgba(255,255,255,.78); }
 .customizer-side-switch button.is-active small::before { background: rgba(255,255,255,.62); }
 .customizer-side-switch button small[hidden] { display: none; }
-.customizer-side-switch[hidden] { display: none !important; }
 
 .customizer-preview {
   position: relative;
@@ -297,9 +296,6 @@
 .customizer-summary h3 { margin-bottom: var(--space-md); font-size: 1rem; }
 .customizer-summary-mockups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
 .customizer-summary-mockups figure { margin: 0; padding: .65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: #fff; }
-.customizer-summary-mockups [data-summary-side-card] { cursor: pointer; transition: border-color var(--transition), box-shadow var(--transition); }
-.customizer-summary-mockups [data-summary-side-card]:hover { border-color: var(--color-accent); box-shadow: 0 0 0 2px rgba(18, 63, 55, .08); }
-.customizer-summary-mockups [data-summary-side-card]:focus-visible { outline: 3px solid rgba(18, 63, 55, .2); outline-offset: 3px; }
 .customizer-summary-mockups figcaption { margin-top: .45rem; color: var(--color-text-strong); font-size: .78rem; font-weight: 750; text-align: center; }
 .customizer-final-preview { display: block; width: 100%; height: auto; margin: 0; aspect-ratio: 6 / 7; object-fit: contain; border-radius: 12px; background: #f4f4f1; }
 .customizer-summary dl { display: grid; gap: .55rem; margin: var(--space-md) 0 0; }
