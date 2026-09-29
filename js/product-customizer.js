@@ -235,6 +235,15 @@
       node.setAttribute('fill', palette.stroke);
     });
 
+    // Hoodie traced details are contours only, never a second colour layer.
+    root.querySelectorAll('.shirt-outline').forEach(node => {
+      node.setAttribute('fill', 'none');
+      node.setAttribute('stroke', palette.stroke);
+      node.setAttribute('stroke-width', '6');
+      node.setAttribute('stroke-linejoin', 'round');
+      node.setAttribute('stroke-linecap', 'round');
+    });
+
     // T-shirt and any future SVGs that use strokes for seams/contours.
     root.querySelectorAll('[stroke]').forEach(node => {
       const stroke = (node.getAttribute('stroke') || '').trim().toLowerCase();
