@@ -111,10 +111,13 @@
       piezimeParIzmeriem: '4XL un 5XL pieejamība ir atkarīga no izvēlētās krāsas.',
       puses: commonSides,
       drukasZona: {
-        prieksa: { x: 0.350, y: 0.330, w: 0.300, h: 0.250 },
-        aizmugure: { x: 0.345, y: 0.335, w: 0.310, h: 0.270 },
-        sleeveLeft: commonZones.sleeveLeft,
-        sleeveRight: commonZones.sleeveRight
+        // Hoodie-specific placement matched to the approved references:
+        // front = wider chest area, back = taller center area,
+        // sleeves = narrow vertical print area.
+        prieksa: { x: 0.350, y: 0.340, w: 0.300, h: 0.210 },
+        aizmugure: { x: 0.350, y: 0.315, w: 0.300, h: 0.340 },
+        sleeveLeft: { x: 0.430, y: 0.285, w: 0.140, h: 0.430 },
+        sleeveRight: { x: 0.430, y: 0.285, w: 0.140, h: 0.430 }
       },
       drukasLaukumsMm: commonPrintAreas,
       maxDrukaMm: { w: 297, h: 420 }
