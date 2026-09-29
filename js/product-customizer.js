@@ -93,7 +93,7 @@
     if (els.productMaterial) els.productMaterial.textContent = product.materials || '—';
     if (els.productWeight) els.productWeight.textContent = product.gramaza || '—';
     if (els.productCare) els.productCare.textContent = product.kopsana || product.kopšana || '—';
-    if (els.productSizes) els.productSizes.textContent = (product.izmeri || []).join(', ');
+    if (els.productSizes) els.productSizes.textContent = product.izmeruKopsavilkums || (product.izmeri || []).join(', ');
   }
 
   async function selectProduct(productId, button) {
