@@ -27,7 +27,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -85,6 +85,17 @@
     return Boolean(candidate?.svg && candidate?.drukasZona && candidate?.drukasLaukumsMm && candidate?.maxDrukaMm);
   }
 
+  function renderProductInfo() {
+    if (!els.productInfo) return;
+    if (els.productModel) els.productModel.textContent = product.modelis || product.nosaukums || '';
+    if (els.productAudience) els.productAudience.textContent = product.auditorija || '';
+    if (els.productDescription) els.productDescription.textContent = product.apraksts || '';
+    if (els.productMaterial) els.productMaterial.textContent = product.materials || '—';
+    if (els.productWeight) els.productWeight.textContent = product.gramaza || '—';
+    if (els.productCare) els.productCare.textContent = product.kopsana || product.kopšana || '—';
+    if (els.productSizes) els.productSizes.textContent = (product.izmeri || []).join(', ');
+  }
+
   async function selectProduct(productId, button) {
     const candidate = products[productId];
     if (!candidate) return;
@@ -107,6 +118,7 @@
     setPressed(els.productButtons, button);
     renderSizeButtons();
     ensureColorButtons();
+    renderProductInfo();
     updateSideUi();
     if (productReadyForCustomizer(candidate)) {
       error('size');
