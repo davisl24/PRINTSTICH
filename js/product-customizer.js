@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -57,6 +57,20 @@
     return state.library.filter(item => usedIds.has(item.id));
   };
   const usedOriginalsTotalSize = () => usedOriginalItems().reduce((sum, item) => sum + item.file.size, 0);
+  const isLocalDevelopment = () => ['127.0.0.1', 'localhost'].includes(window.location.hostname);
+  const localSuccessMessage = () => {
+    let node = $('[data-local-submit-status]');
+    if (!node && els.form) {
+      node = document.createElement('p');
+      node.dataset.localSubmitStatus = '';
+      node.setAttribute('role', 'status');
+      node.style.margin = '.75rem 0 0';
+      node.style.color = 'var(--color-accent)';
+      node.style.fontWeight = '700';
+      els.form.querySelector('[data-error="form"]')?.insertAdjacentElement('afterend', node);
+    }
+    return node;
+  };
   const error = (name, message = '') => { const node = $(`[data-error="${name}"]`); if (node) node.textContent = message; };
   const createLibraryId = () => globalThis.crypto?.randomUUID?.() || `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
@@ -505,7 +519,63 @@
   async function prepareEmailAttachments() { if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.'); if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.'); const originalsTotal = usedOriginalsTotalSize(); if (originalsTotal >= ORIGINALS_TOTAL_LIMIT) throw new Error('Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); const worksheetBudget = FORM_LIMIT - originalsTotal; if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Izmantoto oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.'); const blob = await createWorksheetBlob(worksheetBudget); const date = new Date().toISOString().slice(0, 10); const file = new File([blob], `printstich-pasutijums-${date}.png`, { type: 'image/png' }); const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files; if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.'); if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.'); return file; }
   const debugEnabled = new URLSearchParams(location.search).has('debug');
   if (els.debugMockup) { els.debugMockup.hidden = !debugEnabled; if (debugEnabled) els.debugMockup.addEventListener('click', async () => { error('form'); try { const blob = await createWorksheetBlob(FORM_LIMIT); const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); } catch (cause) { console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause); error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); } }); }
-  if (els.form) els.form.addEventListener('submit', async event => { if (state.submitting) return; event.preventDefault(); error('form'); const name = $('[data-customer-name]')?.value.trim() || ''; const contact = $('[data-customer-contact]')?.value.trim() || ''; if (!state.size) return error('form', 'Izvēlies krekla izmēru.'); if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); if (usedOriginalItems().some(item => item.file.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no izmantotajiem failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.'); if (usedOriginalsTotalSize() >= ORIGINALS_TOTAL_LIMIT) return error('form', 'Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); if (!name) return error('form', 'Ievadi savu vārdu.'); if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.'); syncFormData(); const submitButton = $('.customizer-submit', els.form); if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Sagatavo nosūtīšanai...'; } try { await prepareEmailAttachments(); state.submitting = true; els.form.submit(); } catch (cause) { console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause); error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Nosūtīt savu dizainu'; } } });
+  if (els.form) els.form.addEventListener('submit', async event => {
+    if (state.submitting) return;
+    event.preventDefault();
+    error('form');
+
+    const localStatus = localSuccessMessage();
+    if (localStatus) localStatus.textContent = '';
+
+    const name = $('[data-customer-name]')?.value.trim() || '';
+    const contact = $('[data-customer-contact]')?.value.trim() || '';
+
+    if (!state.size) return error('form', 'Izvēlies krekla izmēru.');
+    if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.');
+    if (usedOriginalItems().some(item => item.file.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no izmantotajiem failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.');
+    if (usedOriginalsTotalSize() >= ORIGINALS_TOTAL_LIMIT) return error('form', 'Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.');
+    if (!name) return error('form', 'Ievadi savu vārdu.');
+    if (!contact) return error('form', 'Ievadi telefonu vai e-pastu.');
+
+    syncFormData();
+
+    const submitButton = $('.customizer-submit', els.form);
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sagatavo nosūtīšanai...';
+    }
+
+    try {
+      const worksheetFile = await prepareEmailAttachments();
+
+      if (isLocalDevelopment()) {
+        if (localStatus) {
+          const usedCount = usedOriginalItems().length;
+          const worksheetKb = Math.max(1, Math.round(worksheetFile.size / 1024));
+          localStatus.textContent = `Lokālais tests veiksmīgs — pasūtījums sagatavots (${usedCount} dizaina fails/i + ${worksheetKb} KB darba lapa). Īsta e-pasta nosūtīšana lokāli netiek veikta.`;
+        }
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Nosūtīt savu dizainu';
+        }
+        return;
+      }
+
+      if (els.formNext) {
+        els.formNext.value = new URL('paldies.html', window.location.href).href;
+      }
+
+      state.submitting = true;
+      els.form.submit();
+    } catch (cause) {
+      console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause);
+      error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Nosūtīt savu dizainu';
+      }
+    }
+  });
   function updateMobileLayout() { const mobile = window.matchMedia('(max-width: 767px)').matches; let hint = $('[data-mobile-drag-hint]'); if (!hint && els.previewCard) { hint = document.createElement('p'); hint.className = 'customizer-preview-hint customizer-mobile-drag-hint'; hint.dataset.mobileDragHint = ''; hint.textContent = 'Velc dizainu ar pirkstu, lai to pārvietotu'; els.previewCard.appendChild(hint); } if (hint) hint.hidden = !(mobile && state.step === 2); if (mobile && state.step !== 3) { els.preview.style.height = '45vh'; els.preview.style.maxHeight = '45vh'; } else { els.preview.style.height = ''; els.preview.style.maxHeight = ''; } requestAnimationFrame(renderDesign); }
   if ('ResizeObserver' in window) {
     const previewResizeObserver = new ResizeObserver(() => {
