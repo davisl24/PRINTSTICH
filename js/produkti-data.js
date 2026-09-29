@@ -117,7 +117,7 @@
       avots: 'https://shop.malfini.com/cz/en/product/heavy-new-137?color=51',
       svg: 'assets/krekls.svg',
       sleeveSvgs: {
-        sleeveLeft: 'assets/piedurkne-kreisa.svg',
+        sleeveLeft: 'assets/piedurkne-laba.svg',
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
       krasas: [
