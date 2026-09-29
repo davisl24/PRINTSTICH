@@ -111,7 +111,7 @@
       auditorija: 'Unisex',
       razotajs: 'MALFINI',
       apraksts: 'Unisex T-krekls no Single Jersey auduma ar cauruļveida piegriezumu, šauru 1:1 rievotu kakla apdari ar elastānu, plecu lenti un silikona apdari.',
-      materials: '100% kokvilna. Dažām krāsām sastāvs atšķiras (03, 12 un 90).',
+      materials: '100% kokvilna',
       gramaza: '200 g/m²',
       kopsana: 'Mazgāt līdz 40 °C',
       avots: 'https://shop.malfini.com/cz/en/product/heavy-new-137?color=51',
@@ -126,7 +126,6 @@
         { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A', malfini: '02' }
       ],
       izmeri: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
-      piezimeParIzmeriem: 'Konkrētu izmēru pieejamība ir atkarīga no izvēlētās krāsas.',
       puses: commonSides,
       drukasZona: commonZones,
       drukasLaukumsMm: commonPrintAreas,
@@ -162,7 +161,6 @@
         { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
       ],
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
-      piezimeParIzmeriem: '4XL un 5XL pieejamība ir atkarīga no izvēlētās krāsas.',
       puses: commonSides,
       drukasZona: {
         // Hoodie-specific placement matched to the approved references:
@@ -191,7 +189,7 @@
       auditorija: 'Unisex',
       razotajs: 'MALFINI',
       apraksts: 'Unisex džemperis bez kapuces ar taisnu piegriezumu un sānu šuvēm, pazeminātu plecu līniju un mīksti uzkārstu iekšpusi. Bez zīmola etiķetes, ar neitrālu izmēra marķējumu kakla daļā.',
-      materials: '60% kokvilna, 40% poliesters. Krāsai 12: 75% kokvilna, 25% poliesters.',
+      materials: '60% kokvilna, 40% poliesters',
       gramaza: '280 g/m²',
       kopsana: 'Mazgāt līdz 40 °C',
       avots: 'https://shop.malfini.com/cz/en/product/crew-426?color=21',
