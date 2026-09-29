@@ -128,11 +128,42 @@
 .customizer-product-info-head strong { color: var(--color-text-strong); font-size: .95rem; }
 .customizer-product-info-head span { color: var(--color-text-muted); font-size: .76rem; font-weight: 700; }
 .customizer-product-info > p { margin: .55rem 0 0; color: var(--color-text-muted); font-size: .82rem; line-height: 1.55; }
-.customizer-product-info dl { display: grid; gap: .4rem; margin: .85rem 0 0; }
-.customizer-product-info dl > div { display: flex; justify-content: space-between; gap: 1rem; padding-top: .4rem; border-top: 1px solid var(--color-border); }
-.customizer-product-info dt, .customizer-product-info dd { margin: 0; font-size: .78rem; }
-.customizer-product-info dt { color: var(--color-text-muted); }
-.customizer-product-info dd { color: var(--color-text-strong); font-weight: 700; text-align: right; }
+.customizer-product-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .55rem;
+  margin: .9rem 0 0;
+}
+.customizer-product-stats .product-stat {
+  min-width: 0;
+  padding: .75rem .8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #fff;
+}
+.customizer-product-stats dt,
+.customizer-product-stats dd {
+  margin: 0;
+}
+.customizer-product-stats dt {
+  margin-bottom: .28rem;
+  color: var(--color-text-muted);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.customizer-product-stats dd {
+  color: var(--color-text-strong);
+  font-size: .82rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: left;
+}
+.customizer-product-stats .product-stat:nth-child(2) dd,
+.customizer-product-stats .product-stat:nth-child(3) dd {
+  font-size: .95rem;
+}
 .swatch-group, .size-options, .customizer-tool-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
 .color-swatch, .size-options button {
   min-height: 46px;
@@ -315,6 +346,8 @@
   .customizer-step-panel h2 { font-size: clamp(1.55rem, 7vw, 2rem); }
   .customizer-fieldset { padding-top: var(--space-md); }
   .customizer-fieldset + .customizer-fieldset { margin-top: var(--space-sm); }
+  .customizer-product-stats { gap: .45rem; }
+  .customizer-product-stats .product-stat { padding: .65rem .7rem; }
   .swatch-group, .size-options { gap: .5rem; }
   .color-swatch, .size-options button { min-height: 44px; }
   .size-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
