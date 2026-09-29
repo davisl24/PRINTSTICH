@@ -27,6 +27,33 @@
     '5XL': { w: 100, h: 100 }
   };
 
+
+  // Printify reference sizes supplied by the client for the hoodie.
+  // Pixel templates are 300 DPI, so the mm values below are derived directly
+  // from those exact template dimensions.
+  const hoodiePrintAreaPx = {
+    prieksa: { w: 4016, h: 3307 },
+    aizmugure: { w: 4500, h: 5100 },
+    sleeveLeft: { w: 1181, h: 4134 },
+    sleeveRight: { w: 1181, h: 4134 }
+  };
+
+  const hoodiePrintAreaMm = {
+    prieksa: { w: 340.0, h: 280.0 },
+    aizmugure: { w: 381.0, h: 431.8 },
+    sleeveLeft: { w: 100.0, h: 350.0 },
+    sleeveRight: { w: 100.0, h: 350.0 }
+  };
+
+  const hoodiePrintAreaBySize = Object.fromEntries(
+    Object.entries(hoodiePrintAreaMm).map(([side, area]) => [
+      side,
+      Object.fromEntries(
+        ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'].map(size => [size, { ...area }])
+      )
+    ])
+  );
+
   const commonSides = {
     prieksa: 'Priekšpuse',
     aizmugure: 'Aizmugure',
@@ -119,8 +146,14 @@
         sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 },
         sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 }
       },
-      drukasLaukumsMm: commonPrintAreas,
-      maxDrukaMm: { w: 297, h: 420 }
+      drukasLaukumsPx: hoodiePrintAreaPx,
+      drukasLaukumsMm: hoodiePrintAreaBySize,
+      maxDrukaMm: {
+        prieksa: hoodiePrintAreaMm.prieksa,
+        aizmugure: hoodiePrintAreaMm.aizmugure,
+        sleeveLeft: hoodiePrintAreaMm.sleeveLeft,
+        sleeveRight: hoodiePrintAreaMm.sleeveRight
+      }
     },
 
     sweatshirt: {
