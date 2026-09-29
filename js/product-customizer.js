@@ -307,7 +307,7 @@
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
   function stepComplete(step) { if (step === 1) return Boolean(state.size) && productReadyForCustomizer(product); if (step === 2) return anySideHasDesign(); return true; }
   function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
-  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
+  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
   function findLibraryDuplicate(file) { return state.library.find(item => item.name === file.name && item.file.size === file.size) || null; }
   function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); } updateNavigation(); }
@@ -447,7 +447,38 @@
   function getOrderSummary() { const color = colorById(state.color); const summary = { product: `${product.nosaukums} — ${product.modelis || ''}`.trim(), color: color.nosaukums, size: state.size || '—', sides: Object.fromEntries(SIDE_KEYS.map(sideKey => { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const metrics = printMetrics(sideKey); return [sideKey, { hasDesign: Boolean(asset), fileName: asset?.name || 'Nav pievienots', positionLabel: asset ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—', printSizeMm: !asset ? '—' : asset.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms' }]; })) }; Object.defineProperty(summary, 'meta', { enumerable: false, value: { date: new Date().toISOString().slice(0, 10), customerName: $('[data-customer-name]')?.value.trim() || '—', customerContact: $('[data-customer-contact]')?.value.trim() || '—', comment: $('[data-customer-comment]')?.value.trim() || '' } }); return summary; }
   function syncFormData() { const summary = getOrderSummary(); const productInput = $('[data-form-product]'); const colorInput = $('[data-form-color]'); const sizeInput = $('[data-form-size]'); if (productInput) productInput.value = summary.product; if (colorInput) colorInput.value = summary.color; if (sizeInput) sizeInput.value = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileInput = $(`[data-form-original-filename="${sideKey}"]`); const positionInput = $(`[data-form-position="${sideKey}"]`); const printInput = $(`[data-form-print-mm="${sideKey}"]`); if (fileInput) fileInput.value = item.fileName; if (positionInput) positionInput.value = item.positionLabel; if (printInput) printInput.value = item.printSizeMm; }); }
   async function drawSummaryMockup(sideKey) { const canvas = $(`[data-final-preview="${sideKey}"]`); if (!canvas) return; try { const svgData = await svgToImage(sideKey); canvas.width = 420; canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); } catch (cause) { console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās.`, cause); } }
-  async function updateSummary() { const summary = getOrderSummary(); const colorNode = $('[data-summary-color]'); const sizeNode = $('[data-summary-size]'); if (colorNode) colorNode.textContent = summary.color; if (sizeNode) sizeNode.textContent = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileNode = $(`[data-summary-file="${sideKey}"]`); const positionNode = $(`[data-summary-position="${sideKey}"]`); const printNode = $(`[data-summary-print-mm="${sideKey}"]`); if (fileNode) fileNode.textContent = item.fileName; if (positionNode) positionNode.textContent = item.positionLabel; if (printNode) printNode.textContent = item.printSizeMm; }); syncFormData(); updateWhatsApp(summary); await Promise.all(SIDE_KEYS.map(drawSummaryMockup)); }
+  async function updateSummary() {
+    const summary = getOrderSummary();
+    const productNode = $('[data-summary-product]');
+    const colorNode = $('[data-summary-color]');
+    const sizeNode = $('[data-summary-size]');
+
+    if (productNode) productNode.textContent = summary.product;
+    if (colorNode) colorNode.textContent = summary.color;
+    if (sizeNode) sizeNode.textContent = summary.size;
+
+    SIDE_KEYS.forEach(sideKey => {
+      const item = summary.sides[sideKey];
+      const fileNode = `[data-summary-file="${sideKey}"]`;
+      const positionNode = `[data-summary-position="${sideKey}"]`;
+      const printNode = `[data-summary-print-mm="${sideKey}"]`;
+      const detailsSection = `[data-summary-parameters="${sideKey}"]`;
+
+      const fileEl = $(fileNode);
+      const positionEl = $(positionNode);
+      const printEl = $(printNode);
+      const sectionEl = $(detailsSection);
+
+      if (fileEl) fileEl.textContent = item.fileName;
+      if (positionEl) positionEl.textContent = item.positionLabel;
+      if (printEl) printEl.textContent = item.printSizeMm;
+      if (sectionEl) sectionEl.hidden = !item.hasDesign;
+    });
+
+    syncFormData();
+    updateWhatsApp(summary);
+    await Promise.all(SIDE_KEYS.map(drawSummaryMockup));
+  }
   function updateWhatsApp(summary = getOrderSummary()) { if (!els.whatsapp) return; const lines = ['Sveiki! Vēlos PrintStich piedāvājumu savam dizainam.', `Produkts: ${summary.product}`, `Krāsa: ${summary.color}`, `Izmērs: ${summary.size}`]; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; if (!item.hasDesign) return; lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`); lines.push(`Novietojums: ${item.positionLabel}`); lines.push(`Drukas izmērs: ${item.printSizeMm}`); }); els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`; }
   function canvasToBlob(canvas) { return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG neizdevās izveidot.')), 'image/png')); }
   async function createSideMockupCanvas(sideKey, width) { const svgData = await svgToImage(sideKey); const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); return canvas; }
