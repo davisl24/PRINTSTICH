@@ -344,7 +344,24 @@
   if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
   if (els.uploadZone) { ['dragenter', 'dragover'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); if (state.library.length < LIBRARY_MAX_FILES) els.uploadZone.classList.add('is-dragging'); })); ['dragleave', 'drop'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.remove('is-dragging'); })); els.uploadZone.addEventListener('drop', event => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); loadFile(event.dataTransfer?.files?.[0]); }); }
   if (els.libraryList) els.libraryList.addEventListener('click', event => { const deleteButton = event.target.closest('[data-library-delete]'); if (deleteButton) { event.preventDefault(); event.stopPropagation(); removeLibraryItem(deleteButton.dataset.libraryDelete); return; } const selectButton = event.target.closest('[data-library-id]'); if (selectButton) { error('file'); attachLibraryItem(state.activeSide, selectButton.dataset.libraryId); renderLibrary(); } });
-  function applyPreset(preset) { const side = currentSide(); if (!side.libraryId) return; side.preset = preset; if (preset === 'center') { side.x = 0.5; side.y = 0.5; } if (preset === 'top') { side.x = 0.5; side.y = 0.27; } if (preset === 'lower') { side.x = 0.5; side.y = 0.73; } if (preset === 'left-chest') { side.scale = 0.32; side.x = 0.28; side.y = 0.28; } if (preset === 'sleeve-top') { side.x = 0.5; side.y = 0.32; } if (preset === 'sleeve-lower') { side.x = 0.5; side.y = 0.68; } enforcePrintLimit(); constrainPosition(); renderDesign(); }
+  function applyPreset(preset) {
+    const side = currentSide();
+    if (!side.libraryId) return;
+
+    side.preset = preset;
+
+    // Position presets must only change position, never design size.
+    if (preset === 'center') { side.x = 0.5; side.y = 0.5; }
+    if (preset === 'top') { side.x = 0.5; side.y = 0.27; }
+    if (preset === 'lower') { side.x = 0.5; side.y = 0.73; }
+    if (preset === 'left-chest') { side.x = 0.28; side.y = 0.28; }
+    if (preset === 'sleeve-top') { side.x = 0.5; side.y = 0.32; }
+    if (preset === 'sleeve-lower') { side.x = 0.5; side.y = 0.68; }
+
+    enforcePrintLimit();
+    constrainPosition();
+    renderDesign();
+  }
   if (els.presetContainer) els.presetContainer.addEventListener('click', event => { const button = event.target.closest('[data-position-preset]'); if (button) applyPreset(button.dataset.positionPreset); });
   els.productButtons.forEach(button => button.addEventListener('click', () => selectProduct(button.dataset.product, button)));
   els.scale.addEventListener('input', () => { const side = currentSide(); side.scale = Number(els.scale.value) / 100; side.preset = ''; enforcePrintLimit(); constrainPosition(); renderDesign(); });
