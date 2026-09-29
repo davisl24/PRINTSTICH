@@ -137,6 +137,7 @@
       : items;
 
     portfolioGrid.innerHTML = '';
+    portfolioGrid.dataset.visibleCount = String(visibleItems.length);
 
     const fragment = document.createDocumentFragment();
 
