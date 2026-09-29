@@ -169,7 +169,7 @@
         // front = wider chest area, back = taller center area,
         // sleeves = narrow vertical print area.
         prieksa: { x: 0.350, y: 0.355, w: 0.300, h: 0.200 },
-        aizmugure: { x: 0.357, y: 0.300, w: 0.286, h: 0.324 },
+        aizmugure: { x: 0.330, y: 0.325, w: 0.340, h: 0.386 },
         sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 },
         sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 }
       },
