@@ -88,7 +88,6 @@
 .customizer-side-switch button.is-active small { color: rgba(255,255,255,.78); }
 .customizer-side-switch button.is-active small::before { background: rgba(255,255,255,.62); }
 .customizer-side-switch button small[hidden] { display: none; }
-.customizer-side-switch[hidden] { display: none !important; }
 
 .customizer-preview {
   position: relative;
@@ -345,8 +344,10 @@
     padding: .85rem;
   }
   [data-step-panel="3"] .customizer-summary-heading {
-    display: grid;
-    gap: .35rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     margin-bottom: .7rem;
   }
   [data-step-panel="3"] .customizer-summary-heading h3 {
@@ -355,8 +356,7 @@
   [data-step-panel="3"] .customizer-summary-product-line {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: .35rem .55rem;
+    gap: .55rem;
     min-width: 0;
     color: var(--color-text-muted);
     font-size: .8rem;
@@ -376,19 +376,6 @@
   }
   [data-step-panel="3"] .customizer-summary-mockups figure {
     padding: .45rem;
-  }
-  [data-step-panel="3"] .customizer-summary-side-card {
-    cursor: pointer;
-    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-  }
-  [data-step-panel="3"] .customizer-summary-side-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 2px rgba(18, 63, 55, .08);
-    transform: translateY(-1px);
-  }
-  [data-step-panel="3"] .customizer-summary-side-card:focus-visible {
-    outline: 3px solid rgba(18, 63, 55, .2);
-    outline-offset: 3px;
   }
   [data-step-panel="3"] .customizer-final-preview {
     aspect-ratio: 6 / 7;
@@ -625,7 +612,6 @@
   .customizer-summary-sides h4 { margin: 0 0 .25rem; font-size: .78rem; }
   .customizer-summary-sides p { margin: 0; color: var(--color-text-muted); font-size: .73rem; line-height: 1.45; }
   .customizer-summary-sides p span { display: block; }
-  .customizer-summary-side-card { cursor: pointer; }
   .customizer-summary-mockups { grid-template-columns: repeat(2, minmax(0,1fr)); gap: .55rem; }
   .customizer-summary-mockups figure { padding: .45rem; }
   .customizer-summary-mockups figcaption { font-size: .72rem; }
