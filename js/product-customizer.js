@@ -178,50 +178,83 @@
     };
   }
 
+  function getGarmentPalette(colorId) {
+    if (colorId === 'melns') {
+      return {
+        base: '#1A1A1A',
+        stroke: '#666666',
+        guide: 'rgba(255,255,255,.50)'
+      };
+    }
+
+    if (colorId === 'zils') {
+      return {
+        base: '#1B2A4A',
+        stroke: '#5A6F96',
+        guide: 'rgba(255,255,255,.50)'
+      };
+    }
+
+    return {
+      base: '#FFFFFF',
+      stroke: '#B8B2A9',
+      guide: '#8a8a85'
+    };
+  }
+
   function updatePrintArea() {
     const zone = getZone();
     const render = getSvgRenderBox();
     if (!zone || !render) return;
-    const dark = ['melns', 'zils'].includes(state.color);
-    const guideColor = dark ? 'rgba(255,255,255,.55)' : '#8a8a85';
+
+    const color = colorById(state.color);
+    const palette = getGarmentPalette(color.id);
+
     Object.assign(els.printArea.style, {
       left: `${render.left + zone.x * render.width}px`,
       top: `${render.top + zone.y * render.height}px`,
       width: `${zone.w * render.width}px`,
       height: `${zone.h * render.height}px`,
-      borderColor: guideColor
+      borderColor: palette.guide
     });
-    if (els.previewHint) els.previewHint.style.color = guideColor;
+
+    if (els.previewHint) els.previewHint.style.color = palette.guide;
   }
   function applySvgAppearance(root, sideKey) {
     if (!root) return;
+
     const color = colorById(state.color);
-    const dark = ['melns', 'zils'].includes(color.id);
-    const outlineColor = dark ? '#D9DEE8' : '#3A3B3A';
+    const palette = getGarmentPalette(color.id);
 
-    root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
+    root.querySelectorAll('.shirt-body').forEach(node => {
+      node.setAttribute('fill', palette.base);
+    });
 
-    // Hoodie/sweatshirt SVGs are traced artwork. Keep their shape/detail paths,
-    // but never mix neutral white/grey fills into a selected dark garment.
-    // Details stay in the same colour family as the selected garment.
+    // Some sweatshirt SVGs inherit their garment fill from a parent <g>.
+    root.querySelectorAll('g[fill]').forEach(node => {
+      const fill = (node.getAttribute('fill') || '').trim().toLowerCase();
+      if (!fill || fill === 'none' || fill === 'transparent') return;
+      node.setAttribute('fill', palette.base);
+    });
+
+    // Keep traced hoodie/sweatshirt artwork visually consistent:
+    // garment surfaces use the exact selected colour, details stay subtle.
     if (state.svgPath?.includes('hudijs-') || state.svgPath?.includes('dzemperis-')) {
-      const tracedPaths = [...root.querySelectorAll('path[fill]')];
-      const detailColor = color.id === 'balts'
-        ? '#C9C6BF'
-        : color.id === 'melns'
-          ? '#555555'
-          : color.id === 'zils'
-            ? '#314266'
-            : color.hex;
+      const fillNodes = [
+        ...root.querySelectorAll('path[fill], rect[fill], circle[fill], ellipse[fill], polygon[fill], polyline[fill]')
+      ];
 
-      tracedPaths.forEach((node, index) => {
-        if (!node.dataset.originalFill) node.dataset.originalFill = node.getAttribute('fill') || '';
-        const fill = node.dataset.originalFill;
-        const match = fill.match(/^#([0-9a-f]{6})$/i);
-        if (!match) return;
+      fillNodes.forEach(node => {
+        if (!node.dataset.originalFill) {
+          node.dataset.originalFill = node.getAttribute('fill') || '';
+        }
 
-        if (index === 0) {
-          node.setAttribute('fill', 'transparent');
+        const original = node.dataset.originalFill.trim();
+        if (!original || original === 'none' || original === 'transparent') return;
+
+        const match = original.match(/^#([0-9a-f]{6})$/i);
+        if (!match) {
+          node.setAttribute('fill', palette.base);
           return;
         }
 
@@ -231,16 +264,14 @@
         const b = parseInt(hex.slice(4, 6), 16);
         const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-        node.setAttribute('fill', luminance > 210 ? color.hex : detailColor);
+        node.setAttribute('fill', luminance > 160 ? palette.base : palette.stroke);
       });
     }
 
     root.querySelectorAll('[stroke]').forEach(node => {
-      if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || '';
-      if (color.id === 'melns') node.setAttribute('stroke', '#666666');
-      else if (color.id === 'zils') node.setAttribute('stroke', '#40527A');
-      else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf');
-      else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke);
+      const stroke = (node.getAttribute('stroke') || '').trim().toLowerCase();
+      if (!stroke || stroke === 'none' || stroke === 'transparent') return;
+      node.setAttribute('stroke', palette.stroke);
     });
 
     Object.entries(SHIRT_GROUPS).forEach(([key, selector]) => {
