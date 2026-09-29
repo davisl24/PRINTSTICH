@@ -339,6 +339,27 @@
   els.colorButtons.forEach(button => button.addEventListener('click', () => { state.color = normalizeColor(button.dataset.color); setPressed(els.colorButtons, button); updateSvgColor(); renderDesign(); }));
   els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
   els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; error('file'); await updatePreview(); }));
+  async function editSummarySide(sideKey) {
+    if (!SIDE_KEYS.includes(sideKey)) return;
+    state.activeSide = sideKey;
+    showStep(2);
+    await updatePreview();
+    const activeButton = els.sideButtons.find(button => button.dataset.side === sideKey);
+    if (activeButton) setPressed(els.sideButtons, activeButton);
+    requestAnimationFrame(() => els.previewCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
+
+  $('[data-summary-side-card]').forEach(card => {
+    const openEditor = () => editSummarySide(card.dataset.summarySideCard);
+    card.addEventListener('click', openEditor);
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openEditor();
+      }
+    });
+  });
+
   if (els.designInput) els.designInput.addEventListener('change', () => { const file = els.designInput.files?.[0]; loadFile(file); els.designInput.value = ''; });
   if (els.replace) els.replace.addEventListener('click', () => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); els.designInput?.click(); });
   if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
