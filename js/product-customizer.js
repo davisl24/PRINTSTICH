@@ -226,48 +226,16 @@
     const color = colorById(state.color);
     const palette = getGarmentPalette(color.id);
 
+    // One simple color system for every garment.
     root.querySelectorAll('.shirt-body').forEach(node => {
       node.setAttribute('fill', palette.base);
     });
 
-    // Some sweatshirt SVGs inherit their garment fill from a parent <g>.
-    root.querySelectorAll('g[fill]').forEach(node => {
-      const fill = (node.getAttribute('fill') || '').trim().toLowerCase();
-      if (!fill || fill === 'none' || fill === 'transparent') return;
-      node.setAttribute('fill', palette.base);
+    root.querySelectorAll('.shirt-detail').forEach(node => {
+      node.setAttribute('fill', palette.stroke);
     });
 
-    // Keep traced hoodie/sweatshirt artwork visually consistent:
-    // garment surfaces use the exact selected colour, details stay subtle.
-    if (state.svgPath?.includes('hudijs-') || state.svgPath?.includes('dzemperis-')) {
-      const fillNodes = [
-        ...root.querySelectorAll('path[fill], rect[fill], circle[fill], ellipse[fill], polygon[fill], polyline[fill]')
-      ];
-
-      fillNodes.forEach(node => {
-        if (!node.dataset.originalFill) {
-          node.dataset.originalFill = node.getAttribute('fill') || '';
-        }
-
-        const original = node.dataset.originalFill.trim();
-        if (!original || original === 'none' || original === 'transparent') return;
-
-        const match = original.match(/^#([0-9a-f]{6})$/i);
-        if (!match) {
-          node.setAttribute('fill', palette.base);
-          return;
-        }
-
-        const hex = match[1];
-        const r = parseInt(hex.slice(0, 2), 16);
-        const g = parseInt(hex.slice(2, 4), 16);
-        const b = parseInt(hex.slice(4, 6), 16);
-        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-        node.setAttribute('fill', luminance > 160 ? palette.base : palette.stroke);
-      });
-    }
-
+    // T-shirt and any future SVGs that use strokes for seams/contours.
     root.querySelectorAll('[stroke]').forEach(node => {
       const stroke = (node.getAttribute('stroke') || '').trim().toLowerCase();
       if (!stroke || stroke === 'none' || stroke === 'transparent') return;
