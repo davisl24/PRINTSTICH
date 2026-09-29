@@ -91,7 +91,10 @@
     product = candidate;
     state.productId = productId;
     state.size = '';
-    state.color = candidate.krasas?.[0]?.id || '';
+    const previousColor = state.color;
+    state.color = candidate.krasas?.some(color => color.id === previousColor)
+      ? previousColor
+      : (candidate.krasas?.[0]?.id || '');
 
     // Every product opens on its front view immediately.
     // This also forces a fresh SVG load when switching products,
@@ -182,7 +185,7 @@
     // Hoodie assets are exact VTracer traces from the approved references.
     // Keep every original contour/path, but render them in the same visual
     // language as the T-shirt: solid garment color + clean contrasting details.
-    if (state.svgPath?.includes('hudijs-')) {
+    if (state.svgPath?.includes('hudijs-') || state.svgPath?.includes('dzemperis-')) {
       const tracedPaths = [...root.querySelectorAll('path[fill]')];
       tracedPaths.forEach((node, index) => {
         if (!node.dataset.originalFill) node.dataset.originalFill = node.getAttribute('fill') || '';
