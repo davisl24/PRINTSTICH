@@ -322,6 +322,66 @@
 .customizer-success .button { margin-top: var(--space-md); }
 .visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
 
+
+@media (min-width: 769px) {
+  /* Step 2: compact editor layout so the full workflow fits in one desktop viewport. */
+  [data-step-panel="2"] h2 { margin-bottom: .45rem; }
+  [data-step-panel="2"] > p:not(.step-kicker):not(.customizer-error) {
+    margin: 0 0 .75rem;
+    font-size: .9rem;
+    line-height: 1.45;
+  }
+  [data-step-panel="2"] .customizer-side-file {
+    margin-top: .75rem;
+  }
+  [data-step-panel="2"] .customizer-side-file-label {
+    margin-bottom: .4rem;
+  }
+  [data-step-panel="2"] .customizer-library {
+    margin-top: .7rem;
+  }
+  [data-step-panel="2"] .customizer-library-list {
+    padding-bottom: .15rem;
+  }
+  [data-step-panel="2"] .customizer-file-actions {
+    margin-top: .45rem;
+    padding: .6rem .7rem;
+  }
+  [data-step-panel="2"] .customizer-file-actions .button,
+  [data-step-panel="2"] .customizer-file-actions .text-action {
+    min-height: 38px;
+  }
+  [data-step-panel="2"] .position-presets {
+    margin-top: .85rem;
+    padding-top: .75rem;
+  }
+  [data-step-panel="2"] .position-presets button {
+    min-height: 38px;
+    padding: .48rem .8rem;
+  }
+  [data-step-panel="2"] .scale-control {
+    margin-top: .85rem;
+  }
+  [data-step-panel="2"] .scale-control label {
+    margin-bottom: .4rem;
+  }
+  [data-step-panel="2"] .scale-control input[type="range"] {
+    min-height: 34px;
+  }
+  [data-step-panel="2"] .print-size-info {
+    margin-top: .35rem;
+  }
+  [data-step-panel="2"] .customizer-error {
+    min-height: .9em;
+    margin-top: .3rem;
+  }
+  [data-step-panel="2"] ~ .customizer-navigation,
+  .customizer-controls:has([data-step-panel="2"].is-active) .customizer-navigation {
+    margin-top: 1rem;
+    padding-top: .85rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .customizer-layout { grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: var(--space-xl); }
   .customizer-controls { padding: var(--space-lg); }
