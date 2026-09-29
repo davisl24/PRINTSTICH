@@ -148,7 +148,7 @@
     canvas = document.createElement('canvas'); canvas.className = 'customizer-design-canvas'; canvas.dataset.designCanvas = ''; canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums'); Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'grab' }); if (els.legacyDesign) els.legacyDesign.hidden = true; els.printArea.appendChild(canvas); return canvas;
   }
 
-  ensureColorButtons(); renderSizeButtons(); els.designCanvas = ensureDesignCanvas();
+  ensureColorButtons(); renderSizeButtons(); renderProductInfo(); els.designCanvas = ensureDesignCanvas();
   function setPressed(buttons, activeButton) { buttons.forEach(button => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); }); }
   function getZone(sideKey = state.activeSide) { return product.drukasZona[productSide(sideKey)]; }
   function getPhysicalArea(sideKey = state.activeSide) { if (!state.size) return null; return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null; }
@@ -307,7 +307,35 @@
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
   function stepComplete(step) { if (step === 1) return Boolean(state.size) && productReadyForCustomizer(product); if (step === 2) return anySideHasDesign(); return true; }
   function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
-  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
+  function showStep(step) {
+    state.step = clamp(step, 1, 3);
+
+    els.panels.forEach(panel => {
+      const active = Number(panel.dataset.stepPanel) === state.step;
+      panel.hidden = !active;
+      panel.classList.toggle('is-active', active);
+    });
+
+    els.indicators.forEach(indicator => {
+      const active = Number(indicator.dataset.stepIndicator) === state.step;
+      indicator.classList.toggle('is-active', active);
+      if (active) indicator.setAttribute('aria-current', 'step');
+      else indicator.removeAttribute('aria-current');
+    });
+
+    if (els.previewColumn) els.previewColumn.hidden = state.step === 3;
+    if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3;
+
+    // Re-render product copy whenever returning to step 1.
+    // This prevents the info card from appearing empty after navigating back
+    // from the review/editor steps.
+    if (state.step === 1) renderProductInfo();
+
+    updateNavigation();
+    updateSideUi();
+    if (state.step === 3) updateSummary();
+    updateMobileLayout();
+  }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
   function findLibraryDuplicate(file) { return state.library.find(item => item.name === file.name && item.file.size === file.size) || null; }
   function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); } updateNavigation(); }
