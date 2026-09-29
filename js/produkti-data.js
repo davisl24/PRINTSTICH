@@ -214,10 +214,13 @@
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
       puses: commonSides,
       drukasZona: {
-        prieksa: { x: 0.340, y: 0.315, w: 0.320, h: 0.380 },
-        aizmugure: { x: 0.340, y: 0.300, w: 0.320, h: 0.390 },
-        sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 },
-        sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 }
+        // Matched to the Printify Gildan 18000 references supplied by the client.
+        // Body print areas preserve the exact 4500:5100 template aspect ratio.
+        // Sleeve print areas preserve the exact 1181:4134 template aspect ratio.
+        prieksa: { x: 0.340, y: 0.315, w: 0.320, h: 0.3627 },
+        aizmugure: { x: 0.340, y: 0.300, w: 0.320, h: 0.3627 },
+        sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.5075 },
+        sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.5075 }
       },
       drukasLaukumsPx: sweatshirtPrintAreaPx,
       drukasLaukumsMm: sweatshirtPrintAreaBySize,
