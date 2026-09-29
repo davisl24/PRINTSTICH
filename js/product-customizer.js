@@ -99,10 +99,13 @@
   async function selectProduct(productId, button) {
     const candidate = products[productId];
     if (!candidate) return;
+    const previousSize = state.size;
+    const previousColor = state.color;
     product = candidate;
     state.productId = productId;
-    state.size = '';
-    const previousColor = state.color;
+    state.size = candidate.izmeri?.includes(previousSize)
+      ? previousSize
+      : (previousSize ? (candidate.izmeri?.[0] || '') : '');
     state.color = candidate.krasas?.some(color => color.id === previousColor)
       ? previousColor
       : (candidate.krasas?.[0]?.id || '');
@@ -119,6 +122,10 @@
     renderSizeButtons();
     ensureColorButtons();
     renderProductInfo();
+    const activeColorButton = els.colorButtons.find(item => normalizeColor(item.dataset.color) === state.color);
+    if (activeColorButton) setPressed(els.colorButtons, activeColorButton);
+    const activeSizeButton = els.sizeButtons.find(item => item.dataset.size === state.size);
+    if (activeSizeButton) setPressed(els.sizeButtons, activeSizeButton);
     updateSideUi();
     if (productReadyForCustomizer(candidate)) {
       error('size');
@@ -194,18 +201,25 @@
 
     root.querySelectorAll('.shirt-body').forEach(node => node.setAttribute('fill', color.hex));
 
-    // Hoodie assets are exact VTracer traces from the approved references.
-    // Keep every original contour/path, but render them in the same visual
-    // language as the T-shirt: solid garment color + clean contrasting details.
+    // Hoodie/sweatshirt SVGs are traced artwork. Keep their shape/detail paths,
+    // but never mix neutral white/grey fills into a selected dark garment.
+    // Details stay in the same colour family as the selected garment.
     if (state.svgPath?.includes('hudijs-') || state.svgPath?.includes('dzemperis-')) {
       const tracedPaths = [...root.querySelectorAll('path[fill]')];
+      const detailColor = color.id === 'balts'
+        ? '#C9C6BF'
+        : color.id === 'melns'
+          ? '#555555'
+          : color.id === 'zils'
+            ? '#314266'
+            : color.hex;
+
       tracedPaths.forEach((node, index) => {
         if (!node.dataset.originalFill) node.dataset.originalFill = node.getAttribute('fill') || '';
         const fill = node.dataset.originalFill;
         const match = fill.match(/^#([0-9a-f]{6})$/i);
         if (!match) return;
 
-        // VTracer's first path is the full image/background rectangle.
         if (index === 0) {
           node.setAttribute('fill', 'transparent');
           return;
@@ -217,19 +231,14 @@
         const b = parseInt(hex.slice(4, 6), 16);
         const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-        if (luminance > 220) {
-          node.setAttribute('fill', color.hex);
-        } else if (luminance > 155) {
-          node.setAttribute('fill', dark ? '#AEB8C8' : '#C9C6BF');
-        } else {
-          node.setAttribute('fill', outlineColor);
-        }
+        node.setAttribute('fill', luminance > 210 ? color.hex : detailColor);
       });
     }
 
     root.querySelectorAll('[stroke]').forEach(node => {
       if (!node.dataset.originalStroke) node.dataset.originalStroke = node.getAttribute('stroke') || '';
-      if (dark) node.setAttribute('stroke', '#D9DEE8');
+      if (color.id === 'melns') node.setAttribute('stroke', '#666666');
+      else if (color.id === 'zils') node.setAttribute('stroke', '#40527A');
       else if (color.id === 'balts') node.setAttribute('stroke', '#c9c6bf');
       else if (node.dataset.originalStroke) node.setAttribute('stroke', node.dataset.originalStroke);
     });
