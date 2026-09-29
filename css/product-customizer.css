@@ -316,6 +316,7 @@
 .customizer-submit { width: 100%; min-height: 52px; margin-top: var(--space-md); }
 .customizer-whatsapp { display: inline-flex; min-height: 44px; margin-top: var(--space-md); align-items: center; color: var(--color-accent); font-size: .9rem; font-weight: 750; }
 #debugMockup { margin-top: var(--space-md); }
+#debugMockup[hidden] { display: none !important; }
 .customizer-success { padding: var(--space-lg) 0; }
 .customizer-success h2 { max-width: 14ch; margin-bottom: var(--space-sm); }
 .customizer-success > p:not(.eyebrow) { color: var(--color-text-muted); }
