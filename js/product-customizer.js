@@ -7,8 +7,7 @@
 
   const SLEEVE_PRINT_MM = 76;
   const SLEEVE_MAX_MM = 100;
-  const SLEEVE_SAFE_MARGIN_MM = 15;
-
+ 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -155,7 +154,7 @@
   function getPhysicalArea(sideKey = state.activeSide) { if (!state.size) return null; return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null; }
   function getDesignRect(zoneWidth, zoneHeight, side = currentSide(), asset = currentAsset()) { if (!asset || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return null; const aspect = asset.image.naturalWidth / asset.image.naturalHeight; let width = zoneWidth * side.scale; let height = width / aspect; if (height > zoneHeight * side.scale) { height = zoneHeight * side.scale; width = height * aspect; } return { width, height, x: side.x * zoneWidth - width / 2, y: side.y * zoneHeight - height / 2 }; }
   function getVirtualZoneSize(sideKey) { const zone = getZone(sideKey); return { width: zone.w * 600, height: zone.h * 700 }; }
-  function constrainPosition(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); if (!asset || asset.vectorFallback) return; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side, asset); if (!rect) return; const halfX = rect.width / (2 * virtual.width); const halfY = rect.height / (2 * virtual.height); if (halfX >= 0.5) side.x = 0.5; else { let minX = halfX; let maxX = 1 - halfX; if (isSleeve(sideKey)) { const safe = SLEEVE_SAFE_MARGIN_MM / SLEEVE_MAX_MM; if (sideKey === 'sleeveLeft') maxX = Math.max(minX, 1 - safe - halfX); if (sideKey === 'sleeveRight') minX = Math.min(maxX, safe + halfX); } side.x = clamp(side.x, minX, maxX); } side.y = halfY >= 0.5 ? 0.5 : clamp(side.y, halfY, 1 - halfY); }
+  function constrainPosition(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); if (!asset || asset.vectorFallback) return; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side, asset); if (!rect) return; const halfX = rect.width / (2 * virtual.width); const halfY = rect.height / (2 * virtual.height); side.x = halfX >= 0.5 ? 0.5 : clamp(side.x, halfX, 1 - halfX); side.y = halfY >= 0.5 ? 0.5 : clamp(side.y, halfY, 1 - halfY); }
   function printMetrics(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const mmArea = getPhysicalArea(sideKey); if (!asset || !mmArea || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return null; const virtual = getVirtualZoneSize(sideKey); const rect = getDesignRect(virtual.width, virtual.height, side, asset); if (!rect) return null; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; const dpi = widthMm > 0 ? (asset.image.naturalWidth / widthMm) * 25.4 : 0; return { widthRounded: Math.round(widthMm), heightRounded: Math.round(heightMm), dpiRounded: Math.round(dpi) }; }
   function maxAllowedScale(sideKey = state.activeSide) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const mmArea = getPhysicalArea(sideKey); if (!asset || !mmArea || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return 1; const virtual = getVirtualZoneSize(sideKey); const max = getMaxPrintMm(sideKey); for (let candidate = 1; candidate >= 0.05; candidate -= 0.005) { const rect = getDesignRect(virtual.width, virtual.height, { ...side, scale: candidate }, asset); if (!rect) return 1; const widthMm = (rect.width / virtual.width) * mmArea.w; const heightMm = (rect.height / virtual.height) * mmArea.h; if (widthMm <= max.w && heightMm <= max.h) return candidate; } return 0.05; }
   function enforcePrintLimit() { return false; }
@@ -339,11 +338,77 @@
   if (els.presetContainer) els.presetContainer.addEventListener('click', event => { const button = event.target.closest('[data-position-preset]'); if (button) applyPreset(button.dataset.positionPreset); });
   els.productButtons.forEach(button => button.addEventListener('click', () => selectProduct(button.dataset.product, button)));
   els.scale.addEventListener('input', () => { const side = currentSide(); side.scale = Number(els.scale.value) / 100; side.preset = ''; enforcePrintLimit(); constrainPosition(); renderDesign(); });
-  let drag = null;
-  els.designCanvas.addEventListener('pointerdown', event => { const asset = currentAsset(); if (state.step !== 2 || !asset || asset.vectorFallback) return; event.preventDefault(); drag = { pointerId: event.pointerId }; els.designCanvas.setPointerCapture(event.pointerId); currentSide().preset = ''; });
-  els.designCanvas.addEventListener('pointermove', event => { if (!drag || drag.pointerId !== event.pointerId) return; const area = els.printArea.getBoundingClientRect(); const side = currentSide(); side.x = (event.clientX - area.left) / area.width; side.y = (event.clientY - area.top) / area.height; constrainPosition(); renderDesign(); });
-  const endDrag = event => { if (drag?.pointerId === event.pointerId) drag = null; };
-  els.designCanvas.addEventListener('pointerup', endDrag); els.designCanvas.addEventListener('pointercancel', endDrag);
+  const activePointers = new Map();
+  let dragPointerId = null;
+  let pinchStartDistance = 0;
+  let pinchStartScale = 0;
+
+  const pointerDistance = () => {
+    const points = [...activePointers.values()];
+    if (points.length < 2) return 0;
+    return Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y);
+  };
+
+  els.designCanvas.addEventListener('pointerdown', event => {
+    const asset = currentAsset();
+    if (state.step !== 2 || !asset || asset.vectorFallback) return;
+
+    event.preventDefault();
+    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    els.designCanvas.setPointerCapture(event.pointerId);
+    currentSide().preset = '';
+
+    if (activePointers.size === 1) {
+      dragPointerId = event.pointerId;
+    } else if (activePointers.size === 2) {
+      dragPointerId = null;
+      pinchStartDistance = pointerDistance();
+      pinchStartScale = currentSide().scale;
+    }
+  });
+
+  els.designCanvas.addEventListener('pointermove', event => {
+    if (!activePointers.has(event.pointerId)) return;
+    event.preventDefault();
+    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+    const side = currentSide();
+
+    if (activePointers.size >= 2) {
+      const distance = pointerDistance();
+      if (pinchStartDistance > 0) {
+        side.scale = clamp(pinchStartScale * (distance / pinchStartDistance), 0.05, 1.25);
+        els.scale.value = String(Math.round(side.scale * 100));
+        constrainPosition();
+        renderDesign();
+      }
+      return;
+    }
+
+    if (dragPointerId !== event.pointerId) return;
+    const area = els.printArea.getBoundingClientRect();
+    side.x = (event.clientX - area.left) / area.width;
+    side.y = (event.clientY - area.top) / area.height;
+    constrainPosition();
+    renderDesign();
+  });
+
+  const endPointer = event => {
+    activePointers.delete(event.pointerId);
+    try { els.designCanvas.releasePointerCapture(event.pointerId); } catch {}
+
+    if (activePointers.size === 1) {
+      dragPointerId = [...activePointers.keys()][0];
+      pinchStartDistance = 0;
+    } else if (activePointers.size === 0) {
+      dragPointerId = null;
+      pinchStartDistance = 0;
+      pinchStartScale = 0;
+    }
+  };
+
+  els.designCanvas.addEventListener('pointerup', endPointer);
+  els.designCanvas.addEventListener('pointercancel', endPointer);
   if (els.prev) els.prev.addEventListener('click', () => showStep(state.step - 1));
   if (els.next) els.next.addEventListener('click', () => { if (!stepComplete(state.step)) { if (state.step === 1) error('size', 'Izvēlies krekla izmēru.'); if (state.step === 2) error('file', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); return; } showStep(state.step + 1); });
 
