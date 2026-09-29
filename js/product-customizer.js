@@ -37,7 +37,13 @@
   const productSide = sideKey => SIDE_TO_PRODUCT[sideKey] || 'prieksa';
   const isSleeve = sideKey => sideKey === 'sleeveLeft' || sideKey === 'sleeveRight';
   const getSvgPath = sideKey => product.viewSvgs?.[sideKey] || (isSleeve(sideKey) ? product.sleeveSvgs?.[sideKey] : product.svg);
-  const getMaxPrintMm = sideKey => isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : product.maxDrukaMm;
+  const getMaxPrintMm = sideKey => {
+    const side = productSide(sideKey);
+    const max = product.maxDrukaMm;
+    if (max?.[side]?.w && max?.[side]?.h) return max[side];
+    if (max?.w && max?.h) return max;
+    return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
+  };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, preset: 'center' });
   const state = { step: 1, productId: 'tshirt', color: 'balts', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
