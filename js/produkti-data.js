@@ -114,10 +114,10 @@
         // Hoodie-specific placement matched to the approved references:
         // front = wider chest area, back = taller center area,
         // sleeves = narrow vertical print area.
-        prieksa: { x: 0.350, y: 0.340, w: 0.300, h: 0.210 },
+        prieksa: { x: 0.350, y: 0.325, w: 0.300, h: 0.247 },
         aizmugure: { x: 0.350, y: 0.315, w: 0.300, h: 0.340 },
-        sleeveLeft: { x: 0.430, y: 0.285, w: 0.140, h: 0.430 },
-        sleeveRight: { x: 0.430, y: 0.285, w: 0.140, h: 0.430 }
+        sleeveLeft: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 },
+        sleeveRight: { x: 0.4275, y: 0.245, w: 0.145, h: 0.508 }
       },
       drukasLaukumsMm: commonPrintAreas,
       maxDrukaMm: { w: 297, h: 420 }
