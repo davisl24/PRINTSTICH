@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://printstich.vercel.app/sitemap.xml
