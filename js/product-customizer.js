@@ -78,10 +78,15 @@
     const group = $('[data-color-options]');
     if (!group) return;
 
-    group.innerHTML = (product.krasas || []).map(color => `
-      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}">
-        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>${color.nosaukums}
-      </button>`).join('');
+    group.innerHTML = (product.krasas || []).map(color => {
+      const label = (color.nosaukums || '').replace(/\s*·\s*\d+\s*$/, '').trim();
+      return `
+      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
+        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>
+        <span class="color-swatch-label">${label}</span>
+        <span class="color-swatch-code">${color.malfini || color.id}</span>
+      </button>`;
+    }).join('');
 
     els.colorButtons = $$('[data-color]', group);
     els.colorButtons.forEach(button => button.addEventListener('click', () => {
