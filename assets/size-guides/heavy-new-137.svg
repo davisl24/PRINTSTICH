@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 918 715"><image href="data:image/webp;base64,UklGRooKAABXRUJQVlA4TIAAAMwBAAD/" width="918" height="715" preserveAspectRatio="xMidYMid meet"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720">
+  <rect width="900" height="720" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="3" d="M330 120 L385 105 Q450 135 515 105 L570 120
+      L700 205 L650 345 L565 315 L565 610 L335 610 L335 315 L250 345 L200 205 Z"/>
+    <path stroke-width="3" d="M385 105 Q450 160 515 105"/>
+    <path stroke-width="1.5" d="M374 111 Q450 151 526 111"/>
+    <path stroke-width="1.4" stroke-dasharray="4 3" d="M209 214 L244 336 M691 214 L656 336 M335 600 H565"/>
+    <path stroke-width="1.2" d="M335 315 H565"/>
+  </g>
+  <g fill="none" stroke="#555" stroke-width="1.4">
+    <path d="M135 105 V610"/><path d="M127 105 H143 M127 610 H143"/>
+    <path d="M335 302 H565"/><path d="M335 294 V310 M565 294 V310"/>
+    <path d="M570 113 L700 195"/><path d="M564 121 L576 104 M694 203 L706 186"/>
+  </g>
+  <g fill="#111" font-family="Arial,Helvetica,sans-serif" font-size="42">
+    <text x="94" y="370" transform="rotate(-90 94 370)">A</text>
+    <text x="437" y="288">C</text>
+    <text x="650" y="145" transform="rotate(32 650 145)">H</text>
+  </g>
+</svg>
