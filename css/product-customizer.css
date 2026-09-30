@@ -530,61 +530,75 @@
     padding-top: .85rem;
   }
 
-  /* Step 2: compact editor layout so the full workflow fits in one desktop viewport. */
-  [data-step-panel="2"] h2 { margin-bottom: .45rem; }
+  /* Step 2: keep the whole editor control flow visible on a normal desktop viewport. */
+  [data-step-panel="2"] h2 { margin-bottom: .28rem; }
   [data-step-panel="2"] > p:not(.step-kicker):not(.customizer-error) {
-    margin: 0 0 .75rem;
-    font-size: .9rem;
-    line-height: 1.45;
+    margin: 0 0 .5rem;
+    font-size: .86rem;
+    line-height: 1.38;
   }
   [data-step-panel="2"] .customizer-side-file {
-    margin-top: .75rem;
+    margin-top: .5rem;
   }
   [data-step-panel="2"] .customizer-side-file-label {
-    margin-bottom: .4rem;
+    margin-bottom: .3rem;
+  }
+  [data-step-panel="2"] .upload-zone-label {
+    min-height: 112px;
+    padding: .8rem 1rem;
+    gap: .22rem;
+  }
+  [data-step-panel="2"] .upload-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: .15rem;
+    font-size: 1rem;
   }
   [data-step-panel="2"] .customizer-library {
-    margin-top: .7rem;
+    margin-top: .5rem;
   }
   [data-step-panel="2"] .customizer-library-list {
-    padding-bottom: .15rem;
+    padding-bottom: .1rem;
   }
   [data-step-panel="2"] .customizer-file-actions {
-    margin-top: .45rem;
-    padding: .6rem .7rem;
+    margin-top: .35rem;
+    padding: .5rem .6rem;
   }
   [data-step-panel="2"] .customizer-file-actions .button,
   [data-step-panel="2"] .customizer-file-actions .text-action {
-    min-height: 38px;
+    min-height: 36px;
   }
   [data-step-panel="2"] .position-presets {
-    margin-top: .85rem;
-    padding-top: .75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .6rem;
+    padding-top: .55rem;
   }
   [data-step-panel="2"] .position-presets button {
-    min-height: 38px;
-    padding: .48rem .8rem;
+    min-height: 36px;
+    padding: .42rem .72rem;
   }
   [data-step-panel="2"] .scale-control {
-    margin-top: .85rem;
+    margin-top: .6rem;
   }
   [data-step-panel="2"] .scale-control label {
-    margin-bottom: .4rem;
+    margin-bottom: .25rem;
   }
   [data-step-panel="2"] .scale-control input[type="range"] {
-    min-height: 34px;
+    min-height: 30px;
   }
   [data-step-panel="2"] .print-size-info {
-    margin-top: .35rem;
+    margin-top: .2rem;
   }
   [data-step-panel="2"] .customizer-error {
-    min-height: .9em;
-    margin-top: .3rem;
+    min-height: .75em;
+    margin-top: .2rem;
   }
   [data-step-panel="2"] ~ .customizer-navigation,
   .customizer-controls:has([data-step-panel="2"].is-active) .customizer-navigation {
-    margin-top: 1rem;
-    padding-top: .85rem;
+    margin-top: .65rem;
+    padding-top: .6rem;
   }
 }
 
