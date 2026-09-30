@@ -187,6 +187,13 @@
 .swatch-white { background: #fff; }
 .swatch-black { background: #151515; }
 .color-swatch.is-active, .size-options button.is-active { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent); }
+.customizer-selected-color {
+  margin: .55rem 0 0;
+  color: var(--color-text-muted);
+  font-size: .76rem;
+  line-height: 1.35;
+}
+.customizer-selected-color::first-letter { color: inherit; }
 .size-options button { min-width: 52px; padding-inline: .9rem; }
 
 .customizer-side-file { margin-top: var(--space-lg); }
