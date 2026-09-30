@@ -91,6 +91,7 @@
 
 .customizer-mobile-side-nav { display: none; }
 .customizer-mobile-side-nav[hidden] { display: none !important; }
+.customizer-mobile-sleeve-switch[hidden] { display: none !important; }
 .customizer-mobile-side-main,
 .customizer-mobile-sleeve-switch { display: grid; gap: .45rem; }
 .customizer-mobile-side-main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
