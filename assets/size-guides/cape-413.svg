@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 700">
+  <rect width="820" height="700" fill="white"/>
+  <g fill="none" stroke="#111820" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M300 185 L355 165 Q410 200 465 165 L520 185 L660 245 L615 545 L560 570 L520 330 L520 610 L300 610 L300 330 L260 570 L205 545 L160 245 Z"/>
+    <path d="M355 165 Q340 55 410 45 Q480 55 465 165"/>
+    <path d="M370 165 Q365 78 410 68 Q455 78 450 165"/>
+    <path d="M385 165 V285 M435 165 V285"/>
+    <path d="M320 500 L345 420 L475 420 L500 500 Z"/>
+    <path d="M300 330 L520 330"/>
+    <path d="M300 595 H520 M205 530 L260 555 M560 555 L615 530" stroke-width="1.5" stroke-dasharray="3 3"/>
+  </g>
+  <g fill="none" stroke="#7b858d" stroke-width="1.5">
+    <path d="M95 165 V610"/><path d="M87 165 H103 M87 610 H103"/>
+    <path d="M300 320 H520"/><path d="M300 312 V328 M520 312 V328"/>
+    <path d="M520 180 L660 532"/><path d="M514 184 L526 176 M654 536 L666 528"/>
+  </g>
+  <g fill="#123f37" font-family="Arial, sans-serif" font-size="42" font-weight="700">
+    <text x="60" y="400">A</text><text x="397" y="308">C</text><text x="600" y="305" transform="rotate(56 600 305)">H</text>
+  </g>
+</svg>
