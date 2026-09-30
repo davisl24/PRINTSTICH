@@ -31,7 +31,7 @@
 
   if (!els.preview || !els.printArea || !els.scale) return;
 
-  const normalizeColor = value => ({ white: 'balts', black: 'melns', blue: 'zils' }[value] || value || 'balts');
+  const normalizeColor = value => ({ white: '00', balts: '00', black: '01', melns: '01', blue: '02', zils: '02' }[value] || value || '00');
   const colorById = id => product.krasas.find(color => color.id === normalizeColor(id)) || product.krasas[0];
   const productSide = sideKey => SIDE_TO_PRODUCT[sideKey] || 'prieksa';
   const isSleeve = sideKey => sideKey === 'sleeveLeft' || sideKey === 'sleeveRight';
@@ -44,7 +44,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: 'balts', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -75,14 +75,22 @@
   const createLibraryId = () => globalThis.crypto?.randomUUID?.() || `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
   function ensureColorButtons() {
-    const group = $('[data-color-options]'); if (!group) return;
-    product.krasas.forEach(color => {
-      let button = $$('[data-color]', group).find(item => normalizeColor(item.dataset.color) === color.id);
-      if (!button) { button = document.createElement('button'); button.className = 'color-swatch'; button.type = 'button'; button.dataset.color = color.id; button.setAttribute('aria-pressed', 'false'); button.innerHTML = `<span class="swatch" aria-hidden="true"></span>${color.nosaukums}`; group.appendChild(button); }
-      button.dataset.color = color.id; const swatch = $('.swatch', button); if (swatch) swatch.style.backgroundColor = color.hex;
-      const textNode = [...button.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()); if (textNode) textNode.textContent = color.nosaukums;
-    });
-    els.colorButtons = $$('[data-color]');
+    const group = $('[data-color-options]');
+    if (!group) return;
+
+    group.innerHTML = (product.krasas || []).map(color => `
+      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}">
+        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>${color.nosaukums}
+      </button>`).join('');
+
+    els.colorButtons = $$('[data-color]', group);
+    els.colorButtons.forEach(button => button.addEventListener('click', () => {
+      state.color = normalizeColor(button.dataset.color);
+      setPressed(els.colorButtons, button);
+      renderProductInfo();
+      updateSvgColor();
+      renderDesign();
+    }));
   }
 
   function renderSizeButtons() {
@@ -108,9 +116,10 @@
     if (els.productModel) els.productModel.textContent = product.modelis || product.nosaukums || '';
     if (els.productAudience) els.productAudience.textContent = product.auditorija || '';
     if (els.productDescription) els.productDescription.textContent = product.apraksts || '';
-    if (els.productMaterial) els.productMaterial.textContent = product.materials || '—';
+    const activeColor = colorById(state.color);
+    if (els.productMaterial) els.productMaterial.textContent = product.materialOverrides?.[activeColor?.id] || product.materials || '—';
     if (els.productWeight) els.productWeight.textContent = product.gramaza || '—';
-    if (els.productCare) els.productCare.textContent = product.kopsana || product.kopšana || '—';
+    if (els.productCare) els.productCare.textContent = product.careOverrides?.[activeColor?.id] || product.kopsana || product.kopšana || '—';
     if (els.productSizes) els.productSizes.textContent = product.izmeruKopsavilkums || (product.izmeri || []).join(', ');
   }
 
@@ -207,27 +216,22 @@
   }
 
   function getGarmentPalette(colorId) {
-    if (colorId === 'melns') {
-      return {
-        base: '#1A1A1A',
-        stroke: '#666666',
-        guide: 'rgba(255,255,255,.50)'
-      };
+    const color = colorById(colorId);
+    const base = color?.hex || '#FFFFFF';
+    const hex = base.replace('#', '');
+    const normalized = hex.length === 3 ? hex.split('').map(char => char + char).join('') : hex;
+    const r = parseInt(normalized.slice(0, 2), 16) || 0;
+    const g = parseInt(normalized.slice(2, 4), 16) || 0;
+    const b = parseInt(normalized.slice(4, 6), 16) || 0;
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+    if (luminance > 0.78) {
+      return { base, stroke: '#B8B2A9', guide: '#8a8a85' };
     }
 
-    if (colorId === 'zils') {
-      return {
-        base: '#1B2A4A',
-        stroke: '#5A6F96',
-        guide: 'rgba(255,255,255,.50)'
-      };
-    }
-
-    return {
-      base: '#FFFFFF',
-      stroke: '#B8B2A9',
-      guide: '#8a8a85'
-    };
+    const mix = value => Math.round(value + (255 - value) * 0.38);
+    const stroke = `#${[mix(r), mix(g), mix(b)].map(value => value.toString(16).padStart(2, '0')).join('')}`;
+    return { base, stroke, guide: 'rgba(255,255,255,.55)' };
   }
 
   function updatePrintArea() {
@@ -355,7 +359,6 @@
     updateSideUi(); renderDesign(); updateNavigation();
   }
 
-  els.colorButtons.forEach(button => button.addEventListener('click', () => { state.color = normalizeColor(button.dataset.color); setPressed(els.colorButtons, button); updateSvgColor(); renderDesign(); }));
   els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
   els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; error('file'); await updatePreview(); }));
   if (els.designInput) els.designInput.addEventListener('change', () => { const file = els.designInput.files?.[0]; loadFile(file); els.designInput.value = ''; });
