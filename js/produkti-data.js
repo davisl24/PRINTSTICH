@@ -150,6 +150,17 @@
       },
       izmeri: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
       izmeruKopsavilkums: 'XS–5XL',
+      sizeGuide: {
+        kind: 'tshirt',
+        columns: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
+        rows: {
+          A: [68, 70, 72, 74, 76, 78, 81, 84, 87],
+          C: [43, 47, 51, 55, 59, 64, 70, 76, 82],
+          H: [18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5]
+        },
+        labels: { A: 'Garums', C: 'Platums krūšu daļā', H: 'Piedurknes garums' },
+        note: 'Visi izmēri norādīti cm. Pieļaujamā tolerance ±5%.'
+      },
       puses: commonSides,
       drukasZona: commonZones,
       drukasLaukumsMm: commonPrintAreas,
@@ -183,6 +194,17 @@
       },
       izmeri: ['110 cm / 4 g.', '122 cm / 6 g.', '134 cm / 8 g.', '146 cm / 10 g.', '158 cm / 12 g.'],
       izmeruKopsavilkums: '110–158 cm / 4–12 g.',
+      sizeGuide: {
+        kind: 'tshirt',
+        columns: ['4 g. / 110 cm', '6 g. / 122 cm', '8 g. / 134 cm', '10 g. / 146 cm', '12 g. / 158 cm'],
+        rows: {
+          A: [43, 46, 52, 58, 64],
+          C: [34, 37, 40, 43, 46],
+          H: [11, 13, 15, 16, 17]
+        },
+        labels: { A: 'Garums', C: 'Platums krūšu daļā', H: 'Piedurknes garums' },
+        note: 'Visi izmēri norādīti cm. Pieļaujamā tolerance ±5%.'
+      },
       puses: commonSides,
       drukasZona: commonZones,
       // Fiziskie drukas mm bērnu modelim vēl nav klienta apstiprināti.
@@ -225,6 +247,17 @@
       },
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
       izmeruKopsavilkums: 'S–5XL',
+      sizeGuide: {
+        kind: 'hoodie',
+        columns: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
+        rows: {
+          A: [70, 72, 74, 76, 78, 80, 82, 84],
+          C: [52, 56, 60, 64, 68.5, 74.5, 80.5, 86.5],
+          H: [66, 67, 68, 69, 70, 71.5, 73, 74.5]
+        },
+        labels: { A: 'Garums', C: 'Platums krūšu daļā', H: 'Piedurknes garums' },
+        note: 'Visi izmēri norādīti cm. Pieļaujamā tolerance ±5%.'
+      },
       puses: commonSides,
       drukasZona: {
         // Hoodie-specific placement matched to the approved references:
@@ -272,8 +305,19 @@
       materialOverrides: {
         '12': '75% kokvilna, 25% poliesters'
       },
-      izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
-      izmeruKopsavilkums: 'S–3XL',
+      izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
+      izmeruKopsavilkums: 'S–5XL',
+      sizeGuide: {
+        kind: 'sweatshirt',
+        columns: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
+        rows: {
+          A: [70, 72, 74, 77, 80, 83, 86, 89],
+          C: [55, 59, 63, 67, 72, 78, 84, 90],
+          H: [62, 63.5, 65, 66.5, 68, 69.5, 71, 72.5]
+        },
+        labels: { A: 'Garums', C: 'Platums krūšu daļā', H: 'Piedurknes garums' },
+        note: 'Visi izmēri norādīti cm. Pieļaujamā tolerance ±5%.'
+      },
       puses: commonSides,
       drukasZona: {
         // Matched to the Printify Gildan 18000 references supplied by the client.
