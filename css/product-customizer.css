@@ -846,3 +846,59 @@
   .size-guide-legend { grid-template-columns: 1fr; }
   .size-guide-table { min-width: 560px; }
 }
+
+
+/* Size guide product switcher + exact product diagrams */
+.size-guide-products {
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  padding: .9rem 0 .15rem;
+  scrollbar-width: none;
+}
+.size-guide-products::-webkit-scrollbar { display: none; }
+.size-guide-products button {
+  flex: 0 0 auto;
+  display: grid;
+  gap: .05rem;
+  min-width: 145px;
+  padding: .7rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--color-text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.size-guide-products button span {
+  font-size: .8rem;
+  font-weight: 800;
+}
+.size-guide-products button small {
+  color: var(--color-text-muted);
+  font-size: .66rem;
+  font-weight: 600;
+}
+.size-guide-products button.is-active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.size-guide-products button.is-active small {
+  color: currentColor;
+  opacity: .72;
+}
+.size-guide-diagram img {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+}
+@media (max-width: 768px) {
+  .size-guide-products { padding-top: .75rem; }
+  .size-guide-products button { min-width: 132px; padding: .62rem .75rem; }
+  .size-guide-diagram img { max-height: 330px; }
+}
