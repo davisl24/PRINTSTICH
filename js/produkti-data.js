@@ -152,6 +152,7 @@
       izmeruKopsavilkums: 'XS–5XL',
       sizeGuide: {
         kind: 'tshirt',
+        diagramSvg: 'assets/size-guides/heavy-new-137.svg',
         columns: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
         rows: {
           A: [68, 70, 72, 74, 76, 78, 81, 84, 87],
@@ -196,6 +197,7 @@
       izmeruKopsavilkums: '110–158 cm / 4–12 g.',
       sizeGuide: {
         kind: 'tshirt',
+        diagramSvg: 'assets/size-guides/basic-138.svg',
         columns: ['4 g. / 110 cm', '6 g. / 122 cm', '8 g. / 134 cm', '10 g. / 146 cm', '12 g. / 158 cm'],
         rows: {
           A: [43, 46, 52, 58, 64],
@@ -249,6 +251,7 @@
       izmeruKopsavilkums: 'S–5XL',
       sizeGuide: {
         kind: 'hoodie',
+        diagramSvg: 'assets/size-guides/cape-413.svg',
         columns: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
         rows: {
           A: [70, 72, 74, 76, 78, 80, 82, 84],
@@ -309,6 +312,7 @@
       izmeruKopsavilkums: 'S–5XL',
       sizeGuide: {
         kind: 'sweatshirt',
+        diagramSvg: 'assets/size-guides/crew-426.svg',
         columns: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
         rows: {
           A: [70, 72, 74, 77, 80, 83, 86, 89],
