@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), selectedColor: $('[data-selected-color]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), selectedColor: $('[data-selected-color]'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -53,8 +53,8 @@
     if (max?.w && max?.h) return max;
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
-  const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
+  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -198,6 +198,32 @@
   function getZone(sideKey = state.activeSide) { return product.drukasZona[productSide(sideKey)]; }
   function getPhysicalArea(sideKey = state.activeSide) { if (!state.size) return null; return product.drukasLaukumsMm?.[productSide(sideKey)]?.[state.size] || null; }
   function getDesignRect(zoneWidth, zoneHeight, side = currentSide(), asset = currentAsset()) { if (!asset || asset.vectorFallback || !asset.image?.naturalWidth || !asset.image?.naturalHeight) return null; const aspect = asset.image.naturalWidth / asset.image.naturalHeight; let width = zoneWidth * side.scale; let height = width / aspect; if (height > zoneHeight * side.scale) { height = zoneHeight * side.scale; width = height * aspect; } return { width, height, x: side.x * zoneWidth - width / 2, y: side.y * zoneHeight - height / 2 }; }
+  function designCenter(rect) { return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 }; }
+  function rotatePoint(x, y, cx, cy, radians) {
+    const dx = x - cx;
+    const dy = y - cy;
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
+    return { x: cx + dx * cos - dy * sin, y: cy + dx * sin + dy * cos };
+  }
+  function pointInsideRotatedRect(x, y, rect, degrees = 0) {
+    const center = designCenter(rect);
+    const p = rotatePoint(x, y, center.x, center.y, -(degrees * Math.PI / 180));
+    return p.x >= rect.x && p.x <= rect.x + rect.width && p.y >= rect.y && p.y <= rect.y + rect.height;
+  }
+  function resizeHandlePoint(rect, degrees = 0) {
+    const center = designCenter(rect);
+    return rotatePoint(rect.x + rect.width, rect.y + rect.height, center.x, center.y, degrees * Math.PI / 180);
+  }
+  function drawRotatedImage(ctx, image, rect, degrees = 0) {
+    const center = designCenter(rect);
+    ctx.save();
+    ctx.translate(center.x, center.y);
+    ctx.rotate(degrees * Math.PI / 180);
+    ctx.drawImage(image, -rect.width / 2, -rect.height / 2, rect.width, rect.height);
+    ctx.restore();
+  }
+
   function getVirtualZoneSize(sideKey) { const zone = getZone(sideKey); return { width: zone.w * 600, height: zone.h * 700 }; }
   function constrainPosition(sideKey = state.activeSide) {
     const side = state.sides[sideKey];
@@ -309,7 +335,53 @@
   async function getSvgMarkup(sideKey) { const path = getSvgPath(sideKey); if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`); if (svgMarkupCache.has(path)) return svgMarkupCache.get(path); const response = await fetch(path, { cache: 'no-cache' }); if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`); const markup = await response.text(); svgMarkupCache.set(path, markup); return markup; }
   async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); if (!svg.getAttribute('viewBox')) { const sourceWidth = parseFloat(svg.getAttribute('width')) || 600; const sourceHeight = parseFloat(svg.getAttribute('height')) || 700; svg.setAttribute('viewBox', `0 0 ${sourceWidth} ${sourceHeight}`); } svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); updatePrintArea(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
   function drawVectorFallback(ctx, width, height) { ctx.save(); ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2); ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore(); }
-  function drawDesignCanvas() { const side = currentSide(); const asset = currentAsset(); const area = els.printArea.getBoundingClientRect(); const canvas = els.designCanvas; if (!area.width || !area.height) return; const dpr = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.max(1, Math.round(area.width * dpr)); canvas.height = Math.max(1, Math.round(area.height * dpr)); const ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, area.width, area.height); if (!asset) return; if (asset.vectorFallback) return drawVectorFallback(ctx, area.width, area.height); if (!asset.image) return; const rect = getDesignRect(area.width, area.height, side, asset); if (!rect) return; ctx.drawImage(asset.image, rect.x, rect.y, rect.width, rect.height); }
+  function drawDesignCanvas() {
+    const side = currentSide();
+    const asset = currentAsset();
+    const area = els.printArea.getBoundingClientRect();
+    const canvas = els.designCanvas;
+    if (!area.width || !area.height) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(area.width * dpr));
+    canvas.height = Math.max(1, Math.round(area.height * dpr));
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, area.width, area.height);
+
+    if (!asset) return;
+    if (asset.vectorFallback) return drawVectorFallback(ctx, area.width, area.height);
+    if (!asset.image) return;
+
+    const rect = getDesignRect(area.width, area.height, side, asset);
+    if (!rect) return;
+
+    drawRotatedImage(ctx, asset.image, rect, side.rotation || 0);
+
+    if (state.step === 2 && state.designSelected) {
+      const center = designCenter(rect);
+      ctx.save();
+      ctx.translate(center.x, center.y);
+      ctx.rotate((side.rotation || 0) * Math.PI / 180);
+      ctx.strokeStyle = '#0f4b43';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 4]);
+      ctx.strokeRect(-rect.width / 2, -rect.height / 2, rect.width, rect.height);
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      const handle = resizeHandlePoint(rect, side.rotation || 0);
+      ctx.save();
+      ctx.fillStyle = '#0f4b43';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(handle.x, handle.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
 
   function updateMeasurementUi() {
     const side = currentSide();
@@ -321,6 +393,14 @@
       els.printLimitWarning.textContent = nearMax ? 'Tuvu maksimālajam drukas izmēram' : '';
     }
     if (els.dpiWarning) els.dpiWarning.textContent = metrics && metrics.dpiRounded < 150 ? `Faila izšķirtspēja šim izmēram ir zema (aptuveni ${metrics.dpiRounded} DPI).` : '';
+    const hasEditableAsset = Boolean(currentAsset() && !currentAsset().vectorFallback);
+    if (els.directEditControls) els.directEditControls.hidden = !hasEditableAsset;
+    if (els.transformInfo) {
+      els.transformInfo.hidden = !hasEditableAsset;
+      els.transformInfo.textContent = hasEditableAsset
+        ? `X ${Math.round(side.x * 100)}% · Y ${Math.round(side.y * 100)}% · mērogs ${Math.round(side.scale * 100)}%, rotācija ${Math.round(side.rotation || 0)}° · rotācija ${Math.round(side.rotation || 0)}°`
+        : '';
+    }
     els.scale.value = String(Math.round(side.scale * 100));
     els.scale.max = '125';
   }
@@ -350,7 +430,7 @@
   function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
   function findLibraryDuplicate(file) { return state.library.find(item => item.name === file.name && item.file.size === file.size) || null; }
-  function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { updateSideUi(); renderDesign(); } updateNavigation(); }
+  function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { state.designSelected = true; updateSideUi(); renderDesign(); } updateNavigation(); }
   function addLibraryFile(file, sideKey) {
     const duplicate = findLibraryDuplicate(file);
     if (duplicate) { attachLibraryItem(sideKey, duplicate.id); return; }
@@ -402,10 +482,36 @@
     renderDesign();
   }
   if (els.presetContainer) els.presetContainer.addEventListener('click', event => { const button = event.target.closest('[data-position-preset]'); if (button) applyPreset(button.dataset.positionPreset); });
+  const rotateActiveDesign = delta => {
+    const side = currentSide();
+    if (!side.libraryId) return;
+    side.rotation = (((side.rotation || 0) + delta + 180) % 360) - 180;
+    side.preset = '';
+    state.designSelected = true;
+    renderDesign();
+  };
+  if (els.rotateLeft) els.rotateLeft.addEventListener('click', () => rotateActiveDesign(-15));
+  if (els.rotateRight) els.rotateRight.addEventListener('click', () => rotateActiveDesign(15));
+  if (els.resetTransform) els.resetTransform.addEventListener('click', () => {
+    const side = currentSide();
+    if (!side.libraryId) return;
+    const fresh = createSideState(state.activeSide);
+    side.x = fresh.x;
+    side.y = fresh.y;
+    side.scale = fresh.scale;
+    side.rotation = 0;
+    side.preset = 'center';
+    state.designSelected = true;
+    renderDesign();
+  });
   els.productButtons.forEach(button => button.addEventListener('click', () => selectProduct(button.dataset.product, button)));
-  els.scale.addEventListener('input', () => { const side = currentSide(); side.scale = Number(els.scale.value) / 100; side.preset = ''; enforcePrintLimit(); constrainPosition(); renderDesign(); });
+  els.scale.addEventListener('input', () => { const side = currentSide(); side.scale = Number(els.scale.value) / 100; side.preset = ''; state.designSelected = Boolean(side.libraryId); enforcePrintLimit(); constrainPosition(); renderDesign(); });
   const activePointers = new Map();
   let dragPointerId = null;
+  let interactionMode = '';
+  let dragOffset = { x: 0, y: 0 };
+  let resizeStartDistance = 0;
+  let resizeStartScale = 0;
   let pinchStartDistance = 0;
   let pinchStartScale = 0;
 
@@ -415,33 +521,84 @@
     return Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y);
   };
 
+  const pointerInCanvas = event => {
+    const rect = els.designCanvas.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top, width: rect.width, height: rect.height };
+  };
+
   els.designCanvas.addEventListener('pointerdown', event => {
     const asset = currentAsset();
-    if (state.step !== 2 || !asset || asset.vectorFallback) return;
+    if (state.step !== 2 || !asset || asset.vectorFallback || !asset.image) return;
+
+    const point = pointerInCanvas(event);
+    const designRect = getDesignRect(point.width, point.height, currentSide(), asset);
+    if (!designRect) return;
+
+    const handle = resizeHandlePoint(designRect, currentSide().rotation || 0);
+    const onHandle = state.designSelected && Math.hypot(point.x - handle.x, point.y - handle.y) <= 18;
+    const onDesign = pointInsideRotatedRect(point.x, point.y, designRect, currentSide().rotation || 0);
+
+    if (!onHandle && !onDesign) {
+      state.designSelected = false;
+      interactionMode = '';
+      renderDesign();
+      return;
+    }
 
     event.preventDefault();
+    state.designSelected = true;
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     els.designCanvas.setPointerCapture(event.pointerId);
     currentSide().preset = '';
 
-    if (activePointers.size === 1) {
+    if (onHandle) {
+      const center = designCenter(designRect);
+      resizeStartDistance = Math.max(1, Math.hypot(point.x - center.x, point.y - center.y));
+      resizeStartScale = currentSide().scale;
+      interactionMode = 'resize';
       dragPointerId = event.pointerId;
-    } else if (activePointers.size === 2) {
-      dragPointerId = null;
-      pinchStartDistance = pointerDistance();
-      pinchStartScale = currentSide().scale;
+      els.designCanvas.style.cursor = 'nwse-resize';
+    } else if (activePointers.size === 1) {
+      interactionMode = 'drag';
+      dragPointerId = event.pointerId;
+      dragOffset = {
+        x: point.x - currentSide().x * point.width,
+        y: point.y - currentSide().y * point.height
+      };
+      els.designCanvas.style.cursor = 'grabbing';
     }
+
+    renderDesign();
   });
 
   els.designCanvas.addEventListener('pointermove', event => {
-    if (!activePointers.has(event.pointerId)) return;
+    const point = pointerInCanvas(event);
+    const asset = currentAsset();
+
+    if (!activePointers.has(event.pointerId)) {
+      if (state.step === 2 && asset && asset.image) {
+        const designRect = getDesignRect(point.width, point.height, currentSide(), asset);
+        if (designRect) {
+          const handle = resizeHandlePoint(designRect, currentSide().rotation || 0);
+          const onHandle = state.designSelected && Math.hypot(point.x - handle.x, point.y - handle.y) <= 18;
+          const onDesign = pointInsideRotatedRect(point.x, point.y, designRect, currentSide().rotation || 0);
+          els.designCanvas.style.cursor = onHandle ? 'nwse-resize' : onDesign ? 'grab' : 'default';
+        }
+      }
+      return;
+    }
+
     event.preventDefault();
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-
     const side = currentSide();
 
     if (activePointers.size >= 2) {
+      interactionMode = 'pinch';
       const distance = pointerDistance();
+      if (!pinchStartDistance) {
+        pinchStartDistance = distance;
+        pinchStartScale = side.scale;
+      }
       if (pinchStartDistance > 0) {
         side.scale = clamp(pinchStartScale * (distance / pinchStartDistance), 0.05, 1.25);
         els.scale.value = String(Math.round(side.scale * 100));
@@ -452,11 +609,25 @@
     }
 
     if (dragPointerId !== event.pointerId) return;
-    const area = els.printArea.getBoundingClientRect();
-    side.x = (event.clientX - area.left) / area.width;
-    side.y = (event.clientY - area.top) / area.height;
-    constrainPosition();
-    renderDesign();
+
+    if (interactionMode === 'resize') {
+      const area = els.designCanvas.getBoundingClientRect();
+      const designRect = getDesignRect(area.width, area.height, side, asset);
+      if (!designRect) return;
+      const center = designCenter(designRect);
+      const distance = Math.max(1, Math.hypot(point.x - center.x, point.y - center.y));
+      side.scale = clamp(resizeStartScale * (distance / resizeStartDistance), 0.05, 1.25);
+      els.scale.value = String(Math.round(side.scale * 100));
+      renderDesign();
+      return;
+    }
+
+    if (interactionMode === 'drag') {
+      side.x = (point.x - dragOffset.x) / point.width;
+      side.y = (point.y - dragOffset.y) / point.height;
+      constrainPosition();
+      renderDesign();
+    }
   });
 
   const endPointer = event => {
@@ -466,22 +637,28 @@
     if (activePointers.size === 1) {
       dragPointerId = [...activePointers.keys()][0];
       pinchStartDistance = 0;
+      interactionMode = 'drag';
     } else if (activePointers.size === 0) {
       dragPointerId = null;
+      interactionMode = '';
       pinchStartDistance = 0;
       pinchStartScale = 0;
+      resizeStartDistance = 0;
+      resizeStartScale = 0;
+      els.designCanvas.style.cursor = state.designSelected ? 'grab' : 'default';
     }
   };
 
   els.designCanvas.addEventListener('pointerup', endPointer);
   els.designCanvas.addEventListener('pointercancel', endPointer);
+
   if (els.prev) els.prev.addEventListener('click', () => showStep(state.step - 1));
   if (els.next) els.next.addEventListener('click', () => { if (!stepComplete(state.step)) { if (state.step === 1) error('size', 'Izvēlies krekla izmēru.'); if (state.step === 2) error('file', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); return; } showStep(state.step + 1); });
 
   function inlineComputedSvgStyles(sourceSvg, cloneSvg) { const sourceNodes = [sourceSvg, ...sourceSvg.querySelectorAll('*')]; const cloneNodes = [cloneSvg, ...cloneSvg.querySelectorAll('*')]; sourceNodes.forEach((sourceNode, index) => { const cloneNode = cloneNodes[index]; if (!cloneNode) return; const computed = getComputedStyle(sourceNode); ['fill', 'stroke', 'stroke-width', 'opacity'].forEach(property => { const value = computed.getPropertyValue(property); if (value) cloneNode.setAttribute(property, value.trim()); }); }); }
   async function prepareSerializedSvg(sideKey) { const markup = await getSvgMarkup(sideKey); const holder = document.createElement('div'); Object.assign(holder.style, { position: 'fixed', left: '-10000px', top: '0', width: '600px', height: '700px', pointerEvents: 'none' }); holder.innerHTML = markup; document.body.appendChild(holder); try { const source = $('svg', holder); if (!source) throw new Error('SVG nesatur <svg>.'); if (!source.getAttribute('viewBox')) { const sourceWidth = parseFloat(source.getAttribute('width')) || 600; const sourceHeight = parseFloat(source.getAttribute('height')) || 700; source.setAttribute('viewBox', `0 0 ${sourceWidth} ${sourceHeight}`); } source.setAttribute('width', '600'); source.setAttribute('height', '700'); source.style.width = '600px'; source.style.height = '700px'; applySvgAppearance(source, sideKey); const clone = source.cloneNode(true); clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); clone.setAttribute('width', '600'); clone.setAttribute('height', '700'); clone.setAttribute('viewBox', source.getAttribute('viewBox') || '0 0 600 700'); inlineComputedSvgStyles(source, clone); const parts = clone.getAttribute('viewBox').trim().split(/[ ,]+/).map(Number); const viewBox = parts.length === 4 && parts.every(Number.isFinite) ? { x: parts[0], y: parts[1], width: parts[2], height: parts[3] } : { x: 0, y: 0, width: 600, height: 700 }; return { svgString: new XMLSerializer().serializeToString(clone), viewBox }; } finally { holder.remove(); } }
   async function svgToImage(sideKey) { const { svgString, viewBox } = await prepareSerializedSvg(sideKey); const image = new Image(); image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`; await image.decode(); if (!image.naturalWidth || !image.naturalHeight) throw new Error('Serializētais SVG ielādējās ar 0×0 izmēru.'); return { image, viewBox }; }
-  function drawMockupContent(ctx, canvas, sideKey, baseImage) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height); const zone = getZone(sideKey); if (!zone || !asset) return; const zoneX = zone.x * canvas.width; const zoneY = zone.y * canvas.height; const zoneW = zone.w * canvas.width; const zoneH = zone.h * canvas.height; if (asset.vectorFallback || !asset.image) { ctx.save(); ctx.translate(zoneX, zoneY); drawVectorFallback(ctx, zoneW, zoneH); ctx.restore(); return; } const rect = getDesignRect(zoneW, zoneH, side, asset); if (rect) ctx.drawImage(asset.image, zoneX + rect.x, zoneY + rect.y, rect.width, rect.height); }
+  function drawMockupContent(ctx, canvas, sideKey, baseImage) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height); const zone = getZone(sideKey); if (!zone || !asset) return; const zoneX = zone.x * canvas.width; const zoneY = zone.y * canvas.height; const zoneW = zone.w * canvas.width; const zoneH = zone.h * canvas.height; if (asset.vectorFallback || !asset.image) { ctx.save(); ctx.translate(zoneX, zoneY); drawVectorFallback(ctx, zoneW, zoneH); ctx.restore(); return; } const rect = getDesignRect(zoneW, zoneH, side, asset); if (rect) { ctx.save(); ctx.translate(zoneX, zoneY); drawRotatedImage(ctx, asset.image, rect, side.rotation || 0); ctx.restore(); } }
   function positionLabel(side) { const labels = { center: 'Centrā', 'left-chest': 'Krūšu kreisajā pusē', top: 'Augšā', lower: 'Zemāk', 'sleeve-top': 'Augšāk', 'sleeve-lower': 'Zemāk' }; return labels[side.preset] || `X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`; }
   function getOrderSummary() { const color = colorById(state.color); const summary = { product: `${product.nosaukums} — ${product.modelis || ''}`.trim(), color: color.nosaukums, size: state.size || '—', sides: Object.fromEntries(SIDE_KEYS.map(sideKey => { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const metrics = printMetrics(sideKey); return [sideKey, { hasDesign: Boolean(asset), fileName: asset?.name || 'Nav pievienots', positionLabel: asset ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—', printSizeMm: !asset ? '—' : asset.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms' }]; })) }; Object.defineProperty(summary, 'meta', { enumerable: false, value: { date: new Date().toISOString().slice(0, 10), customerName: $('[data-customer-name]')?.value.trim() || '—', customerContact: $('[data-customer-contact]')?.value.trim() || '—', comment: $('[data-customer-comment]')?.value.trim() || '' } }); return summary; }
   function syncFormData() { const summary = getOrderSummary(); const productInput = $('[data-form-product]'); const colorInput = $('[data-form-color]'); const sizeInput = $('[data-form-size]'); if (productInput) productInput.value = summary.product; if (colorInput) colorInput.value = summary.color; if (sizeInput) sizeInput.value = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileInput = $(`[data-form-original-filename="${sideKey}"]`); const positionInput = $(`[data-form-position="${sideKey}"]`); const printInput = $(`[data-form-print-mm="${sideKey}"]`); if (fileInput) fileInput.value = item.fileName; if (positionInput) positionInput.value = item.positionLabel; if (printInput) printInput.value = item.printSizeMm; }); }
