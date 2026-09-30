@@ -253,8 +253,24 @@ p:last-child { margin-bottom: 0; }
 }
 
 @media (max-width: 767px) {
-  .inquiry-topic-options { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; }
-  .topic-option span { width: 100%; justify-content: center; text-align: center; }
+  .inquiry-form { gap: 1rem; padding: 1rem; }
+  .field { gap: .42rem; }
+  .field label,
+  .inquiry-topic legend,
+  .field-label { font-size: .8rem; }
+  .field input { min-height: 50px; padding: .8rem .9rem; }
+  .field textarea { min-height: 145px; padding: .85rem .9rem; }
+  .inquiry-topic-options { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .topic-option span {
+    width: 100%;
+    min-height: 46px;
+    justify-content: center;
+    padding: .58rem .45rem;
+    text-align: center;
+    white-space: nowrap;
+    font-size: .78rem;
+    line-height: 1.15;
+  }
   .file-drop { align-items: flex-start; }
 
   :root { --header-height: 84px; }
