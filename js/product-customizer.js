@@ -54,7 +54,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -84,6 +84,22 @@
   const error = (name, message = '') => { const node = $(`[data-error="${name}"]`); if (node) node.textContent = message; };
   const createLibraryId = () => globalThis.crypto?.randomUUID?.() || `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
+  function revealMobilePreviewAfterColorChange() {
+    if (!window.matchMedia('(max-width: 768px)').matches || !els.previewCard) return;
+    requestAnimationFrame(() => {
+      const rect = els.previewCard.getBoundingClientRect();
+      const header = document.querySelector('.site-header');
+      const headerHeight = header?.getBoundingClientRect().height || 0;
+      const visibleTop = headerHeight + 8;
+      const visibleBottom = window.innerHeight - 12;
+      const enoughVisible = rect.top >= visibleTop && rect.bottom <= visibleBottom;
+      if (!enoughVisible) {
+        const targetTop = Math.max(0, window.scrollY + rect.top - headerHeight - 12);
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    });
+  }
+
   function ensureColorButtons() {
     const group = $('[data-color-options]');
     if (!group) return;
@@ -106,6 +122,7 @@
       renderSelectedColor();
       updateSvgColor();
       renderDesign();
+      revealMobilePreviewAfterColorChange();
     }));
   }
 
@@ -158,6 +175,7 @@
     // This also forces a fresh SVG load when switching products,
     // even when the previous active side was already "front".
     state.activeSide = 'front';
+    state.mobileSleevesOpen = false;
     state.svgLoaded = false;
     state.svgRoot = null;
     state.svgPath = '';
@@ -434,7 +452,7 @@
       els.mobileSleeveParent.classList.toggle('is-active', sleeveActive);
       els.mobileSleeveParent.setAttribute('aria-pressed', String(sleeveActive));
     }
-    if (els.mobileSleeveSwitch) els.mobileSleeveSwitch.hidden = !sleeveActive;
+    if (els.mobileSleeveSwitch) els.mobileSleeveSwitch.hidden = !state.mobileSleevesOpen;
     els.sideStatuses.forEach(status => { const side = state.sides[status.dataset.sideStatus]; if (!side) return; status.textContent = side.libraryId ? 'gatavs' : 'tukša'; status.hidden = Boolean(side.libraryId); }); const side = currentSide(); const asset = currentAsset(); if (els.activeSideLabel) els.activeSideLabel.textContent = SIDE_LABELS[state.activeSide]; if (els.fileName) els.fileName.textContent = asset?.name || ''; if (els.fileActions) els.fileActions.hidden = !asset; if (els.uploadZone) els.uploadZone.hidden = Boolean(asset); renderLibrary(); renderPresetButtons(); updateMeasurementUi(); }
   function renderDesign() { updatePrintArea(); constrainPosition(); drawDesignCanvas(); updateMeasurementUi(); updatePresetState(); }
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
@@ -470,7 +488,26 @@
   }
 
   els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
-  els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; state.designSelected = Boolean(getSideAsset(key)); error('file'); await updatePreview(); }));
+  els.sideButtons.forEach(button => button.addEventListener('click', async () => {
+    const key = button.dataset.side;
+    if (!SIDE_KEYS.includes(key)) return;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isSleeveParent = button.classList.contains('mobile-sleeve-parent');
+
+    if (isMobile && isSleeveParent) {
+      state.mobileSleevesOpen = !state.mobileSleevesOpen;
+      if (state.mobileSleevesOpen && !isSleeve(state.activeSide)) state.activeSide = 'sleeveLeft';
+      if (!state.mobileSleevesOpen && isSleeve(state.activeSide)) state.activeSide = 'front';
+    } else {
+      state.activeSide = key;
+      if (isMobile) state.mobileSleevesOpen = isSleeve(key);
+    }
+
+    state.designSelected = Boolean(getSideAsset(state.activeSide));
+    error('file');
+    await updatePreview();
+  }));
   if (els.designInput) els.designInput.addEventListener('change', () => { const file = els.designInput.files?.[0]; loadFile(file); els.designInput.value = ''; });
   if (els.replace) els.replace.addEventListener('click', () => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); els.designInput?.click(); });
   if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); state.designSelected = false; if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
