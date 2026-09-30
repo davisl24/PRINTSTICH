@@ -180,6 +180,9 @@
 .color-swatch:hover, .size-options button:hover { border-color: var(--color-accent); }
 .color-swatch:focus-visible, .size-options button:focus-visible, .customizer-side-switch button:focus-visible, .position-presets button:focus-visible, .upload-zone-label:focus-visible, .text-action:focus-visible, .customizer-navigation button:focus-visible, .customizer-submit:focus-visible, .customizer-whatsapp:focus-visible { outline: 3px solid rgba(18, 63, 55, .2); outline-offset: 3px; }
 .color-swatch { display: inline-flex; align-items: center; gap: .6rem; padding: .65rem 1rem; }
+.color-swatch-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.color-swatch-code { margin-left: auto; color: var(--color-text-muted); font-size: .72rem; font-weight: 650; line-height: 1; }
+.color-swatch.is-active .color-swatch-code { color: currentColor; opacity: .72; }
 .swatch { width: 22px; height: 22px; flex: 0 0 22px; border: 1px solid rgba(0, 0, 0, .15); border-radius: 50%; }
 .swatch-white { background: #fff; }
 .swatch-black { background: #151515; }
@@ -490,11 +493,28 @@
   [data-step-panel="1"] .customizer-product-stats .product-stat {
     padding: .6rem .7rem;
   }
-  [data-step-panel="1"] .swatch-group,
+  [data-step-panel="1"] .swatch-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .42rem;
+  }
   [data-step-panel="1"] .size-options {
     gap: .45rem;
   }
-  [data-step-panel="1"] .color-swatch,
+  [data-step-panel="1"] .color-swatch {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    gap: .45rem;
+    padding: .48rem .62rem;
+    font-size: .78rem;
+    text-align: left;
+  }
+  [data-step-panel="1"] .color-swatch .swatch {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
   [data-step-panel="1"] .size-options button {
     min-height: 40px;
   }
@@ -588,8 +608,19 @@
   .customizer-fieldset + .customizer-fieldset { margin-top: var(--space-sm); }
   .customizer-product-stats { gap: .45rem; }
   .customizer-product-stats .product-stat { padding: .65rem .7rem; }
-  .swatch-group, .size-options { gap: .5rem; }
-  .color-swatch, .size-options button { min-height: 44px; }
+  .swatch-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
+  .color-swatch {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    gap: .45rem;
+    padding: .5rem .62rem;
+    font-size: .8rem;
+    text-align: left;
+  }
+  .color-swatch .swatch { width: 18px; height: 18px; flex-basis: 18px; }
+  .size-options { gap: .5rem; }
+  .size-options button { min-height: 44px; }
   .size-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .size-options button { min-width: 0; padding-inline: .3rem; }
   .upload-zone-label { min-height: 145px; padding: var(--space-md); }
