@@ -20,9 +20,6 @@
     .customizer-side-switch { grid-template-columns: repeat(4,minmax(0,1fr)); width:min(100%,900px); }
     .customizer-summary-mockups { grid-template-columns: repeat(2,minmax(0,1fr)); }
     @media (max-width:768px) {
-      .customizer-side-switch { display:flex; width:100%; overflow-x:auto; gap:.5rem; padding-bottom:.25rem; scroll-snap-type:x proximity; scrollbar-width:none; }
-      .customizer-side-switch::-webkit-scrollbar { display:none; }
-      .customizer-side-switch button { flex:0 0 auto; min-width:max-content; scroll-snap-align:start; }
       .customizer-summary-mockups { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
   </style>
@@ -47,6 +44,18 @@
         <button type="button" data-side="back" aria-pressed="false"><span>Aizmugure</span><small data-side-status="back">tukša</small></button>
         <button type="button" data-side="sleeveLeft" aria-pressed="false"><span>Kreisā piedurkne</span><small data-side-status="sleeveLeft">tukša</small></button>
         <button type="button" data-side="sleeveRight" aria-pressed="false"><span>Labā piedurkne</span><small data-side-status="sleeveRight">tukša</small></button>
+      </div>
+
+      <div class="customizer-mobile-side-nav" data-mobile-side-nav aria-label="Apdrukas puse mobilajā skatā">
+        <div class="customizer-mobile-side-main">
+          <button class="is-active" type="button" data-side="front" aria-pressed="true">Priekša</button>
+          <button type="button" data-side="back" aria-pressed="false">Aizmugure</button>
+          <button class="mobile-sleeve-parent" type="button" data-side="sleeveLeft" aria-pressed="false">Piedurknes</button>
+        </div>
+        <div class="customizer-mobile-sleeve-switch" data-mobile-sleeve-switch hidden>
+          <button type="button" data-side="sleeveLeft" aria-pressed="false">Kreisā</button>
+          <button type="button" data-side="sleeveRight" aria-pressed="false">Labā</button>
+        </div>
       </div>
 
       <div class="customizer-layout">
