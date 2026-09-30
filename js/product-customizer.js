@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), selectedColor: $('[data-selected-color]'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), selectedColor: $('[data-selected-color]'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]'), sizeGuideOpen: $('[data-size-guide-open]'), sizeGuideDialog: $('[data-size-guide-dialog]'), sizeGuideClose: $('[data-size-guide-close]'), sizeGuideTitle: $('[data-size-guide-title]'), sizeGuideAudience: $('[data-size-guide-audience]'), sizeGuideDiagram: $('[data-size-guide-diagram]'), sizeGuideHeadRow: $('[data-size-guide-head-row]'), sizeGuideBody: $('[data-size-guide-body]'), sizeGuideNote: $('[data-size-guide-note]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -113,7 +113,7 @@
     const group = $('[data-size-options]');
     if (!group) return;
     group.innerHTML = (product.izmeri || []).map(size => `<button type="button" data-size="${size}" aria-pressed="false">${size}</button>`).join('');
-    els.sizeButtons = $$('[data-size]', group);
+    els.sizeButtons = $('[data-size]', group);
     els.sizeButtons.forEach(button => button.addEventListener('click', () => {
       state.size = button.dataset.size || '';
       setPressed(els.sizeButtons, button);
@@ -121,6 +121,80 @@
       updateNavigation();
       renderDesign();
     }));
+  }
+
+  function sizeGuideSvg(kind = 'tshirt') {
+    const longSleeve = kind === 'hoodie' || kind === 'sweatshirt';
+    const hoodie = kind === 'hoodie';
+    const bodyTop = 58;
+    const bodyBottom = 245;
+    const leftBody = 108;
+    const rightBody = 252;
+    const sleeveEndY = longSleeve ? 226 : 128;
+    const sleeveEndX = longSleeve ? 48 : 42;
+    const rightSleeveEndX = 312;
+
+    return `
+      <svg viewBox="0 0 360 290" role="img" aria-label="A, C un H mērījumu shēma">
+        <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          ${hoodie ? '<path d="M145 60 Q180 18 215 60 L205 83 Q180 62 155 83 Z"/>' : '<path d="M145 58 Q180 83 215 58"/>'}
+          <path d="M108 76 L145 58 ${hoodie ? 'M215 58' : ''} L252 76 L${rightSleeveEndX} ${sleeveEndY} L274 ${sleeveEndY + (longSleeve ? 12 : 14)} L252 112 L252 245 L108 245 L108 112 L86 ${sleeveEndY + (longSleeve ? 12 : 14)} L${sleeveEndX} ${sleeveEndY} L108 76"/>
+          ${longSleeve ? '<path d="M74 211 L92 229 M268 229 L286 211"/>' : ''}
+          ${hoodie ? '<path d="M142 173 L155 148 L205 148 L218 173 M153 173 L207 173"/>' : ''}
+          <path d="M108 112 L252 112"/>
+        </g>
+        <g fill="none" stroke="currentColor" stroke-width="1.5" opacity=".72">
+          <path d="M84 60 L84 245"/>
+          <path d="M78 60 L90 60 M78 245 L90 245"/>
+          <path d="M108 104 L252 104"/>
+          <path d="M108 98 L108 110 M252 98 L252 110"/>
+          <path d="${longSleeve ? 'M252 76 L304 218' : 'M252 76 L309 125'}"/>
+          <path d="${longSleeve ? 'M247 79 L257 73 M299 221 L309 215' : 'M248 81 L256 71 M304 130 L314 120'}"/>
+        </g>
+        <g fill="currentColor" font-family="Manrope, Arial, sans-serif" font-weight="800" font-size="22">
+          <text x="52" y="160">A</text>
+          <text x="174" y="98">C</text>
+          <text x="${longSleeve ? 292 : 296}" y="${longSleeve ? 155 : 92}">H</text>
+        </g>
+      </svg>`;
+  }
+
+  function renderSizeGuide() {
+    const guide = product.sizeGuide;
+    if (!guide || !els.sizeGuideDialog) return;
+
+    if (els.sizeGuideTitle) els.sizeGuideTitle.textContent = product.modelis || product.nosaukums || 'Izmēru tabula';
+    if (els.sizeGuideAudience) els.sizeGuideAudience.textContent = [product.nosaukums, product.auditorija].filter(Boolean).join(' · ');
+    if (els.sizeGuideDiagram) els.sizeGuideDiagram.innerHTML = sizeGuideSvg(guide.kind);
+
+    ['A','C','H'].forEach(key => {
+      const label = $('[data-size-guide-label="' + key + '"]', els.sizeGuideDialog);
+      if (label) label.textContent = guide.labels?.[key] || key;
+    });
+
+    if (els.sizeGuideHeadRow) {
+      els.sizeGuideHeadRow.innerHTML = '<tr><th>Mērījums</th>' + guide.columns.map(column => `<th>${column}</th>`).join('') + '</tr>';
+    }
+    if (els.sizeGuideBody) {
+      els.sizeGuideBody.innerHTML = ['A','C','H'].map(key => {
+        const values = guide.rows?.[key] || [];
+        return '<tr><th scope="row">' + key + '</th>' + values.map(value => '<td>' + String(value).replace('.', ',') + '</td>').join('') + '</tr>';
+      }).join('');
+    }
+    if (els.sizeGuideNote) els.sizeGuideNote.textContent = guide.note || 'Visi izmēri norādīti cm.';
+  }
+
+  function openSizeGuide() {
+    if (!els.sizeGuideDialog || !product.sizeGuide) return;
+    renderSizeGuide();
+    if (typeof els.sizeGuideDialog.showModal === 'function') els.sizeGuideDialog.showModal();
+    else els.sizeGuideDialog.setAttribute('open', '');
+  }
+
+  function closeSizeGuide() {
+    if (!els.sizeGuideDialog) return;
+    if (typeof els.sizeGuideDialog.close === 'function') els.sizeGuideDialog.close();
+    else els.sizeGuideDialog.removeAttribute('open');
   }
 
   function productReadyForCustomizer(candidate) {
@@ -686,6 +760,18 @@
 
   els.designCanvas.addEventListener('pointerup', endPointer);
   els.designCanvas.addEventListener('pointercancel', endPointer);
+
+  if (els.sizeGuideOpen) els.sizeGuideOpen.addEventListener('click', openSizeGuide);
+  if (els.sizeGuideClose) els.sizeGuideClose.addEventListener('click', closeSizeGuide);
+  if (els.sizeGuideDialog) {
+    els.sizeGuideDialog.addEventListener('click', event => {
+      if (event.target === els.sizeGuideDialog) closeSizeGuide();
+    });
+    els.sizeGuideDialog.addEventListener('cancel', event => {
+      event.preventDefault();
+      closeSizeGuide();
+    });
+  }
 
   if (els.prev) els.prev.addEventListener('click', () => showStep(state.step - 1));
   if (els.next) els.next.addEventListener('click', () => { if (!stepComplete(state.step)) { if (state.step === 1) error('size', 'Izvēlies krekla izmēru.'); if (state.step === 2) error('file', 'Pievieno dizainu vismaz vienai apdrukas pusei.'); return; } showStep(state.step + 1); });
