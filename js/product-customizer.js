@@ -513,6 +513,8 @@
   let dragOffset = { x: 0, y: 0 };
   let resizeStartDistance = 0;
   let resizeStartScale = 0;
+  let resizeStartAngle = 0;
+  let resizeStartRotation = 0;
   let pinchStartDistance = 0;
   let pinchStartScale = 0;
 
@@ -556,6 +558,8 @@
       const center = designCenter(designRect);
       resizeStartDistance = Math.max(1, Math.hypot(point.x - center.x, point.y - center.y));
       resizeStartScale = currentSide().scale;
+      resizeStartAngle = Math.atan2(point.y - center.y, point.x - center.x);
+      resizeStartRotation = currentSide().rotation || 0;
       interactionMode = 'resize';
       dragPointerId = event.pointerId;
       els.designCanvas.style.cursor = 'nwse-resize';
@@ -617,7 +621,13 @@
       if (!designRect) return;
       const center = designCenter(designRect);
       const distance = Math.max(1, Math.hypot(point.x - center.x, point.y - center.y));
+      const angle = Math.atan2(point.y - center.y, point.x - center.x);
+      let angleDelta = angle - resizeStartAngle;
+      if (angleDelta > Math.PI) angleDelta -= Math.PI * 2;
+      if (angleDelta < -Math.PI) angleDelta += Math.PI * 2;
+
       side.scale = clamp(resizeStartScale * (distance / resizeStartDistance), 0.05, 1.25);
+      side.rotation = (((resizeStartRotation + angleDelta * 180 / Math.PI) + 180) % 360) - 180;
       els.scale.value = String(Math.round(side.scale * 100));
       renderDesign();
       return;
@@ -646,6 +656,8 @@
       pinchStartScale = 0;
       resizeStartDistance = 0;
       resizeStartScale = 0;
+      resizeStartAngle = 0;
+      resizeStartRotation = 0;
       els.designCanvas.style.cursor = state.designSelected ? 'grab' : 'default';
     }
   };
