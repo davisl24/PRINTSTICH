@@ -515,6 +515,7 @@
   let resizeStartScale = 0;
   let resizeStartAngle = 0;
   let resizeStartRotation = 0;
+  let handleGestureLocked = '';
   let pinchStartDistance = 0;
   let pinchStartScale = 0;
 
@@ -560,7 +561,8 @@
       resizeStartScale = currentSide().scale;
       resizeStartAngle = Math.atan2(point.y - center.y, point.x - center.x);
       resizeStartRotation = currentSide().rotation || 0;
-      interactionMode = 'resize';
+      handleGestureLocked = '';
+      interactionMode = 'transform-handle';
       dragPointerId = event.pointerId;
       els.designCanvas.style.cursor = 'nwse-resize';
     } else if (activePointers.size === 1) {
@@ -615,7 +617,7 @@
 
     if (dragPointerId !== event.pointerId) return;
 
-    if (interactionMode === 'resize') {
+    if (interactionMode === 'transform-handle') {
       const area = els.designCanvas.getBoundingClientRect();
       const designRect = getDesignRect(area.width, area.height, side, asset);
       if (!designRect) return;
@@ -626,9 +628,28 @@
       if (angleDelta > Math.PI) angleDelta -= Math.PI * 2;
       if (angleDelta < -Math.PI) angleDelta += Math.PI * 2;
 
-      side.scale = clamp(resizeStartScale * (distance / resizeStartDistance), 0.05, 1.25);
-      side.rotation = (((resizeStartRotation + angleDelta * 180 / Math.PI) + 180) % 360) - 180;
-      els.scale.value = String(Math.round(side.scale * 100));
+      const radialMovement = Math.abs(distance - resizeStartDistance);
+      const tangentialMovement = Math.abs(angleDelta) * resizeStartDistance;
+
+      // Do nothing for the first few pixels, then lock the gesture.
+      // Dragging in/out resizes; dragging around the design rotates.
+      if (!handleGestureLocked) {
+        const intentThreshold = 9;
+        if (Math.max(radialMovement, tangentialMovement) < intentThreshold) return;
+        handleGestureLocked = tangentialMovement > radialMovement * 1.35 ? 'rotate' : 'resize';
+      }
+
+      if (handleGestureLocked === 'resize') {
+        side.scale = clamp(resizeStartScale * (distance / resizeStartDistance), 0.05, 1.25);
+        els.scale.value = String(Math.round(side.scale * 100));
+        els.designCanvas.style.cursor = 'nwse-resize';
+      } else {
+        const rawDegrees = resizeStartRotation + angleDelta * 180 / Math.PI;
+        const snappedDegrees = Math.round(rawDegrees / 2) * 2;
+        side.rotation = (((snappedDegrees + 180) % 360) + 360) % 360 - 180;
+        els.designCanvas.style.cursor = 'grabbing';
+      }
+
       renderDesign();
       return;
     }
@@ -658,6 +679,7 @@
       resizeStartScale = 0;
       resizeStartAngle = 0;
       resizeStartRotation = 0;
+      handleGestureLocked = '';
       els.designCanvas.style.cursor = state.designSelected ? 'grab' : 'default';
     }
   };
