@@ -179,7 +179,63 @@
     <section class="section quote-section"><div class="container quote-shell"><p class="quote-mark" aria-hidden="true">“</p><blockquote>Ļoti kvalitatīvi un skaisti izgatavo! Palīdzēja gan ar dizainu, gan risinājumiem!</blockquote><p class="quote-source">Google klienta atsauksme</p></div></section>
     <div class="divider" aria-hidden="true"></div>
     <section class="section inquiry" id="piedavajums"><div class="container inquiry-grid"><div class="inquiry-copy"><p class="eyebrow">Saņemt piedāvājumu</p><h2>Ir ideja? Izrunāsim, kā to realizēt</h2><p>Katrs pasūtījums var būt atšķirīgs, tāpēc cenu sagatavojam individuāli. Apraksti savu ideju un sazināsimies par piemērotāko risinājumu.</p></div>
-      <form class="inquiry-form" id="inquiry-form" method="POST" action="https://formsubmit.co/davislocs135@gmail.com" novalidate><input type="hidden" name="_subject" value="Jauns pieprasījums no printstich.lv"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" value="https://printstich.vercel.app/paldies.html"><input type="text" name="_honey" style="display:none"><div class="field"><label for="vards">Vārds</label><input id="vards" name="vards" type="text" autocomplete="name" required aria-describedby="name-error"><p class="form-status" id="name-error" role="status" hidden></p></div><div class="field"><label for="kontakts">Telefons vai e-pasts</label><input id="kontakts" name="kontakts" type="text" autocomplete="email" required aria-describedby="contact-error"><p class="form-status" id="contact-error" role="status" hidden></p></div><div class="field field-full"><label for="zina">Ko vēlies izgatavot?</label><textarea id="zina" name="zina" rows="5" minlength="10" required aria-describedby="message-error"></textarea><p class="form-status" id="message-error" role="status" hidden></p></div><div class="form-footer field-full"><button class="button" type="submit" id="submit-button">Nosūtīt pieprasījumu</button></div><p class="form-status field-full" role="status" aria-live="polite" id="form-error" hidden></p></form>
+      <form class="inquiry-form" id="inquiry-form" method="POST" action="https://formsubmit.co/davislocs135@gmail.com" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="_subject" value="Jauns pieprasījums no printstich.lv">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://printstich.vercel.app/paldies.html">
+        <input type="text" name="_honey" style="display:none">
+        <div class="field">
+          <label for="vards">Vārds</label>
+          <input id="vards" name="vards" type="text" autocomplete="name" required aria-describedby="name-error">
+          <p class="form-status" id="name-error" role="status" hidden></p>
+        </div>
+        <div class="field">
+          <label for="kontakts">Telefons vai e-pasts</label>
+          <input id="kontakts" name="kontakts" type="text" autocomplete="email" required aria-describedby="contact-error">
+          <p class="form-status" id="contact-error" role="status" hidden></p>
+        </div>
+
+        <fieldset class="field field-full inquiry-topic">
+          <legend>Par ko vēlies izrunāt?</legend>
+          <div class="inquiry-topic-options">
+            <label class="topic-option"><input type="radio" name="temats" value="Apģērba apdruka" required><span>Apģērba apdruka</span></label>
+            <label class="topic-option"><input type="radio" name="temats" value="Dizaina izveide"><span>Dizaina izveide</span></label>
+            <label class="topic-option"><input type="radio" name="temats" value="Uzņēmumam / komandai"><span>Uzņēmumam / komandai</span></label>
+            <label class="topic-option"><input type="radio" name="temats" value="Cits"><span>Cits</span></label>
+          </div>
+          <p class="form-status" id="topic-error" role="status" hidden></p>
+        </fieldset>
+
+        <div class="field field-full inquiry-other" data-other-topic hidden>
+          <label for="cits-temats">Par ko tieši?</label>
+          <input id="cits-temats" name="cits_temats" type="text" placeholder="Īsi apraksti tēmu">
+        </div>
+
+        <div class="field field-full">
+          <label for="zina">Pastāsti īsumā, ko vēlies izveidot</label>
+          <textarea id="zina" name="zina" rows="5" minlength="10" required aria-describedby="message-error" placeholder="Piem., 20 T-krekli komandai ar logo priekšpusē un uzrakstu aizmugurē."></textarea>
+          <p class="form-status" id="message-error" role="status" hidden></p>
+        </div>
+
+        <div class="field field-full inquiry-upload">
+          <span class="field-label">Pievieno failu <small>— nav obligāti</small></span>
+          <label class="file-drop" for="idejas-fails">
+            <span class="file-drop-icon" aria-hidden="true">↑</span>
+            <span class="file-drop-copy">
+              <strong>Pievienot failu</strong>
+              <small>Logo, skice, attēls vai piemērs · PNG, JPG, PDF, SVG</small>
+            </span>
+          </label>
+          <input class="file-input" id="idejas-fails" name="pielikums" type="file" accept=".png,.jpg,.jpeg,.pdf,.svg,image/png,image/jpeg,application/pdf,image/svg+xml">
+          <div class="file-selected" data-file-selected hidden>
+            <span data-file-name></span>
+            <button type="button" data-file-remove>Noņemt</button>
+          </div>
+        </div>
+
+        <div class="form-footer field-full"><button class="button" type="submit" id="submit-button">Nosūtīt pieprasījumu</button></div>
+        <p class="form-status field-full" role="status" aria-live="polite" id="form-error" hidden></p>
+      </form>
       <p class="form-status" id="form-success" role="status" aria-live="polite" hidden>Paldies, ziņa saņemta. Atbildēsim tuvākajā laikā.</p>
     </div></section>
   </main>
@@ -192,12 +248,103 @@
       const form = document.getElementById('inquiry-form');
       const formError = document.getElementById('form-error');
       if (!form || !formError) return;
-      const fields = { name: { input: document.getElementById('vards'), error: document.getElementById('name-error') }, contact: { input: document.getElementById('kontakts'), error: document.getElementById('contact-error') }, message: { input: document.getElementById('zina'), error: document.getElementById('message-error') } };
+      const fields = {
+        name: { input: document.getElementById('vards'), error: document.getElementById('name-error') },
+        contact: { input: document.getElementById('kontakts'), error: document.getElementById('contact-error') },
+        message: { input: document.getElementById('zina'), error: document.getElementById('message-error') }
+      };
+      const topicInputs = [...form.querySelectorAll('input[name="temats"]')];
+      const topicError = document.getElementById('topic-error');
+      const otherWrap = form.querySelector('[data-other-topic]');
+      const otherInput = document.getElementById('cits-temats');
+      const fileInput = document.getElementById('idejas-fails');
+      const fileSelected = form.querySelector('[data-file-selected]');
+      const fileName = form.querySelector('[data-file-name]');
+      const fileRemove = form.querySelector('[data-file-remove]');
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const phonePattern = /^[+\d\s()\-]{7,}$/;
-      const setError = (field, message = '') => { if (!field?.error) return; field.error.textContent = message; field.error.hidden = !message; field.error.classList.toggle('is-error', Boolean(message)); };
-      const clearErrors = () => { Object.values(fields).forEach((field) => setError(field)); formError.textContent = ''; formError.hidden = true; formError.classList.remove('is-error'); };
-      const validate = () => { clearErrors(); let valid = true; const name = fields.name.input?.value.trim() || ''; const contact = fields.contact.input?.value.trim() || ''; const message = fields.message.input?.value.trim() || ''; if (!name) { setError(fields.name, 'Lūdzu, ievadi savu vārdu.'); valid = false; } if (!contact) { setError(fields.contact, 'Lūdzu, ievadi telefonu vai e-pastu.'); valid = false; } else if (!emailPattern.test(contact) && !phonePattern.test(contact)) { setError(fields.contact, 'Ievadi derīgu e-pasta adresi vai tālruņa numuru.'); valid = false; } if (message.length < 10) { setError(fields.message, 'Apraksti savu ideju vismaz 10 rakstzīmēs.'); valid = false; } return valid; };
+
+      const setError = (field, message = '') => {
+        if (!field?.error) return;
+        field.error.textContent = message;
+        field.error.hidden = !message;
+        field.error.classList.toggle('is-error', Boolean(message));
+      };
+
+      const selectedTopic = () => topicInputs.find((input) => input.checked)?.value || '';
+
+      const updateOtherTopic = () => {
+        const isOther = selectedTopic() === 'Cits';
+        if (otherWrap) otherWrap.hidden = !isOther;
+        if (otherInput) {
+          otherInput.required = isOther;
+          if (!isOther) otherInput.value = '';
+        }
+      };
+
+      topicInputs.forEach((input) => input.addEventListener('change', updateOtherTopic));
+      updateOtherTopic();
+
+      if (fileInput && fileSelected && fileName) {
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files?.[0];
+          fileSelected.hidden = !file;
+          fileName.textContent = file ? file.name : '';
+        });
+      }
+      fileRemove?.addEventListener('click', () => {
+        if (fileInput) fileInput.value = '';
+        if (fileSelected) fileSelected.hidden = true;
+        if (fileName) fileName.textContent = '';
+      });
+
+      const clearErrors = () => {
+        Object.values(fields).forEach((field) => setError(field));
+        if (topicError) {
+          topicError.textContent = '';
+          topicError.hidden = true;
+          topicError.classList.remove('is-error');
+        }
+        formError.textContent = '';
+        formError.hidden = true;
+        formError.classList.remove('is-error');
+      };
+
+      const validate = () => {
+        clearErrors();
+        let valid = true;
+        const name = fields.name.input?.value.trim() || '';
+        const contact = fields.contact.input?.value.trim() || '';
+        const message = fields.message.input?.value.trim() || '';
+        const topic = selectedTopic();
+
+        if (!name) { setError(fields.name, 'Lūdzu, ievadi savu vārdu.'); valid = false; }
+        if (!contact) {
+          setError(fields.contact, 'Lūdzu, ievadi telefonu vai e-pastu.');
+          valid = false;
+        } else if (!emailPattern.test(contact) && !phonePattern.test(contact)) {
+          setError(fields.contact, 'Ievadi derīgu e-pasta adresi vai tālruņa numuru.');
+          valid = false;
+        }
+        if (!topic) {
+          if (topicError) {
+            topicError.textContent = 'Izvēlies vienu tēmu.';
+            topicError.hidden = false;
+            topicError.classList.add('is-error');
+          }
+          valid = false;
+        }
+        if (topic === 'Cits' && !(otherInput?.value.trim())) {
+          otherInput?.focus();
+          valid = false;
+        }
+        if (message.length < 10) {
+          setError(fields.message, 'Apraksti savu ideju vismaz 10 rakstzīmēs.');
+          valid = false;
+        }
+        return valid;
+      };
+
       form.addEventListener('submit', (event) => {
         if (!validate()) event.preventDefault();
       });
