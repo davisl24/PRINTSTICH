@@ -201,6 +201,7 @@ p:last-child { margin-bottom: 0; }
 .file-drop-copy strong { color: var(--color-text-strong); font-size: .95rem; }
 .file-drop-copy small, .field-label small { color: var(--color-text-muted); font-size: .78rem; font-weight: 500; }
 .file-selected { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 46px; padding: .65rem .85rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); }
+.file-selected[hidden] { display: none !important; }
 .file-selected span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .9rem; font-weight: 650; }
 .file-selected button { flex: 0 0 auto; padding: .35rem .55rem; border: 0; background: transparent; color: var(--color-text-muted); font: inherit; font-size: .82rem; font-weight: 650; cursor: pointer; }
 .file-selected button:hover { color: var(--color-accent); }
