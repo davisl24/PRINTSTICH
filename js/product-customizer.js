@@ -161,6 +161,7 @@
     state.svgLoaded = false;
     state.svgRoot = null;
     state.svgPath = '';
+    state.designSelected = false;
 
     setPressed(els.productButtons, button);
     renderSizeButtons();
@@ -457,10 +458,10 @@
   }
 
   els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
-  els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; error('file'); await updatePreview(); }));
+  els.sideButtons.forEach(button => button.addEventListener('click', async () => { const key = button.dataset.side; if (!SIDE_KEYS.includes(key)) return; state.activeSide = key; state.designSelected = Boolean(getSideAsset(key)); error('file'); await updatePreview(); }));
   if (els.designInput) els.designInput.addEventListener('change', () => { const file = els.designInput.files?.[0]; loadFile(file); els.designInput.value = ''; });
   if (els.replace) els.replace.addEventListener('click', () => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); els.designInput?.click(); });
-  if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
+  if (els.remove) els.remove.addEventListener('click', () => { state.sides[state.activeSide] = createSideState(state.activeSide); state.designSelected = false; if (els.designInput) els.designInput.value = ''; updateSideUi(); renderDesign(); updateNavigation(); });
   if (els.uploadZone) { ['dragenter', 'dragover'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); if (state.library.length < LIBRARY_MAX_FILES) els.uploadZone.classList.add('is-dragging'); })); ['dragleave', 'drop'].forEach(name => els.uploadZone.addEventListener(name, event => { event.preventDefault(); els.uploadZone.classList.remove('is-dragging'); })); els.uploadZone.addEventListener('drop', event => { if (state.library.length >= LIBRARY_MAX_FILES) return error('file', 'Sasniegts maksimums, dzēs kādu failu'); loadFile(event.dataTransfer?.files?.[0]); }); }
   if (els.libraryList) els.libraryList.addEventListener('click', event => { const deleteButton = event.target.closest('[data-library-delete]'); if (deleteButton) { event.preventDefault(); event.stopPropagation(); removeLibraryItem(deleteButton.dataset.libraryDelete); return; } const selectButton = event.target.closest('[data-library-id]'); if (selectButton) { error('file'); attachLibraryItem(state.activeSide, selectButton.dataset.libraryId); renderLibrary(); } });
   function applyPreset(preset) {
