@@ -81,6 +81,27 @@
     ])
   );
 
+  const commonGarmentColors = {
+    '00': { id: '00', nosaukums: 'Balta · 00', hex: '#FFFFFF', malfini: '00' },
+    '01': { id: '01', nosaukums: 'Melna · 01', hex: '#0A0A0C', malfini: '01' },
+    '02': { id: '02', nosaukums: 'Tumši zila · 02', hex: '#1B2D3C', malfini: '02' },
+    '04': { id: '04', nosaukums: 'Dzeltena · 04', hex: '#F5C519', malfini: '04' },
+    '05': { id: '05', nosaukums: 'Karaliski zila · 05', hex: '#1B4992', malfini: '05' },
+    '06': { id: '06', nosaukums: 'Pudeļu zaļa · 06', hex: '#23512F', malfini: '06' },
+    '07': { id: '07', nosaukums: 'Sarkana · 07', hex: '#B31F24', malfini: '07' },
+    '12': { id: '12', nosaukums: 'Tumši pelēka melange · 12', hex: '#8B8F90', malfini: '12' },
+    '16': { id: '16', nosaukums: 'Zaļa · 16', hex: '#018C52', malfini: '16' },
+    '21': { id: '21', nosaukums: 'Bēša · 21', hex: '#E8D8C0', malfini: '21' },
+    '36': { id: '36', nosaukums: 'Tērauda pelēka · 36', hex: '#4F4D4E', malfini: '36' },
+    '44': { id: '44', nosaukums: 'Tirkīza zila · 44', hex: '#01A2C8', malfini: '44' },
+    '67': { id: '67', nosaukums: 'Tumši haki · 67', hex: '#555C55', malfini: '67' },
+    '69': { id: '69', nosaukums: 'Armijas zaļa · 69', hex: '#304837', malfini: '69' },
+    '86': { id: '86', nosaukums: 'Bordo · 86', hex: '#610B2F', malfini: '86' },
+    '87': { id: '87', nosaukums: 'Pusnakts zila · 87', hex: '#1C365B', malfini: '87' }
+  };
+
+  const colorsFor = codes => codes.map(code => ({ ...commonGarmentColors[code] }));
+
   const commonSides = {
     prieksa: 'Priekšpuse',
     aizmugure: 'Aizmugure',
@@ -120,16 +141,58 @@
         sleeveLeft: 'assets/piedurkne-laba.svg',
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
-      krasas: [
-        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF', malfini: '00' },
-        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A', malfini: '01' },
-        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A', malfini: '02' }
-      ],
+      krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      materialOverrides: {
+        '12': '85% kokvilna, 15% viskoze'
+      },
+      careOverrides: {
+        '12': '30 °C'
+      },
       izmeri: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
       izmeruKopsavilkums: 'XS–5XL',
       puses: commonSides,
       drukasZona: commonZones,
       drukasLaukumsMm: commonPrintAreas,
+      maxDrukaMm: { w: 297, h: 420 }
+    },
+
+
+    kids: {
+      id: 'kids',
+      modelis: 'Basic 138',
+      nosaukums: 'Bērnu T-krekls',
+      kategorija: 'Bērnu T-krekls',
+      auditorija: 'Bērniem',
+      razotajs: 'MALFINI',
+      apraksts: 'Bērnu T-krekls no Single Jersey auduma ar sānu šuvēm, šauru 1:1 rievotu kakla apdari ar elastānu, nostiprinātām plecu šuvēm un silikona apdari.',
+      materials: '100% kokvilna',
+      gramaza: '160 g/m²',
+      kopsana: '40 °C',
+      avots: 'https://shop.malfini.com/lv/en/product/basic-138',
+      svg: 'assets/krekls.svg',
+      sleeveSvgs: {
+        sleeveLeft: 'assets/piedurkne-laba.svg',
+        sleeveRight: 'assets/piedurkne-laba.svg'
+      },
+      krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      materialOverrides: {
+        '12': '85% kokvilna, 15% viskoze'
+      },
+      careOverrides: {
+        '12': '30 °C'
+      },
+      izmeri: ['110 cm / 4 g.', '122 cm / 6 g.', '134 cm / 8 g.', '146 cm / 10 g.', '158 cm / 12 g.'],
+      izmeruKopsavilkums: '110–158 cm / 4–12 g.',
+      puses: commonSides,
+      drukasZona: commonZones,
+      // Fiziskie drukas mm bērnu modelim vēl nav klienta apstiprināti.
+      // SVG redaktors strādā, bet mm aprēķinu neizdomājam līdz saņemam precīzu drukas laukumu.
+      drukasLaukumsMm: {
+        prieksa: {},
+        aizmugure: {},
+        sleeveLeft: {},
+        sleeveRight: {}
+      },
       maxDrukaMm: { w: 297, h: 420 }
     },
 
@@ -156,11 +219,10 @@
         sleeveLeft: 'assets/hudijs-piedurkne.svg',
         sleeveRight: 'assets/hudijs-piedurkne.svg'
       },
-      krasas: [
-        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
-        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A' },
-        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
-      ],
+      krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      materialOverrides: {
+        '12': '85% kokvilna, 15% viskoze'
+      },
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
       izmeruKopsavilkums: 'S–5XL',
       puses: commonSides,
@@ -206,11 +268,10 @@
         sleeveLeft: 'assets/dzemperis-piedurkne.svg',
         sleeveRight: 'assets/dzemperis-piedurkne.svg'
       },
-      krasas: [
-        { id: 'balts', nosaukums: 'Balta', hex: '#FFFFFF' },
-        { id: 'melns', nosaukums: 'Melna', hex: '#1A1A1A' },
-        { id: 'zils', nosaukums: 'Tumši zila', hex: '#1B2A4A' }
-      ],
+      krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '21', '69', '86', '87']),
+      materialOverrides: {
+        '12': '75% kokvilna, 25% poliesters'
+      },
       izmeri: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
       izmeruKopsavilkums: 'S–3XL',
       puses: commonSides,
