@@ -102,12 +102,56 @@
 
   const colorsFor = codes => codes.map(code => ({ ...commonGarmentColors[code] }));
 
-  const catalogColorsFor = codes => codes.map(code => ({
-    id: code,
-    nosaukums: `MALFINI tonis · ${code}`,
-    malfini: code,
-    catalogOnly: true
-  }));
+  const catalogColorMeta = {
+    '03': { nosaukums: 'Pelēka melange', hex: '#D2D0CD', grupa: 'Neitrālās' },
+    '08': { nosaukums: 'Smilšu', hex: '#C7B28D', grupa: 'Neitrālās' },
+    '09': { nosaukums: 'Haki', hex: '#77735B', grupa: 'Zaļās' },
+    '11': { nosaukums: 'Oranža', hex: '#E87522', grupa: 'Siltās' },
+    '13': { nosaukums: 'Koraļļu', hex: '#D95D53', grupa: 'Siltās' },
+    '14': { nosaukums: 'Debeszila', hex: '#54A7D8', grupa: 'Zilās' },
+    '15': { nosaukums: 'Gaiši zila', hex: '#8CC9E8', grupa: 'Zilās' },
+    '19': { nosaukums: 'Smaragda', hex: '#16805F', grupa: 'Zaļās' },
+    '21': { nosaukums: 'Bēša', hex: '#E8D8C0', grupa: 'Neitrālās' },
+    '23': { nosaukums: 'Marlboro sarkana', hex: '#B9342D', grupa: 'Siltās' },
+    '27': { nosaukums: 'Violeta', hex: '#685183', grupa: 'Rozā / violetās' },
+    '28': { nosaukums: 'Tumši haki', hex: '#5C5A44', grupa: 'Zaļās' },
+    '29': { nosaukums: 'Armijas brūna', hex: '#645A48', grupa: 'Neitrālās' },
+    '30': { nosaukums: 'Rozā', hex: '#D989A3', grupa: 'Rozā / violetās' },
+    '38': { nosaukums: 'Šokolādes', hex: '#62483D', grupa: 'Neitrālās' },
+    '39': { nosaukums: 'Zāles zaļa', hex: '#4E9A42', grupa: 'Zaļās' },
+    '40': { nosaukums: 'Violeta', hex: '#775A95', grupa: 'Rozā / violetās' },
+    '51': { nosaukums: 'Ledus pelēka', hex: '#C9D0D2', grupa: 'Neitrālās' },
+    '59': { nosaukums: 'Tirkīza', hex: '#2CA7A2', grupa: 'Zilās' },
+    '60': { nosaukums: 'Denim', hex: '#476780', grupa: 'Zilās' },
+    '62': { nosaukums: 'Laima zaļa', hex: '#9DCB3B', grupa: 'Zaļās' },
+    '64': { nosaukums: 'Violeta', hex: '#7A4E9C', grupa: 'Rozā / violetās' },
+    '69': { nosaukums: 'Armijas zaļa', hex: '#304837', grupa: 'Zaļās' },
+    '70': { nosaukums: 'Snorkel zila', hex: '#275D89', grupa: 'Zilās' },
+    '86': { nosaukums: 'Bordo', hex: '#610B2F', grupa: 'Siltās' },
+    '90': { nosaukums: 'Neona dzeltena', hex: '#EAF20D', grupa: 'Siltās' },
+    '92': { nosaukums: 'Ābolu zaļa', hex: '#74B63E', grupa: 'Zaļās' },
+    '93': { nosaukums: 'Petrol zila', hex: '#176678', grupa: 'Zilās' },
+    '94': { nosaukums: 'Ebony pelēka', hex: '#4A4A48', grupa: 'Neitrālās' },
+    '95': { nosaukums: 'Piparmētru', hex: '#86CFB5', grupa: 'Zaļās' },
+    '96': { nosaukums: 'Citronu', hex: '#E4E934', grupa: 'Siltās' },
+    'A1': { nosaukums: 'Gaiši rozā', hex: '#E7A7B6', grupa: 'Rozā / violetās' },
+    'A2': { nosaukums: 'Mandarīnu oranža', hex: '#EF8735', grupa: 'Siltās' },
+    'A7': { nosaukums: 'Frost', hex: '#D8E6E3', grupa: 'Neitrālās' },
+    'C9': { nosaukums: 'Salvijas zaļa', hex: '#A9B99F', grupa: 'Zaļās' },
+    'D1': { nosaukums: 'Orhideju', hex: '#B681B9', grupa: 'Rozā / violetās' }
+  };
+
+  const catalogColorsFor = codes => codes.map(code => {
+    const meta = catalogColorMeta[code] || {};
+    return {
+      id: code,
+      nosaukums: `${meta.nosaukums || 'MALFINI tonis'} · ${code}`,
+      malfini: code,
+      hex: meta.hex || '#D7DBD8',
+      grupa: meta.grupa || 'Citas',
+      catalogOnly: true
+    };
+  });
 
   const commonSides = {
     prieksa: 'Priekšpuse',
@@ -149,8 +193,6 @@
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
       krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
-      papilduKrasas: catalogColorsFor(['03', '51', '21', '86', '60', 'C9', '69', '28']),
-      papilduKrasas: catalogColorsFor(['03', '21', '86', '11', 'A2', 'A1', '30', '64', 'D1', '15', '14', '70', '60', '19', '95', 'A7', 'C9', '92', '62', '69', '09', '28', '96']),
       papilduKrasas: catalogColorsFor(['94', '03', '51', '08', '38', '27', '86', '23', '13', '11', 'A2', 'A1', '40', '15', '14', '70', '60', '93', '59', '19', '95', 'A7', '39', '62', '69', '09', '29', '28', '96', '90']),
       materialOverrides: {
         '12': '85% kokvilna, 15% viskoze'
@@ -197,6 +239,7 @@
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
       krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      papilduKrasas: catalogColorsFor(['03', '21', '86', '11', 'A2', 'A1', '30', '64', 'D1', '15', '14', '70', '60', '19', '95', 'A7', 'C9', '92', '62', '69', '09', '28', '96']),
       materialOverrides: {
         '12': '85% kokvilna, 15% viskoze'
       },
@@ -254,6 +297,7 @@
         sleeveRight: 'assets/hudijs-piedurkne.svg'
       },
       krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      papilduKrasas: catalogColorsFor(['03', '51', '21', '86', '60', 'C9', '69', '28']),
       materialOverrides: {
         '12': '85% kokvilna, 15% viskoze'
       },
