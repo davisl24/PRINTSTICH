@@ -102,6 +102,13 @@
 
   const colorsFor = codes => codes.map(code => ({ ...commonGarmentColors[code] }));
 
+  const catalogColorsFor = codes => codes.map(code => ({
+    id: code,
+    nosaukums: `MALFINI tonis · ${code}`,
+    malfini: code,
+    catalogOnly: true
+  }));
+
   const commonSides = {
     prieksa: 'Priekšpuse',
     aizmugure: 'Aizmugure',
@@ -142,6 +149,9 @@
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
       krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '36', '44', '67', '87']),
+      papilduKrasas: catalogColorsFor(['03', '51', '21', '86', '60', 'C9', '69', '28']),
+      papilduKrasas: catalogColorsFor(['03', '21', '86', '11', 'A2', 'A1', '30', '64', 'D1', '15', '14', '70', '60', '19', '95', 'A7', 'C9', '92', '62', '69', '09', '28', '96']),
+      papilduKrasas: catalogColorsFor(['94', '03', '51', '08', '38', '27', '86', '23', '13', '11', 'A2', 'A1', '40', '15', '14', '70', '60', '93', '59', '19', '95', 'A7', '39', '62', '69', '09', '29', '28', '96', '90']),
       materialOverrides: {
         '12': '85% kokvilna, 15% viskoze'
       },
@@ -305,6 +315,7 @@
         sleeveRight: 'assets/dzemperis-piedurkne.svg'
       },
       krasas: colorsFor(['00', '01', '02', '04', '05', '06', '07', '12', '16', '21', '69', '86', '87']),
+      papilduKrasas: catalogColorsFor(['15']),
       materialOverrides: {
         '12': '75% kokvilna, 25% poliesters'
       },
