@@ -26,18 +26,23 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), colorMore: $('[data-color-more]'), moreColorOptions: $('[data-more-color-options]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
 
   const normalizeColor = value => ({ white: '00', balts: '00', black: '01', melns: '01', blue: '02', zils: '02' }[value] || value || '00');
-  const colorById = id => product.krasas.find(color => color.id === normalizeColor(id)) || product.krasas[0];
+  const allProductColors = () => [...(product.krasas || []), ...(product.papilduKrasas || [])];
+  const colorById = id => allProductColors().find(color => color.id === normalizeColor(id)) || product.krasas?.[0];
   function renderSelectedColor() {
     if (!els.selectedColor) return;
     const color = colorById(state.color);
     if (!color) {
       els.selectedColor.textContent = '';
+      return;
+    }
+    if (color.catalogOnly) {
+      els.selectedColor.textContent = `Izvēlēts no kataloga: kods ${color.malfini || color.id}. Precīzo toni skati MALFINI katalogā.`;
       return;
     }
     const label = (color.nosaukums || '').replace(/\s*·\s*\d+\s*$/, '').trim();
@@ -54,7 +59,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', size: '', activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', size: '', activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -102,27 +107,57 @@
 
   function ensureColorButtons() {
     const group = $('[data-color-options]');
+    const moreGroup = els.moreColorOptions;
     if (!group) return;
 
-    group.innerHTML = (product.krasas || []).map(color => {
-      const label = (color.nosaukums || '').replace(/\s*·\s*\d+\s*$/, '').trim();
+    const buttonMarkup = (color, catalogOnly = false) => {
+      const label = catalogOnly
+        ? 'Kataloga tonis'
+        : (color.nosaukums || '').replace(/\s*·\s*[^·]+$/, '').trim();
+      const dot = catalogOnly
+        ? '<span class="swatch catalog-swatch" aria-hidden="true"></span>'
+        : `<span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>`;
       return `
-      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
-        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>
+      <button class="color-swatch${catalogOnly ? ' is-catalog-color' : ''}${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" data-catalog-color="${catalogOnly}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
+        ${dot}
         <span class="color-swatch-label">${label}</span>
         <span class="color-swatch-code">${color.malfini || color.id}</span>
       </button>`;
-    }).join('');
+    };
 
-    els.colorButtons = $$('[data-color]', group);
+    group.innerHTML = (product.krasas || []).map(color => buttonMarkup(color, false)).join('');
+    if (moreGroup) {
+      moreGroup.innerHTML = (product.papilduKrasas || []).map(color => buttonMarkup(color, true)).join('');
+      moreGroup.hidden = true;
+    }
+
+    if (els.colorMore) {
+      const hasMore = Boolean(product.papilduKrasas?.length);
+      els.colorMore.hidden = !hasMore;
+      els.colorMore.setAttribute('aria-expanded', 'false');
+      els.colorMore.textContent = '+ Vairāk';
+      els.colorMore.onclick = () => {
+        if (!moreGroup) return;
+        const open = moreGroup.hidden;
+        moreGroup.hidden = !open;
+        els.colorMore.setAttribute('aria-expanded', String(open));
+        els.colorMore.textContent = open ? 'Mazāk' : '+ Vairāk';
+      };
+    }
+
+    els.colorButtons = $$('[data-color]', document);
     els.colorButtons.forEach(button => button.addEventListener('click', () => {
+      const selected = colorById(button.dataset.color);
       state.color = normalizeColor(button.dataset.color);
+      if (!selected?.catalogOnly) state.previewColor = state.color;
       setPressed(els.colorButtons, button);
       renderProductInfo();
       renderSelectedColor();
-      updateSvgColor();
+      if (!selected?.catalogOnly) {
+        updateSvgColor();
+        revealMobilePreviewAfterColorChange();
+      }
       renderDesign();
-      revealMobilePreviewAfterColorChange();
     }));
   }
 
@@ -171,9 +206,13 @@
     state.size = candidate.izmeri?.includes(previousSize)
       ? previousSize
       : (previousSize ? (candidate.izmeri?.[0] || '') : '');
-    state.color = candidate.krasas?.some(color => color.id === previousColor)
+    const candidateColors = [...(candidate.krasas || []), ...(candidate.papilduKrasas || [])];
+    state.color = candidateColors.some(color => color.id === previousColor)
       ? previousColor
       : (candidate.krasas?.[0]?.id || '');
+    state.previewColor = candidate.krasas?.some(color => color.id === state.color)
+      ? state.color
+      : (candidate.krasas?.[0]?.id || '00');
 
     // Every product opens on its front view immediately.
     // This also forces a fresh SVG load when switching products,
@@ -282,7 +321,8 @@
   }
 
   function getGarmentPalette(colorId) {
-    const color = colorById(colorId);
+    const selected = colorById(colorId);
+    const color = selected?.catalogOnly ? colorById(state.previewColor) : selected;
     const base = color?.hex || '#FFFFFF';
     const hex = base.replace('#', '');
     const normalized = hex.length === 3 ? hex.split('').map(char => char + char).join('') : hex;
