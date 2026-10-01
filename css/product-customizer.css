@@ -236,68 +236,6 @@
   font-size: .76rem;
   line-height: 1.35;
 }
-.color-more-toggle {
-  margin-top: .6rem;
-  min-height: 38px;
-  padding: .48rem .8rem;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--color-accent);
-  font: inherit;
-  font-size: .78rem;
-  font-weight: 750;
-  cursor: pointer;
-}
-.color-more-toggle:hover,
-.color-more-toggle[aria-expanded="true"] { border-color: var(--color-accent); background: var(--color-accent-soft); }
-.customizer-more-colors {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  margin-top: .6rem;
-  padding: .65rem;
-  overflow: hidden;
-  box-sizing: border-box;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-}
-.customizer-more-colors[hidden] { display: none !important; }
-.color-category-tabs {
-  display: flex;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  gap: .4rem;
-  margin-bottom: .6rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: .15rem;
-  overscroll-behavior-inline: contain;
-  scrollbar-width: none;
-}
-.color-category-tabs::-webkit-scrollbar { display: none; }
-.color-category-tabs button {
-  flex: 0 0 auto;
-  min-height: 34px;
-  padding: .4rem .7rem;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--color-text);
-  font: inherit;
-  font-size: .7rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-.color-category-tabs button.is-active,
-.color-category-tabs button[aria-pressed="true"] {
-  border-color: var(--color-accent);
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
-}
-.color-swatch.is-catalog-color .color-swatch-label { color: var(--color-text); }
 .customizer-selected-color::first-letter { color: inherit; }
 .size-options button { min-width: 52px; padding-inline: .9rem; }
 
@@ -760,23 +698,7 @@
     margin-left: auto;
     font-size: .66rem;
   }
-  .customizer-selected-color { margin-top: .5rem; font-size: .78rem; font-weight: 650; }
-  .customizer-more-colors { padding: .55rem; }
-  .customizer-more-colors .swatch-group {
-    width: 100%;
-    min-width: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: .45rem;
-  }
-  .customizer-more-colors .color-swatch {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
-  .customizer-more-colors .color-swatch-label { font-size: .68rem; }
-  .color-category-tabs button { min-height: 32px; padding: .36rem .62rem; font-size: .66rem; }
-  .color-more-toggle { width: 100%; min-height: 42px; }
-  .customizer-color-catalog {
+  .customizer-selected-color { margin-top: .5rem; font-size: .78rem; font-weight: 650; }  .customizer-color-catalog {
     align-items: flex-start;
     flex-direction: column;
     gap: .25rem;
