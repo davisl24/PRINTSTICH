@@ -236,6 +236,27 @@
   font-size: .76rem;
   line-height: 1.35;
 }
+.color-more-toggle {
+  margin-top: .6rem;
+  min-height: 38px;
+  padding: .48rem .8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+.color-more-toggle:hover,
+.color-more-toggle[aria-expanded="true"] { border-color: var(--color-accent); background: var(--color-accent-soft); }
+.customizer-more-colors { margin-top: .55rem; }
+.customizer-more-colors[hidden] { display: none !important; }
+.color-swatch.is-catalog-color .catalog-swatch {
+  background: linear-gradient(135deg, #fff 0 46%, var(--color-border) 46% 54%, #f0f2ef 54% 100%);
+}
+.color-swatch.is-catalog-color .color-swatch-label { color: var(--color-text-muted); }
 .customizer-selected-color::first-letter { color: inherit; }
 .size-options button { min-width: 52px; padding-inline: .9rem; }
 
@@ -698,6 +719,8 @@
     font-size: .66rem;
   }
   .customizer-selected-color { margin-top: .5rem; font-size: .78rem; font-weight: 650; }
+  .customizer-more-colors .color-swatch-label { font-size: .66rem; }
+  .color-more-toggle { width: 100%; min-height: 42px; }
   .customizer-color-catalog {
     align-items: flex-start;
     flex-direction: column;
