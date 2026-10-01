@@ -135,7 +135,7 @@
       materials: '100% kokvilna',
       gramaza: '200 g/m²',
       kopsana: '40 °C',
-      avots: 'https://shop.malfini.com/cz/en/product/heavy-new-137?color=51',
+      avots: 'https://shop.malfini.com/lv/en/product/heavy-new-137',
       svg: 'assets/krekls.svg',
       sleeveSvgs: {
         sleeveLeft: 'assets/piedurkne-laba.svg',
@@ -231,7 +231,7 @@
       materials: '65% kokvilna, 35% poliesters',
       gramaza: '320 g/m²',
       kopsana: '40 °C',
-      avots: 'https://shop.malfini.com/cz/en/product/cape-413?color=00',
+      avots: 'https://shop.malfini.com/lv/en/product/cape-413',
       svg: 'assets/hudijs-prieksa.svg',
       viewSvgs: {
         front: 'assets/hudijs-prieksa.svg',
@@ -292,7 +292,7 @@
       materials: '60% kokvilna, 40% poliesters',
       gramaza: '280 g/m²',
       kopsana: '40 °C',
-      avots: 'https://shop.malfini.com/cz/en/product/crew-426?color=21',
+      avots: 'https://shop.malfini.com/lv/en/product/crew-426',
       svg: 'assets/dzemperis-prieksa.svg',
       viewSvgs: {
         front: 'assets/dzemperis-prieksa.svg',
