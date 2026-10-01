@@ -131,6 +131,7 @@
       </button>`;
     };
 
+    group.hidden = false;
     group.innerHTML = (product.krasas || []).map(buttonMarkup).join('');
 
     const allColors = allProductColors();
@@ -197,6 +198,7 @@
         if (!morePanel) return;
         const open = morePanel.hidden;
         morePanel.hidden = !open;
+        group.hidden = open;
         els.colorMore.setAttribute('aria-expanded', String(open));
         els.colorMore.textContent = open ? 'Mazāk' : '+ Vairāk';
         if (open) renderMoreCategory('Visas krāsas');
