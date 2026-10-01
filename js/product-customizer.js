@@ -26,14 +26,13 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), colorMore: $('[data-color-more]'), moreColorsPanel: $('[data-more-colors-panel]'), colorCategoryTabs: $('[data-color-category-tabs]'), moreColorOptions: $('[data-more-color-options]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
 
   const normalizeColor = value => ({ white: '00', balts: '00', black: '01', melns: '01', blue: '02', zils: '02' }[value] || value || '00');
-  const allProductColors = () => [...(product.krasas || []), ...(product.papilduKrasas || [])];
-  const colorById = id => allProductColors().find(color => color.id === normalizeColor(id)) || product.krasas?.[0];
+  const colorById = id => (product.krasas || []).find(color => color.id === normalizeColor(id)) || product.krasas?.[0];
   function renderSelectedColor() {
     if (!els.selectedColor) return;
     const color = colorById(state.color);
@@ -107,25 +106,13 @@
 
   function ensureColorButtons() {
     const group = $('[data-color-options]');
-    const moreGroup = els.moreColorOptions;
-    const morePanel = els.moreColorsPanel;
     if (!group) return;
-
-    const baseGroupFor = color => {
-      if (color.grupa) return color.grupa;
-      const code = color.id;
-      if (['00','01','12','21','36'].includes(code)) return 'Neitrālās';
-      if (['02','05','44','87'].includes(code)) return 'Zilās';
-      if (['06','16','67','69'].includes(code)) return 'Zaļās';
-      if (['04','07','86'].includes(code)) return 'Siltās';
-      return 'Citas';
-    };
 
     const buttonMarkup = color => {
       const label = (color.nosaukums || '').replace(/\s*·\s*[^·]+$/, '').trim();
       return `
-      <button class="color-swatch${color.catalogOnly ? ' is-catalog-color' : ''}${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" data-color-group="${baseGroupFor(color)}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
-        <span class="swatch" aria-hidden="true" style="background-color:${color.hex || '#D7DBD8'}"></span>
+      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
+        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>
         <span class="color-swatch-label">${label}</span>
         <span class="color-swatch-code">${color.malfini || color.id}</span>
       </button>`;
@@ -133,77 +120,18 @@
 
     group.hidden = false;
     group.innerHTML = (product.krasas || []).map(buttonMarkup).join('');
+    els.colorButtons = $$('[data-color]', group);
 
-    const allColors = allProductColors();
-    const categories = ['Visas krāsas', 'Neitrālās', 'Zilās', 'Zaļās', 'Siltās', 'Rozā / violetās']
-      .filter(category => category === 'Visas krāsas' || allColors.some(color => baseGroupFor(color) === category));
-
-    const renderMoreCategory = category => {
-      if (!moreGroup) return;
-      const colors = category === 'Visas krāsas'
-        ? allColors
-        : allColors.filter(color => baseGroupFor(color) === category);
-      moreGroup.innerHTML = colors.map(buttonMarkup).join('');
-      if (els.colorCategoryTabs) {
-        $$('[data-color-category]', els.colorCategoryTabs).forEach(tab => {
-          const active = tab.dataset.colorCategory === category;
-          tab.classList.toggle('is-active', active);
-          tab.setAttribute('aria-pressed', String(active));
-        });
-      }
-      bindColorButtons();
-    };
-
-    if (els.colorCategoryTabs) {
-      els.colorCategoryTabs.innerHTML = categories.map((category, index) =>
-        `<button type="button" data-color-category="${category}" aria-pressed="${index === 0}">${category}</button>`
-      ).join('');
-      $$('[data-color-category]', els.colorCategoryTabs).forEach(tab => {
-        tab.addEventListener('click', () => renderMoreCategory(tab.dataset.colorCategory || 'Visas krāsas'));
-      });
-    }
-
-    const selectColor = button => {
-      const selected = colorById(button.dataset.color);
+    els.colorButtons.forEach(button => button.addEventListener('click', () => {
       state.color = normalizeColor(button.dataset.color);
       state.previewColor = state.color;
-      setPressed($$('[data-color]', document), button);
+      setPressed(els.colorButtons, button);
       renderProductInfo();
       renderSelectedColor();
       updateSvgColor();
       revealMobilePreviewAfterColorChange();
       renderDesign();
-    };
-
-    function bindColorButtons() {
-      els.colorButtons = $$('[data-color]', document);
-      els.colorButtons.forEach(button => {
-        if (button.dataset.colorBound === 'true') return;
-        button.dataset.colorBound = 'true';
-        button.addEventListener('click', () => selectColor(button));
-      });
-    }
-
-    bindColorButtons();
-
-    if (moreGroup) renderMoreCategory('Visas krāsas');
-
-    if (els.colorMore) {
-      const hasMore = allColors.length > (product.krasas || []).length;
-      els.colorMore.hidden = !hasMore;
-      els.colorMore.setAttribute('aria-expanded', 'false');
-      els.colorMore.textContent = '+ Vairāk';
-      if (morePanel) morePanel.hidden = true;
-      els.colorMore.onclick = () => {
-        if (!morePanel) return;
-        const open = morePanel.hidden;
-        morePanel.hidden = !open;
-        group.hidden = open;
-        els.colorMore.setAttribute('aria-expanded', String(open));
-        els.colorMore.textContent = open ? 'Mazāk' : '+ Vairāk';
-        if (open) renderMoreCategory('Visas krāsas');
-      };
-    }
+    }));
   }
 
   function renderSizeButtons() {
@@ -251,13 +179,10 @@
     state.size = candidate.izmeri?.includes(previousSize)
       ? previousSize
       : (previousSize ? (candidate.izmeri?.[0] || '') : '');
-    const candidateColors = [...(candidate.krasas || []), ...(candidate.papilduKrasas || [])];
-    state.color = candidateColors.some(color => color.id === previousColor)
+    state.color = candidate.krasas?.some(color => color.id === previousColor)
       ? previousColor
       : (candidate.krasas?.[0]?.id || '');
-    state.previewColor = candidate.krasas?.some(color => color.id === state.color)
-      ? state.color
-      : (candidate.krasas?.[0]?.id || '00');
+    state.previewColor = state.color || (candidate.krasas?.[0]?.id || '00');
 
     // Every product opens on its front view immediately.
     // This also forces a fresh SVG load when switching products,
