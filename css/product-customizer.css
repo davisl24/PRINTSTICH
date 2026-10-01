@@ -252,8 +252,13 @@
 .color-more-toggle:hover,
 .color-more-toggle[aria-expanded="true"] { border-color: var(--color-accent); background: var(--color-accent-soft); }
 .customizer-more-colors {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: .6rem;
   padding: .65rem;
+  overflow: hidden;
+  box-sizing: border-box;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-bg);
@@ -261,10 +266,15 @@
 .customizer-more-colors[hidden] { display: none !important; }
 .color-category-tabs {
   display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   gap: .4rem;
   margin-bottom: .6rem;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: .15rem;
+  overscroll-behavior-inline: contain;
   scrollbar-width: none;
 }
 .color-category-tabs::-webkit-scrollbar { display: none; }
@@ -724,7 +734,8 @@
   .customizer-fieldset + .customizer-fieldset { margin-top: var(--space-sm); }
   .customizer-product-stats { gap: .45rem; }
   .customizer-product-stats .product-stat { padding: .65rem .7rem; }
-  .swatch-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
+  .swatch-group { width: 100%; max-width: 100%; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
+  .customizer-fieldset { min-width: 0; overflow: hidden; }
   .color-swatch {
     width: 100%;
     min-width: 0;
@@ -751,8 +762,18 @@
   }
   .customizer-selected-color { margin-top: .5rem; font-size: .78rem; font-weight: 650; }
   .customizer-more-colors { padding: .55rem; }
-  .customizer-more-colors .swatch-group { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .customizer-more-colors .color-swatch-label { font-size: .66rem; }
+  .customizer-more-colors .swatch-group {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .45rem;
+  }
+  .customizer-more-colors .color-swatch {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .customizer-more-colors .color-swatch-label { font-size: .68rem; }
   .color-category-tabs button { min-height: 32px; padding: .36rem .62rem; font-size: .66rem; }
   .color-more-toggle { width: 100%; min-height: 42px; }
   .customizer-color-catalog {
