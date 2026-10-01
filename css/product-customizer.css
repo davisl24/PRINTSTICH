@@ -189,6 +189,24 @@
 .customizer-product-stats .product-stat:nth-child(3) dd {
   font-size: .95rem;
 }
+.customizer-product-catalog {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: .8rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--color-border);
+  font-size: .76rem;
+}
+.customizer-product-catalog span { color: var(--color-text-muted); }
+.customizer-product-catalog a {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  font-weight: 750;
+  text-decoration: none;
+}
+.customizer-product-catalog a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .swatch-group, .size-options, .customizer-tool-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
 .color-swatch, .size-options button {
   min-height: 46px;
@@ -654,21 +672,37 @@
   .customizer-fieldset + .customizer-fieldset { margin-top: var(--space-sm); }
   .customizer-product-stats { gap: .45rem; }
   .customizer-product-stats .product-stat { padding: .65rem .7rem; }
-  .swatch-group { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .45rem; }
+  .swatch-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
   .color-swatch {
     width: 100%;
     min-width: 0;
-    min-height: 52px;
-    gap: .18rem;
-    padding: .42rem .2rem;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
+    min-height: 44px;
+    gap: .38rem;
+    padding: .48rem .5rem;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
   }
-  .color-swatch .swatch { width: 20px; height: 20px; flex-basis: 20px; }
-  .color-swatch-label { display: none; }
-  .color-swatch-code { margin-left: 0; font-size: .68rem; }
+  .color-swatch .swatch { width: 18px; height: 18px; flex-basis: 18px; }
+  .color-swatch-label {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .72rem;
+  }
+  .color-swatch-code {
+    flex: 0 0 auto;
+    margin-left: auto;
+    font-size: .66rem;
+  }
   .customizer-selected-color { margin-top: .5rem; font-size: .78rem; font-weight: 650; }
+  .customizer-product-catalog {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .3rem;
+  }
   .size-options { gap: .5rem; }
   .size-options button { min-height: 44px; }
   .size-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
