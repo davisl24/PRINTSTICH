@@ -178,6 +178,7 @@
     tshirt: {
       id: 'tshirt',
       modelis: 'Heavy New 137',
+      realPhoto: 'assets/products/heavy-new-137.webp',
       nosaukums: 'T-krekls',
       kategorija: 'T-krekls',
       auditorija: 'Unisex',
@@ -224,6 +225,7 @@
     kids: {
       id: 'kids',
       modelis: 'Basic 138',
+      realPhoto: 'assets/products/basic-138.webp',
       nosaukums: 'Bērnu T-krekls',
       kategorija: 'Bērnu T-krekls',
       auditorija: 'Bērniem',
@@ -276,6 +278,7 @@
     hoodie: {
       id: 'hoodie',
       modelis: 'Cape 413',
+      realPhoto: 'assets/products/cape-413.webp',
       nosaukums: 'Hūdijs',
       kategorija: 'Hūdijs',
       auditorija: 'Vīriešu',
@@ -338,6 +341,7 @@
     sweatshirt: {
       id: 'sweatshirt',
       modelis: 'Crew 426',
+      realPhoto: 'assets/products/crew-426.webp',
       nosaukums: 'Džemperis',
       kategorija: 'Džemperis',
       auditorija: 'Unisex',
