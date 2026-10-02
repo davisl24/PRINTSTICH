@@ -179,6 +179,19 @@
   color: var(--color-text-strong);
   text-align: left;
 }
+.customizer-product-overview { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: .9rem; align-items: center; }
+.customizer-product-copy { min-width: 0; }
+.customizer-real-photo-button {
+  width: 92px;
+  height: 104px;
+  padding: .25rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: zoom-in;
+}
+.customizer-real-photo-button img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .customizer-product-info-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .customizer-product-info-head strong { color: var(--color-text-strong); font-size: .95rem; }
 .customizer-product-info-head span { color: var(--color-text-muted); font-size: .76rem; font-weight: 700; }
@@ -1156,4 +1169,18 @@
   .size-guide-products { padding-top: .75rem; }
   .size-guide-products button { min-width: 132px; padding: .62rem .75rem; }
   .size-guide-diagram img { max-height: 330px; }
+}
+
+.product-photo-modal[hidden] { display: none !important; }
+.product-photo-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; }
+.product-photo-modal-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: rgba(5, 18, 15, .72); cursor: zoom-out; }
+.product-photo-modal-dialog { position: relative; z-index: 1; width: min(92vw, 620px); max-height: 88vh; padding: 1rem; border-radius: 18px; background: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.25); }
+.product-photo-modal-dialog img { display: block; width: 100%; max-height: calc(88vh - 2rem); object-fit: contain; }
+.product-photo-modal-close { position: absolute; top: .65rem; right: .65rem; z-index: 2; width: 38px; height: 38px; padding: 0; border: 1px solid var(--color-border); border-radius: 999px; background: rgba(255,255,255,.94); color: var(--color-text-strong); font: inherit; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.product-photo-modal-open { overflow: hidden; }
+@media (max-width: 768px) {
+  .customizer-product-overview { grid-template-columns: 76px minmax(0, 1fr); gap: .7rem; }
+  .customizer-real-photo-button { width: 76px; height: 88px; }
+  .product-photo-modal { padding: 12px; }
+  .product-photo-modal-dialog { width: min(96vw, 520px); padding: .7rem; border-radius: 14px; }
 }
