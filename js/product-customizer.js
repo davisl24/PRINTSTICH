@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), sizeTotal: $('[data-size-total]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -58,7 +58,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', size: '', activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', size: '', sizeQuantities: {}, activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -134,18 +134,81 @@
     }));
   }
 
+  const selectedSizeEntries = () => (product.izmeri || [])
+    .map(size => [size, Number(state.sizeQuantities[size] || 0)])
+    .filter(([, quantity]) => quantity > 0);
+  const totalQuantity = () => selectedSizeEntries().reduce((sum, [, quantity]) => sum + quantity, 0);
+  const sizeQuantitySummary = () => selectedSizeEntries().map(([size, quantity]) => `${size} — ${quantity} gab.`).join(', ') || '—';
+
+  function syncRepresentativeSize() {
+    state.size = selectedSizeEntries()[0]?.[0] || '';
+  }
+
   function renderSizeButtons() {
     const group = $('[data-size-options]');
     if (!group) return;
-    group.innerHTML = (product.izmeri || []).map(size => `<button type="button" data-size="${size}" aria-pressed="false">${size}</button>`).join('');
-    els.sizeButtons = $$('[data-size]', group);
-    els.sizeButtons.forEach(button => button.addEventListener('click', () => {
-      state.size = button.dataset.size || '';
-      setPressed(els.sizeButtons, button);
+
+    const validSizes = new Set(product.izmeri || []);
+    state.sizeQuantities = Object.fromEntries(
+      Object.entries(state.sizeQuantities || {}).filter(([size]) => validSizes.has(size))
+    );
+
+    group.innerHTML = (product.izmeri || []).map(size => {
+      const quantity = Number(state.sizeQuantities[size] || 0);
+      return `
+        <div class="size-quantity-item${quantity > 0 ? ' is-active' : ''}" data-size-quantity-row="${size}">
+          <span class="size-quantity-label">${size}</span>
+          <div class="size-stepper">
+            <button type="button" data-qty-delta="-1" data-size="${size}" aria-label="Samazināt ${size} daudzumu" ${quantity === 0 ? 'disabled' : ''}>−</button>
+            <input type="number" min="0" max="999" step="1" inputmode="numeric" value="${quantity}" data-size-quantity-input="${size}" aria-label="${size} daudzums">
+            <button type="button" data-qty-delta="1" data-size="${size}" aria-label="Palielināt ${size} daudzumu">+</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    const refreshQuantityUi = () => {
+      syncRepresentativeSize();
+      $$('[data-size-quantity-row]', group).forEach(row => {
+        const size = row.dataset.sizeQuantityRow;
+        const quantity = Number(state.sizeQuantities[size] || 0);
+        row.classList.toggle('is-active', quantity > 0);
+        const input = `[data-size-quantity-input="${CSS.escape(size)}"]`;
+        const quantityInput = $(input, group);
+        if (quantityInput && Number(quantityInput.value) !== quantity) quantityInput.value = quantity;
+        const minus = `[data-qty-delta="-1"][data-size="${CSS.escape(size)}"]`;
+        const minusButton = $(minus, group);
+        if (minusButton) minusButton.disabled = quantity === 0;
+      });
+      if (els.sizeTotal) els.sizeTotal.textContent = `${totalQuantity()} gab.`;
       error('size');
+      SIDE_KEYS.forEach(key => enforcePrintLimit(key));
       updateNavigation();
       renderDesign();
+    };
+
+    $$('[data-qty-delta]', group).forEach(button => button.addEventListener('click', () => {
+      const size = button.dataset.size;
+      const delta = Number(button.dataset.qtyDelta || 0);
+      const current = Number(state.sizeQuantities[size] || 0);
+      state.sizeQuantities[size] = clamp(current + delta, 0, 999);
+      refreshQuantityUi();
     }));
+
+    $$('[data-size-quantity-input]', group).forEach(input => {
+      const applyInput = () => {
+        const size = input.dataset.sizeQuantityInput;
+        const value = clamp(Math.floor(Number(input.value) || 0), 0, 999);
+        state.sizeQuantities[size] = value;
+        input.value = value;
+        refreshQuantityUi();
+      };
+      input.addEventListener('change', applyInput);
+      input.addEventListener('blur', applyInput);
+    });
+
+    syncRepresentativeSize();
+    if (els.sizeTotal) els.sizeTotal.textContent = `${totalQuantity()} gab.`;
+    els.sizeButtons = [];
   }
 
   function productReadyForCustomizer(candidate) {
@@ -172,13 +235,11 @@
   async function selectProduct(productId, button) {
     const candidate = products[productId];
     if (!candidate) return;
-    const previousSize = state.size;
     const previousColor = state.color;
     product = candidate;
     state.productId = productId;
-    state.size = candidate.izmeri?.includes(previousSize)
-      ? previousSize
-      : (previousSize ? (candidate.izmeri?.[0] || '') : '');
+    state.size = '';
+    state.sizeQuantities = {};
     state.color = candidate.krasas?.some(color => color.id === previousColor)
       ? previousColor
       : (candidate.krasas?.[0]?.id || '');
@@ -200,8 +261,6 @@
     renderProductInfo();
     const activeColorButton = els.colorButtons.find(item => normalizeColor(item.dataset.color) === state.color);
     if (activeColorButton) setPressed(els.colorButtons, activeColorButton);
-    const activeSizeButton = els.sizeButtons.find(item => item.dataset.size === state.size);
-    if (activeSizeButton) setPressed(els.sizeButtons, activeSizeButton);
     updateSideUi();
     if (productReadyForCustomizer(candidate)) {
       error('size');
@@ -469,7 +528,7 @@
     els.sideStatuses.forEach(status => { const side = state.sides[status.dataset.sideStatus]; if (!side) return; status.textContent = side.libraryId ? 'gatavs' : 'tukša'; status.hidden = Boolean(side.libraryId); }); const side = currentSide(); const asset = currentAsset(); if (els.activeSideLabel) els.activeSideLabel.textContent = SIDE_LABELS[state.activeSide]; if (els.fileName) els.fileName.textContent = asset?.name || ''; if (els.fileActions) els.fileActions.hidden = !asset; if (els.uploadZone) els.uploadZone.hidden = Boolean(asset); renderLibrary(); renderPresetButtons(); updateMeasurementUi(); }
   function renderDesign() { updatePrintArea(); constrainPosition(); drawDesignCanvas(); updateMeasurementUi(); updatePresetState(); }
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
-  function stepComplete(step) { if (step === 1) return Boolean(state.size) && productReadyForCustomizer(product); if (step === 2) return anySideHasDesign(); return true; }
+  function stepComplete(step) { if (step === 1) return totalQuantity() > 0 && productReadyForCustomizer(product); if (step === 2) return anySideHasDesign(); return true; }
   function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
   function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); if (els.previewColumn) els.previewColumn.hidden = state.step === 3; if (els.sideSwitch) els.sideSwitch.hidden = state.step === 3; if (els.mobileSideNav) els.mobileSideNav.hidden = state.step === 3; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
@@ -500,7 +559,6 @@
     updateSideUi(); renderDesign(); updateNavigation();
   }
 
-  els.sizeButtons.forEach(button => button.addEventListener('click', () => { state.size = button.dataset.size; setPressed(els.sizeButtons, button); error('size'); SIDE_KEYS.forEach(key => enforcePrintLimit(key)); renderDesign(); updateNavigation(); }));
   els.sideButtons.forEach(button => button.addEventListener('click', async () => {
     const key = button.dataset.side;
     if (!SIDE_KEYS.includes(key)) return;
@@ -757,8 +815,38 @@
   async function svgToImage(sideKey) { const { svgString, viewBox } = await prepareSerializedSvg(sideKey); const image = new Image(); image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgString)}`; await image.decode(); if (!image.naturalWidth || !image.naturalHeight) throw new Error('Serializētais SVG ielādējās ar 0×0 izmēru.'); return { image, viewBox }; }
   function drawMockupContent(ctx, canvas, sideKey, baseImage) { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height); const zone = getZone(sideKey); if (!zone || !asset) return; const zoneX = zone.x * canvas.width; const zoneY = zone.y * canvas.height; const zoneW = zone.w * canvas.width; const zoneH = zone.h * canvas.height; if (asset.vectorFallback || !asset.image) { ctx.save(); ctx.translate(zoneX, zoneY); drawVectorFallback(ctx, zoneW, zoneH); ctx.restore(); return; } const rect = getDesignRect(zoneW, zoneH, side, asset); if (rect) { ctx.save(); ctx.translate(zoneX, zoneY); drawRotatedImage(ctx, asset.image, rect, side.rotation || 0); ctx.restore(); } }
   function positionLabel(side) { const labels = { center: 'Centrā', 'left-chest': 'Krūšu kreisajā pusē', top: 'Augšā', lower: 'Zemāk', 'sleeve-top': 'Augšāk', 'sleeve-lower': 'Zemāk' }; return labels[side.preset] || `X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%`; }
-  function getOrderSummary() { const color = colorById(state.color); const summary = { product: `${product.nosaukums} — ${product.modelis || ''}`.trim(), color: color.nosaukums, size: state.size || '—', sides: Object.fromEntries(SIDE_KEYS.map(sideKey => { const side = state.sides[sideKey]; const asset = getSideAsset(sideKey); const metrics = printMetrics(sideKey); return [sideKey, { hasDesign: Boolean(asset), fileName: asset?.name || 'Nav pievienots', positionLabel: asset ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—', printSizeMm: !asset ? '—' : asset.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms' }]; })) }; Object.defineProperty(summary, 'meta', { enumerable: false, value: { date: new Date().toISOString().slice(0, 10), customerName: $('[data-customer-name]')?.value.trim() || '—', customerContact: $('[data-customer-contact]')?.value.trim() || '—', comment: $('[data-customer-comment]')?.value.trim() || '' } }); return summary; }
-  function syncFormData() { const summary = getOrderSummary(); const productInput = $('[data-form-product]'); const colorInput = $('[data-form-color]'); const sizeInput = $('[data-form-size]'); if (productInput) productInput.value = summary.product; if (colorInput) colorInput.value = summary.color; if (sizeInput) sizeInput.value = summary.size; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileInput = $(`[data-form-original-filename="${sideKey}"]`); const positionInput = $(`[data-form-position="${sideKey}"]`); const printInput = $(`[data-form-print-mm="${sideKey}"]`); if (fileInput) fileInput.value = item.fileName; if (positionInput) positionInput.value = item.positionLabel; if (printInput) printInput.value = item.printSizeMm; }); }
+  function getOrderSummary() {
+    const color = colorById(state.color);
+    const sizes = selectedSizeEntries();
+    const summary = {
+      product: `${product.nosaukums} — ${product.modelis || ''}`.trim(),
+      color: color.nosaukums,
+      size: sizeQuantitySummary(),
+      sizes,
+      totalQuantity: totalQuantity(),
+      totalLabel: `${totalQuantity()} gab.`,
+      sides: Object.fromEntries(SIDE_KEYS.map(sideKey => {
+        const side = state.sides[sideKey];
+        const asset = getSideAsset(sideKey);
+        const metrics = printMetrics(sideKey);
+        return [sideKey, {
+          hasDesign: Boolean(asset),
+          fileName: asset?.name || 'Nav pievienots',
+          positionLabel: asset ? `${positionLabel(side)} — X ${Math.round(side.x * 100)}%, Y ${Math.round(side.y * 100)}%, mērogs ${Math.round(side.scale * 100)}%` : '—',
+          printSizeMm: !asset ? '—' : asset.vectorFallback ? 'Vektora/PDF fails' : metrics ? `${metrics.widthRounded} × ${metrics.heightRounded} mm` : 'Nav aprēķināms'
+        }];
+      }))
+    };
+    Object.defineProperty(summary, 'meta', { enumerable: false, value: {
+      date: new Date().toISOString().slice(0, 10),
+      customerName: $('[data-customer-name]')?.value.trim() || '—',
+      customerContact: $('[data-customer-contact]')?.value.trim() || '—',
+      comment: $('[data-customer-comment]')?.value.trim() || ''
+    } });
+    return summary;
+  }
+
+  function syncFormData() { const summary = getOrderSummary(); const productInput = $('[data-form-product]'); const colorInput = $('[data-form-color]'); const sizeInput = $('[data-form-size]'); const quantityInput = $('[data-form-quantity]'); if (productInput) productInput.value = summary.product; if (colorInput) colorInput.value = summary.color; if (sizeInput) sizeInput.value = summary.size; if (quantityInput) quantityInput.value = String(summary.totalQuantity); SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; const fileInput = $(`[data-form-original-filename="${sideKey}"]`); const positionInput = $(`[data-form-position="${sideKey}"]`); const printInput = $(`[data-form-print-mm="${sideKey}"]`); if (fileInput) fileInput.value = item.fileName; if (positionInput) positionInput.value = item.positionLabel; if (printInput) printInput.value = item.printSizeMm; }); }
   async function drawSummaryMockup(sideKey) { const canvas = $(`[data-final-preview="${sideKey}"]`); if (!canvas) return; try { const svgData = await svgToImage(sideKey); canvas.width = 420; canvas.height = Math.round(420 * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); } catch (cause) { console.error(`PrintStich konfigurators: ${SIDE_LABELS[sideKey]} kopsavilkuma preview neizdevās.`, cause); } }
   async function updateSummary() {
     const summary = getOrderSummary();
@@ -766,9 +854,11 @@
     const colorNode = $('[data-summary-color]');
     const sizeNode = $('[data-summary-size]');
 
+    const sizeBreakdownNode = $('[data-summary-size-breakdown]');
     if (productNode) productNode.textContent = summary.product;
     if (colorNode) colorNode.textContent = summary.color;
-    if (sizeNode) sizeNode.textContent = summary.size;
+    if (sizeNode) sizeNode.textContent = summary.totalLabel;
+    if (sizeBreakdownNode) sizeBreakdownNode.textContent = summary.size;
 
     SIDE_KEYS.forEach(sideKey => {
       const item = summary.sides[sideKey];
@@ -792,7 +882,7 @@
     updateWhatsApp(summary);
     await Promise.all(SIDE_KEYS.map(drawSummaryMockup));
   }
-  function updateWhatsApp(summary = getOrderSummary()) { if (!els.whatsapp) return; const lines = ['Sveiki! Vēlos PrintStich piedāvājumu savam dizainam.', `Produkts: ${summary.product}`, `Krāsa: ${summary.color}`, `Izmērs: ${summary.size}`]; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; if (!item.hasDesign) return; lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`); lines.push(`Novietojums: ${item.positionLabel}`); lines.push(`Drukas izmērs: ${item.printSizeMm}`); }); els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`; }
+  function updateWhatsApp(summary = getOrderSummary()) { if (!els.whatsapp) return; const lines = ['Sveiki! Vēlos PrintStich piedāvājumu savam dizainam.', `Produkts: ${summary.product}`, `Krāsa: ${summary.color}`, `Daudzums: ${summary.totalLabel}`, `Izmēri: ${summary.size}`]; SIDE_KEYS.forEach(sideKey => { const item = summary.sides[sideKey]; if (!item.hasDesign) return; lines.push(`${SIDE_LABELS[sideKey]}: ${item.fileName}`); lines.push(`Novietojums: ${item.positionLabel}`); lines.push(`Drukas izmērs: ${item.printSizeMm}`); }); els.whatsapp.href = `https://wa.me/37127333112?text=${encodeURIComponent(lines.join('\n'))}`; }
   function canvasToBlob(canvas) { return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG neizdevās izveidot.')), 'image/png')); }
   async function createSideMockupCanvas(sideKey, width) { const svgData = await svgToImage(sideKey); const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = Math.round(width * (svgData.viewBox.height / svgData.viewBox.width)); drawMockupContent(canvas.getContext('2d'), canvas, sideKey, svgData.image); return canvas; }
   function wrapText(ctx, text, maxWidth) { const words = String(text).split(/\s+/); const lines = []; let line = ''; words.forEach(word => { const test = line ? `${line} ${word}` : word; if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; } else line = test; }); if (line) lines.push(line); return lines; }
@@ -821,7 +911,7 @@
     const name = $('[data-customer-name]')?.value.trim() || '';
     const contact = $('[data-customer-contact]')?.value.trim() || '';
 
-    if (!state.size) return error('form', 'Izvēlies krekla izmēru.');
+    if (totalQuantity() < 1) return error('form', 'Norādi vismaz 1 apģērba gabalu.');
     if (!anySideHasDesign()) return error('form', 'Pievieno dizainu vismaz vienai apdrukas pusei.');
     if (usedOriginalItems().some(item => item.file.size > MAX_CLIENT_FILE_SIZE)) return error('form', 'Kāds no izmantotajiem failiem ir par lielu. Maksimālais viena faila izmērs ir 8 MB.');
     if (usedOriginalsTotalSize() >= ORIGINALS_TOTAL_LIMIT) return error('form', 'Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.');
