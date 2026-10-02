@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productQuick: $('[data-product-quick]'), productDetails: $('[data-product-details]'), productDetailsToggle: $('[data-product-details-toggle]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), colorListToggle: $('[data-color-list-toggle]'), selectedSizeQuantities: $('[data-selected-size-quantities]'), orderInfoToggle: $('[data-order-info-toggle]'), orderInfo: $('[data-order-info]'), sizeTotal: $('[data-size-total]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productQuick: $('[data-product-quick]'), productRealPhoto: $('[data-product-real-photo]'), productRealPhotoLarge: $('[data-product-real-photo-large]'), productPhotoModal: $('[data-product-photo-modal]'), realPhotoOpen: $('[data-real-photo-open]'), productDetails: $('[data-product-details]'), productDetailsToggle: $('[data-product-details-toggle]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), colorListToggle: $('[data-color-list-toggle]'), selectedSizeQuantities: $('[data-selected-size-quantities]'), orderInfoToggle: $('[data-order-info-toggle]'), orderInfo: $('[data-order-info]'), sizeTotal: $('[data-size-total]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -251,6 +251,14 @@
     if (els.productModel) els.productModel.textContent = product.modelis || product.nosaukums || '';
     if (els.productAudience) els.productAudience.textContent = product.auditorija || '';
     if (els.productDescription) els.productDescription.textContent = product.apraksts || '';
+    if (els.productRealPhoto && product.realPhoto) {
+      els.productRealPhoto.src = product.realPhoto;
+      els.productRealPhoto.alt = `${product.modelis || product.nosaukums} produkta foto`;
+    }
+    if (els.productRealPhotoLarge && product.realPhoto) {
+      els.productRealPhotoLarge.src = product.realPhoto;
+      els.productRealPhotoLarge.alt = `${product.modelis || product.nosaukums} produkta foto`;
+    }
     const activeColor = colorById(state.color);
     const activeMaterial = product.materialOverrides?.[activeColor?.id] || product.materials || '—';
     if (els.productQuick) els.productQuick.textContent = [activeMaterial, product.gramaza, product.izmeruKopsavilkums || (product.izmeri || []).join(', ')].filter(Boolean).join(' · ');
@@ -325,6 +333,24 @@
   function ensureDesignCanvas() {
     let canvas = $('[data-design-canvas]', els.printArea); if (canvas) return canvas;
     canvas = document.createElement('canvas'); canvas.className = 'customizer-design-canvas'; canvas.dataset.designCanvas = ''; canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums'); Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'grab' }); if (els.legacyDesign) els.legacyDesign.hidden = true; els.printArea.appendChild(canvas); return canvas;
+  }
+
+  const closeProductPhoto = () => {
+    if (!els.productPhotoModal) return;
+    els.productPhotoModal.hidden = true;
+    els.productPhotoModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('product-photo-modal-open');
+  };
+  if (els.realPhotoOpen && els.productPhotoModal) {
+    els.realPhotoOpen.addEventListener('click', () => {
+      els.productPhotoModal.hidden = false;
+      els.productPhotoModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('product-photo-modal-open');
+    });
+    $('[data-real-photo-close]').forEach(button => button.addEventListener('click', closeProductPhoto));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !els.productPhotoModal.hidden) closeProductPhoto();
+    });
   }
 
   if (els.productDetailsToggle && els.productDetails) {
