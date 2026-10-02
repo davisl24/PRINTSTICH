@@ -235,11 +235,14 @@
   async function selectProduct(productId, button) {
     const candidate = products[productId];
     if (!candidate) return;
+    const productChanged = productId !== state.productId;
     const previousColor = state.color;
     product = candidate;
     state.productId = productId;
-    state.size = '';
-    state.sizeQuantities = {};
+    if (productChanged) {
+      state.size = '';
+      state.sizeQuantities = {};
+    }
     state.color = candidate.krasas?.some(color => color.id === previousColor)
       ? previousColor
       : (candidate.krasas?.[0]?.id || '');
