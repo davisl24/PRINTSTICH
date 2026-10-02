@@ -26,7 +26,7 @@
   const SLEEVE_PRESETS = [['center', 'Centrā'], ['sleeve-top', 'Augšāk'], ['sleeve-lower', 'Zemāk']];
 
   const els = {
-    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), sizeTotal: $('[data-size-total]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
+    productButtons: $$('[data-product]'), panels: $$('[data-step-panel]'), indicators: $$('[data-step-indicator]'), steps: $('[data-steps]'), prev: $('[data-prev-step]'), next: $('[data-next-step]'), navigation: $('[data-step-navigation]'), sideSwitch: $('[data-side-switch]'), preview: $('[data-preview]'), previewCard: $('[data-preview-card]'), previewColumn: $('[data-editor-preview]'), placeholder: $('[data-mockup-placeholder]'), printArea: $('[data-print-area]'), previewHint: $('[data-preview-hint]'), legacyDesign: $('[data-design-image]'), colorButtons: $$('[data-color]'), sizeButtons: $$('[data-size]'), sideButtons: $$('[data-side]'), sideStatuses: $$('[data-side-status]'), uploadZone: $('[data-upload-zone]'), designInput: $('[data-design-input]'), uploadLabel: $('[data-upload-zone] .upload-zone-label'), fileName: $('[data-file-name]'), fileActions: $('[data-file-actions]'), replace: $('[data-replace-design]'), remove: $('[data-remove-design]'), activeSideLabel: $('[data-active-side-label]'), librarySection: $('[data-library]'), libraryList: $('[data-library-list]'), libraryLimit: $('[data-library-limit]'), scale: $('[data-scale-input]'), presetContainer: $('[data-position-presets]'), printSize: $('[data-print-size]'), printLimitWarning: $('[data-print-limit-warning]'), dpiWarning: $('[data-dpi-warning]'), form: $('[data-customizer-form]'), originalAttachments: $('[data-original-attachments]'), worksheetInput: $('[data-worksheet-file]'), formNext: $('[data-form-next]'), whatsapp: $('[data-whatsapp-link]'), debugMockup: $('#debugMockup'), productInfo: $('[data-product-info]'), productModel: $('[data-product-model]'), productAudience: $('[data-product-audience]'), productDescription: $('[data-product-description]'), productQuick: $('[data-product-quick]'), productDetails: $('[data-product-details]'), productDetailsToggle: $('[data-product-details-toggle]'), productMaterial: $('[data-product-material]'), productWeight: $('[data-product-weight]'), productCare: $('[data-product-care]'), productSizes: $('[data-product-sizes]'), productCatalog: $('[data-product-catalog]'), selectedColor: $('[data-selected-color]'), colorListToggle: $('[data-color-list-toggle]'), selectedSizeQuantities: $('[data-selected-size-quantities]'), orderInfoToggle: $('[data-order-info-toggle]'), orderInfo: $('[data-order-info]'), sizeTotal: $('[data-size-total]'), mobileSideNav: $('[data-mobile-side-nav]'), mobileSleeveSwitch: $('[data-mobile-sleeve-switch]'), mobileSleeveParent: $('.mobile-sleeve-parent'), directEditControls: $('[data-direct-edit-controls]'), rotateLeft: $('[data-rotate-left]'), rotateRight: $('[data-rotate-right]'), resetTransform: $('[data-reset-transform]'), transformInfo: $('[data-transform-info]')
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
@@ -58,7 +58,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', size: '', sizeQuantities: {}, activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', colorListExpanded: false, productDetailsOpen: false, size: '', sizeQuantities: {}, activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -108,19 +108,41 @@
     const group = $('[data-color-options]');
     if (!group) return;
 
-    const buttonMarkup = color => {
+    const compactCount = 6;
+    const activeIndex = (product.krasas || []).findIndex(color => color.id === state.color);
+    if (activeIndex >= compactCount) state.colorListExpanded = true;
+
+    const buttonMarkup = (color, index) => {
       const label = (color.nosaukums || '').replace(/\s*·\s*[^·]+$/, '').trim();
+      const extraClass = index >= compactCount ? ' is-extra-color' : '';
       return `
-      <button class="color-swatch${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
+      <button class="color-swatch${extraClass}${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
         <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>
         <span class="color-swatch-label">${label}</span>
         <span class="color-swatch-code">${color.malfini || color.id}</span>
       </button>`;
     };
 
-    group.hidden = false;
     group.innerHTML = (product.krasas || []).map(buttonMarkup).join('');
+    group.classList.toggle('is-expanded', state.colorListExpanded);
     els.colorButtons = $$('[data-color]', group);
+
+    if (els.colorListToggle) {
+      const hasExtras = (product.krasas || []).length > compactCount;
+      els.colorListToggle.hidden = !hasExtras;
+      els.colorListToggle.setAttribute('aria-expanded', String(state.colorListExpanded));
+      els.colorListToggle.innerHTML = state.colorListExpanded
+        ? 'Rādīt mazāk <span aria-hidden="true">↑</span>'
+        : 'Rādīt visas krāsas <span aria-hidden="true">↓</span>';
+      els.colorListToggle.onclick = () => {
+        state.colorListExpanded = !state.colorListExpanded;
+        group.classList.toggle('is-expanded', state.colorListExpanded);
+        els.colorListToggle.setAttribute('aria-expanded', String(state.colorListExpanded));
+        els.colorListToggle.innerHTML = state.colorListExpanded
+          ? 'Rādīt mazāk <span aria-hidden="true">↑</span>'
+          : 'Rādīt visas krāsas <span aria-hidden="true">↓</span>';
+      };
+    }
 
     els.colorButtons.forEach(button => button.addEventListener('click', () => {
       state.color = normalizeColor(button.dataset.color);
@@ -144,63 +166,73 @@
     state.size = selectedSizeEntries()[0]?.[0] || '';
   }
 
+  function afterSizeQuantityChange() {
+    syncRepresentativeSize();
+    if (els.sizeTotal) els.sizeTotal.textContent = `${totalQuantity()} gab.`;
+    error('size');
+    SIDE_KEYS.forEach(key => enforcePrintLimit(key));
+    updateNavigation();
+    renderDesign();
+  }
+
   function renderSizeButtons() {
     const group = $('[data-size-options]');
-    if (!group) return;
+    const selectedList = els.selectedSizeQuantities;
+    if (!group || !selectedList) return;
 
     const validSizes = new Set(product.izmeri || []);
     state.sizeQuantities = Object.fromEntries(
-      Object.entries(state.sizeQuantities || {}).filter(([size]) => validSizes.has(size))
+      Object.entries(state.sizeQuantities || {}).filter(([size, quantity]) => validSizes.has(size) && Number(quantity) > 0)
     );
 
+    group.classList.toggle('is-kids-sizes', product.id === 'kids');
     group.innerHTML = (product.izmeri || []).map(size => {
-      const quantity = Number(state.sizeQuantities[size] || 0);
-      return `
-        <div class="size-quantity-item${quantity > 0 ? ' is-active' : ''}" data-size-quantity-row="${size}">
-          <span class="size-quantity-label">${size}</span>
-          <div class="size-stepper">
-            <button type="button" data-qty-delta="-1" data-size="${size}" aria-label="Samazināt ${size} daudzumu" ${quantity === 0 ? 'disabled' : ''}>−</button>
-            <input type="number" min="0" max="999" step="1" inputmode="numeric" value="${quantity}" data-size-quantity-input="${size}" aria-label="${size} daudzums">
-            <button type="button" data-qty-delta="1" data-size="${size}" aria-label="Palielināt ${size} daudzumu">+</button>
-          </div>
-        </div>`;
+      const selected = Number(state.sizeQuantities[size] || 0) > 0;
+      return `<button type="button" class="${selected ? 'is-active' : ''}" data-size-choice="${size}" aria-pressed="${selected}">${size}</button>`;
     }).join('');
 
-    const refreshQuantityUi = () => {
-      syncRepresentativeSize();
-      $$('[data-size-quantity-row]', group).forEach(row => {
-        const size = row.dataset.sizeQuantityRow;
-        const quantity = Number(state.sizeQuantities[size] || 0);
-        row.classList.toggle('is-active', quantity > 0);
-        const input = `[data-size-quantity-input="${CSS.escape(size)}"]`;
-        const quantityInput = $(input, group);
-        if (quantityInput && Number(quantityInput.value) !== quantity) quantityInput.value = quantity;
-        const minus = `[data-qty-delta="-1"][data-size="${CSS.escape(size)}"]`;
-        const minusButton = $(minus, group);
-        if (minusButton) minusButton.disabled = quantity === 0;
-      });
-      if (els.sizeTotal) els.sizeTotal.textContent = `${totalQuantity()} gab.`;
-      error('size');
-      SIDE_KEYS.forEach(key => enforcePrintLimit(key));
-      updateNavigation();
-      renderDesign();
-    };
+    const selectedEntries = selectedSizeEntries();
+    selectedList.hidden = selectedEntries.length === 0;
+    selectedList.innerHTML = selectedEntries.map(([size, quantity]) => `
+      <div class="size-selected-row">
+        <span class="size-selected-label">${size}</span>
+        <div class="size-stepper">
+          <button type="button" data-qty-delta="-1" data-size="${size}" aria-label="Samazināt ${size} daudzumu">−</button>
+          <input type="number" min="0" max="999" step="1" inputmode="numeric" value="${quantity}" data-size-quantity-input="${size}" aria-label="${size} daudzums">
+          <button type="button" data-qty-delta="1" data-size="${size}" aria-label="Palielināt ${size} daudzumu">+</button>
+        </div>
+      </div>
+    `).join('');
 
-    $$('[data-qty-delta]', group).forEach(button => button.addEventListener('click', () => {
+    els.sizeButtons = $$('[data-size-choice]', group);
+    els.sizeButtons.forEach(button => button.addEventListener('click', () => {
+      const size = button.dataset.sizeChoice;
+      const selected = Number(state.sizeQuantities[size] || 0) > 0;
+      if (selected) delete state.sizeQuantities[size];
+      else state.sizeQuantities[size] = 1;
+      renderSizeButtons();
+      afterSizeQuantityChange();
+    }));
+
+    $$('[data-qty-delta]', selectedList).forEach(button => button.addEventListener('click', () => {
       const size = button.dataset.size;
       const delta = Number(button.dataset.qtyDelta || 0);
       const current = Number(state.sizeQuantities[size] || 0);
-      state.sizeQuantities[size] = clamp(current + delta, 0, 999);
-      refreshQuantityUi();
+      const next = clamp(current + delta, 0, 999);
+      if (next === 0) delete state.sizeQuantities[size];
+      else state.sizeQuantities[size] = next;
+      renderSizeButtons();
+      afterSizeQuantityChange();
     }));
 
-    $$('[data-size-quantity-input]', group).forEach(input => {
+    $$('[data-size-quantity-input]', selectedList).forEach(input => {
       const applyInput = () => {
         const size = input.dataset.sizeQuantityInput;
         const value = clamp(Math.floor(Number(input.value) || 0), 0, 999);
-        state.sizeQuantities[size] = value;
-        input.value = value;
-        refreshQuantityUi();
+        if (value === 0) delete state.sizeQuantities[size];
+        else state.sizeQuantities[size] = value;
+        renderSizeButtons();
+        afterSizeQuantityChange();
       };
       input.addEventListener('change', applyInput);
       input.addEventListener('blur', applyInput);
@@ -208,7 +240,6 @@
 
     syncRepresentativeSize();
     if (els.sizeTotal) els.sizeTotal.textContent = `${totalQuantity()} gab.`;
-    els.sizeButtons = [];
   }
 
   function productReadyForCustomizer(candidate) {
@@ -221,7 +252,9 @@
     if (els.productAudience) els.productAudience.textContent = product.auditorija || '';
     if (els.productDescription) els.productDescription.textContent = product.apraksts || '';
     const activeColor = colorById(state.color);
-    if (els.productMaterial) els.productMaterial.textContent = product.materialOverrides?.[activeColor?.id] || product.materials || '—';
+    const activeMaterial = product.materialOverrides?.[activeColor?.id] || product.materials || '—';
+    if (els.productQuick) els.productQuick.textContent = [activeMaterial, product.gramaza, product.izmeruKopsavilkums || (product.izmeri || []).join(', ')].filter(Boolean).join(' · ');
+    if (els.productMaterial) els.productMaterial.textContent = activeMaterial;
     if (els.productWeight) els.productWeight.textContent = product.gramaza || '—';
     if (els.productCare) els.productCare.textContent = product.careOverrides?.[activeColor?.id] || product.kopsana || product.kopšana || '—';
     if (els.productSizes) els.productSizes.textContent = product.izmeruKopsavilkums || (product.izmeri || []).join(', ');
@@ -242,6 +275,13 @@
     if (productChanged) {
       state.size = '';
       state.sizeQuantities = {};
+      state.colorListExpanded = false;
+      state.productDetailsOpen = false;
+      if (els.productDetails) els.productDetails.classList.remove('is-open');
+      if (els.productDetailsToggle) {
+        els.productDetailsToggle.setAttribute('aria-expanded', 'false');
+        els.productDetailsToggle.innerHTML = 'Skatīt detaļas <span aria-hidden="true">↓</span>';
+      }
     }
     state.color = candidate.krasas?.some(color => color.id === previousColor)
       ? previousColor
@@ -285,6 +325,27 @@
   function ensureDesignCanvas() {
     let canvas = $('[data-design-canvas]', els.printArea); if (canvas) return canvas;
     canvas = document.createElement('canvas'); canvas.className = 'customizer-design-canvas'; canvas.dataset.designCanvas = ''; canvas.setAttribute('aria-label', 'Augšupielādētā dizaina priekšskatījums'); Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'grab' }); if (els.legacyDesign) els.legacyDesign.hidden = true; els.printArea.appendChild(canvas); return canvas;
+  }
+
+  if (els.productDetailsToggle && els.productDetails) {
+    els.productDetailsToggle.addEventListener('click', () => {
+      state.productDetailsOpen = !state.productDetailsOpen;
+      els.productDetails.classList.toggle('is-open', state.productDetailsOpen);
+      els.productDetailsToggle.setAttribute('aria-expanded', String(state.productDetailsOpen));
+      els.productDetailsToggle.innerHTML = state.productDetailsOpen
+        ? 'Paslēpt detaļas <span aria-hidden="true">↑</span>'
+        : 'Skatīt detaļas <span aria-hidden="true">↓</span>';
+    });
+  }
+  if (els.orderInfoToggle && els.orderInfo) {
+    els.orderInfoToggle.addEventListener('click', () => {
+      const open = els.orderInfo.hidden;
+      els.orderInfo.hidden = !open;
+      els.orderInfoToggle.setAttribute('aria-expanded', String(open));
+      els.orderInfoToggle.innerHTML = open
+        ? '<span>Pasūtījuma informācija</span><span aria-hidden="true">↑</span>'
+        : '<span>Pasūtījuma informācija</span><span aria-hidden="true">↓</span>';
+    });
   }
 
   ensureColorButtons(); renderSizeButtons(); els.designCanvas = ensureDesignCanvas();
