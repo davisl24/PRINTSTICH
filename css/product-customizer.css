@@ -1377,7 +1377,33 @@
     color: rgba(255,255,255,.78);
   }
 
-  /* Real garment photos keep their neutral source background. */
+  /* Dark-mode accent text needs higher contrast than the brand-green button fill. */
+  .customizer-page .customizer-steps li.is-active,
+  .customizer-page .step-kicker,
+  .customizer-page .customizer-disclosure-toggle,
+  .customizer-page .customizer-info-toggle,
+  .customizer-page .customizer-color-catalog a,
+  .customizer-page .color-swatch.is-active,
+  .customizer-page .size-options button.is-active,
+  .customizer-page .size-choice-grid button.is-active,
+  .customizer-page .size-guide-trigger,
+  .customizer-page .customizer-whatsapp,
+  .customizer-page .product-visual-option.is-active small,
+  .customizer-page .size-guide-products button.is-active,
+  .customizer-page .size-guide-legend strong,
+  .customizer-page .size-guide-table tbody th {
+    color: #7fc4b1;
+  }
+
+  .customizer-page .customizer-disclosure-toggle:hover,
+  .customizer-page .customizer-info-toggle:hover,
+  .customizer-page .customizer-color-catalog a:hover,
+  .customizer-page .size-guide-trigger:hover,
+  .customizer-page .customizer-whatsapp:hover {
+    color: #9ad3c4;
+  }
+
+    /* Real garment photos keep their neutral source background. */
   .customizer-page .product-visual-option img {
     background: #fff;
   }
