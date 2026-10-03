@@ -830,7 +830,7 @@
   html, body { max-width: 100%; overflow-x: clip; }
   .customizer-page, .customizer-workspace, .customizer-workspace > .container,
   .customizer-layout, .customizer-controls, .customizer-step-panel,
-  .customizer-navigation, .site-footer, .site-footer .container {
+  .site-footer, .site-footer .container {
     max-width: 100%;
     min-width: 0;
   }
@@ -915,7 +915,7 @@
   .scale-control { margin-top: var(--space-lg); }
   .customizer-tool-actions { align-items: stretch; flex-direction: column; }
   .customizer-tool-actions .button, .customizer-tool-actions .text-action { width: 100%; }
-  .customizer-navigation { position: sticky; bottom: 0; z-index: 5; margin: var(--space-lg) calc(var(--space-md) * -1) calc(var(--space-md) * -1); padding: .8rem var(--space-md); background: rgba(255, 255, 255, .96); border-top: 1px solid var(--color-border); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .customizer-navigation { position: sticky; bottom: 0; z-index: 5; width: calc(100% + (var(--space-md) * 2)); max-width: none; margin: var(--space-lg) calc(var(--space-md) * -1) calc(var(--space-md) * -1); padding: .8rem var(--space-md); background: rgba(255, 255, 255, .96); border-top: 1px solid var(--color-border); border-radius: 0 0 var(--radius-md) var(--radius-md); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
   .customizer-navigation .button { flex: 1; min-width: 0; min-height: 48px; }
   .customizer-summary { padding: var(--space-sm); }
   .customizer-summary-heading { display: grid; gap: .45rem; margin-bottom: .65rem; }
