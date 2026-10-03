@@ -133,6 +133,16 @@
 .customizer-mockup-placeholder[hidden] { display: none; }
 .customizer-mockup-placeholder strong { color: var(--color-text-strong); }
 .customizer-print-area { position: absolute; z-index: 2; overflow: hidden; border: 1px dashed rgba(18, 63, 55, .48); touch-action: none; }
+.customizer-print-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  box-sizing: border-box;
+  border: 1px dashed;
+  border-color: inherit;
+  pointer-events: none;
+}
 .customizer-design { position: absolute; left: 50%; top: 50%; max-width: none; user-select: none; -webkit-user-drag: none; cursor: grab; transform-origin: center; touch-action: none; }
 .customizer-design:active { cursor: grabbing; }
 .customizer-design[hidden] { display: none; }
