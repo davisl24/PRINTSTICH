@@ -537,7 +537,7 @@
 .form-honeypot { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; }
 .customizer-attachment, [data-original-attachments] { display: none; }
 .customizer-submit { width: 100%; min-height: 52px; margin-top: var(--space-md); }
-.customizer-whatsapp { display: flex; width: 100%; min-height: 48px; margin-top: var(--space-md); padding: .7rem 1rem; align-items: center; justify-content: center; border: 1px solid var(--color-accent); border-radius: 999px; color: var(--color-accent); font-size: .9rem; font-weight: 750; text-align: center; text-decoration: none; }
+.customizer-whatsapp { display: inline-flex; min-height: 44px; margin-top: var(--space-md); align-items: center; color: var(--color-accent); font-size: .9rem; font-weight: 750; }
 #debugMockup { margin-top: var(--space-md); }
 #debugMockup[hidden] { display: none !important; }
 .customizer-success { padding: var(--space-lg) 0; }
@@ -666,8 +666,8 @@
     margin-top: .75rem;
   }
   [data-step-panel="3"] .customizer-whatsapp {
-    min-height: 46px;
-    margin-top: .65rem;
+    min-height: 34px;
+    margin-top: .45rem;
   }
   .customizer-controls:has([data-step-panel="3"].is-active) .customizer-navigation {
     justify-content: flex-start;
@@ -827,6 +827,13 @@
 }
 
 @media (max-width: 768px) {
+  html, body { max-width: 100%; overflow-x: clip; }
+  .customizer-page, .customizer-workspace, .customizer-workspace > .container,
+  .customizer-layout, .customizer-controls, .customizer-step-panel,
+  .customizer-navigation, .site-footer, .site-footer .container {
+    max-width: 100%;
+    min-width: 0;
+  }
   .customizer-product-info { padding: .72rem .78rem; }
   .customizer-product-quick { margin-top: .3rem; font-size: .72rem; }
   .customizer-product-details { display: none; }
