@@ -595,7 +595,7 @@
   async function updatePreview() { updateSideUi(); await loadActiveSvg(); requestAnimationFrame(renderDesign); }
   function stepComplete(step) { if (step === 1) return productReadyForCustomizer(product); if (step === 2) return totalQuantity() > 0 && anySideHasDesign(); return true; }
   function updateNavigation() { if (els.prev) els.prev.disabled = state.step === 1; if (els.next) { els.next.hidden = state.step === 3; els.next.style.display = state.step === 3 ? 'none' : ''; els.next.disabled = !stepComplete(state.step); } }
-  function showStep(step) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); const editorActive = state.step === 2; if (els.previewColumn) els.previewColumn.hidden = !editorActive; if (els.sideSwitch) els.sideSwitch.hidden = !editorActive; if (els.mobileSideNav) els.mobileSideNav.hidden = !editorActive; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); }
+  function showStep(step, scrollToTop = true) { state.step = clamp(step, 1, 3); els.panels.forEach(panel => { const active = Number(panel.dataset.stepPanel) === state.step; panel.hidden = !active; panel.classList.toggle('is-active', active); }); els.indicators.forEach(indicator => { const active = Number(indicator.dataset.stepIndicator) === state.step; indicator.classList.toggle('is-active', active); if (active) indicator.setAttribute('aria-current', 'step'); else indicator.removeAttribute('aria-current'); }); const editorActive = state.step === 2; if (els.previewColumn) els.previewColumn.hidden = !editorActive; if (els.sideSwitch) els.sideSwitch.hidden = !editorActive; if (els.mobileSideNav) els.mobileSideNav.hidden = !editorActive; updateNavigation(); updateSideUi(); if (state.step === 3) updateSummary(); updateMobileLayout(); if (scrollToTop) requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' })); }
   function validateFile(file) { const allowed = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf']; if (!file) return 'Izvēlies dizaina failu.'; if (!allowed.includes(file.type)) return 'Atļauts PNG, JPG/JPEG, WebP, SVG vai PDF fails.'; if (file.size > MAX_CLIENT_FILE_SIZE) return 'Fails ir par lielu. Maksimālais klienta faila izmērs ir 8 MB.'; return ''; }
   function findLibraryDuplicate(file) { return state.library.find(item => item.name === file.name && item.file.size === file.size) || null; }
   function attachLibraryItem(sideKey, libraryId) { const side = state.sides[sideKey]; const fresh = createSideState(sideKey); Object.assign(side, fresh); side.libraryId = libraryId; enforcePrintLimit(sideKey); constrainPosition(sideKey); if (state.activeSide === sideKey) { state.designSelected = true; updateSideUi(); renderDesign(); } updateNavigation(); }
@@ -1015,7 +1015,7 @@
   window.addEventListener('resize', updateMobileLayout);
   renderPresetButtons();
   updateSideUi();
-  showStep(1);
+  showStep(1, false);
 
   // Initial preview must be rendered only after the page layout is visible.
   // Loading the SVG before the first layout pass could leave the preview blank
