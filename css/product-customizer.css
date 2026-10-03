@@ -132,7 +132,7 @@
 .customizer-mockup-placeholder { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; gap: .35rem; padding: var(--space-lg); text-align: center; color: var(--color-text-muted); background: linear-gradient(145deg, #f7f7f5, #ecece8); }
 .customizer-mockup-placeholder[hidden] { display: none; }
 .customizer-mockup-placeholder strong { color: var(--color-text-strong); }
-.customizer-print-area { position: absolute; z-index: 2; overflow: hidden; border: 1px dashed rgba(18, 63, 55, .48); touch-action: none; }
+.customizer-print-area { position: absolute; z-index: 2; overflow: hidden; border: 0; border-color: rgba(18, 63, 55, .48); touch-action: none; }
 .customizer-print-area::after {
   content: "";
   position: absolute;
