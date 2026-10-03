@@ -1157,3 +1157,75 @@
   .size-guide-products button { min-width: 132px; padding: .62rem .75rem; }
   .size-guide-diagram img { max-height: 330px; }
 }
+
+/* Real product references belong in product selection; the editor remains the colourable SVG mockup. */
+.product-visual-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .6rem;
+}
+.product-visual-option {
+  min-width: 0;
+  padding: .45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--color-text-strong);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.product-visual-option img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / .9;
+  object-fit: contain;
+  margin-bottom: .35rem;
+  border-radius: 9px;
+  background: #fff;
+}
+.product-visual-option span { display: grid; gap: .05rem; min-width: 0; }
+.product-visual-option strong {
+  overflow: hidden;
+  font-size: .74rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-visual-option small {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: .64rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-visual-option.is-active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+.product-visual-note {
+  margin: .5rem 0 0;
+  color: var(--color-text-muted);
+  font-size: .7rem;
+  line-height: 1.4;
+}
+@media (max-width: 768px) {
+  .product-visual-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  .product-visual-option {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: .5rem;
+    align-items: center;
+    padding: .4rem .5rem;
+  }
+  .product-visual-option img {
+    width: 54px;
+    height: 58px;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+  .product-visual-option strong { font-size: .72rem; }
+  .product-visual-option small { font-size: .62rem; }
+}
