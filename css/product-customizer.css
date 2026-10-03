@@ -1158,45 +1158,71 @@
   .size-guide-diagram img { max-height: 330px; }
 }
 
-/* Real product references belong in product selection; the editor remains the colourable SVG mockup. */
+/* Step 1: real product selection. Step 2 remains the colourable SVG editor. */
+.customizer-layout:has([data-step-panel="1"].is-active) {
+  display: block;
+}
+.customizer-layout:has([data-step-panel="1"].is-active) .customizer-controls {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+[data-step-panel="1"] .customizer-step-intro {
+  max-width: 680px;
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+}
+.product-selection-fieldset {
+  margin-top: .4rem;
+}
 .product-visual-options {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: .6rem;
+  gap: .75rem;
 }
 .product-visual-option {
   min-width: 0;
-  padding: .45rem;
+  padding: .55rem;
+  overflow: hidden;
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 16px;
   background: #fff;
   color: var(--color-text-strong);
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
+}
+.product-visual-option:hover {
+  border-color: rgba(18, 63, 55, .5);
+  transform: translateY(-1px);
 }
 .product-visual-option img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / .9;
+  aspect-ratio: 1 / 1.04;
   object-fit: contain;
-  margin-bottom: .35rem;
-  border-radius: 9px;
+  margin-bottom: .5rem;
+  border-radius: 11px;
   background: #fff;
 }
-.product-visual-option span { display: grid; gap: .05rem; min-width: 0; }
+.product-visual-option span {
+  display: grid;
+  gap: .08rem;
+  min-width: 0;
+  padding: 0 .15rem .15rem;
+}
 .product-visual-option strong {
   overflow: hidden;
-  font-size: .74rem;
-  line-height: 1.2;
+  font-size: .82rem;
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .product-visual-option small {
   overflow: hidden;
   color: var(--color-text-muted);
-  font-size: .64rem;
-  line-height: 1.2;
+  font-size: .7rem;
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1205,27 +1231,70 @@
   background: var(--color-accent-soft);
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }
-.product-visual-note {
-  margin: .5rem 0 0;
-  color: var(--color-text-muted);
-  font-size: .7rem;
-  line-height: 1.4;
+.product-visual-option.is-active small { color: var(--color-accent); opacity: .75; }
+
+/* Step 2 now owns colour, sizes and all design controls. */
+[data-step-panel="2"] > .customizer-fieldset {
+  padding-top: .75rem;
 }
+[data-step-panel="2"] > .customizer-fieldset + .customizer-fieldset {
+  margin-top: .65rem;
+}
+[data-step-panel="2"] .swatch-group {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .42rem;
+}
+[data-step-panel="2"] .color-swatch {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  gap: .45rem;
+  padding: .48rem .62rem;
+  font-size: .78rem;
+  text-align: left;
+}
+[data-step-panel="2"] .color-swatch .swatch {
+  width: 18px;
+  height: 18px;
+  flex-basis: 18px;
+}
+
 @media (max-width: 768px) {
-  .product-visual-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  .customizer-layout:has([data-step-panel="1"].is-active) .customizer-controls {
+    max-width: none;
+  }
+  [data-step-panel="1"] .customizer-step-intro {
+    margin-bottom: .8rem;
+    font-size: .82rem;
+    line-height: 1.45;
+  }
+  .product-visual-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+  }
   .product-visual-option {
-    display: grid;
-    grid-template-columns: 54px minmax(0, 1fr);
-    gap: .5rem;
-    align-items: center;
-    padding: .4rem .5rem;
+    display: block;
+    padding: .4rem;
+    border-radius: 14px;
   }
   .product-visual-option img {
-    width: 54px;
-    height: 58px;
-    aspect-ratio: auto;
-    margin: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1.02;
+    margin: 0 0 .38rem;
+    padding: .15rem;
   }
-  .product-visual-option strong { font-size: .72rem; }
-  .product-visual-option small { font-size: .62rem; }
+  .product-visual-option span {
+    padding: 0 .2rem .2rem;
+  }
+  .product-visual-option strong {
+    font-size: .76rem;
+  }
+  .product-visual-option small {
+    font-size: .66rem;
+  }
+  [data-step-panel="2"] .swatch-group {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
