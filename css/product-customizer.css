@@ -1298,3 +1298,8 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+
+/* Keep Step 2 focused: editing controls appear only after a design is attached. */
+.customizer-design-tools[hidden] { display: none !important; }
+.customizer-design-tools { margin-top: .15rem; }
