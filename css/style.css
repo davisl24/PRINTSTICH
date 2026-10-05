@@ -31,7 +31,14 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  color-scheme: only light;
+  background: #f5f7f4;
+}
+body {
+  color-scheme: only light;
+}
 body { margin: 0; font-family: var(--font-body); background: var(--color-bg); color: var(--color-text-strong); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 img, picture, svg { display: block; max-width: 100%; }
 button, input, textarea { font: inherit; }
