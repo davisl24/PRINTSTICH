@@ -1382,7 +1382,7 @@
   }
 
   .customizer-navigation {
-    background: rgba(21,31,28,.96);
+    background: #101815 !important;
     border-color: var(--color-border);
   }
 
