@@ -58,11 +58,12 @@ p:last-child { margin-bottom: 0; }
 .eyebrow { margin-bottom: .8rem; color: var(--color-text); font-size: .78rem; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-.button { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: .85rem 1.5rem; border: 1px solid var(--color-accent); border-radius: 999px; background: var(--color-accent); color: #fff; font-weight: 750; transition: transform var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition); }
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: .8rem 1.5rem; border: 1px solid var(--color-accent); border-radius: 999px; background: var(--color-accent); color: #fff; font-weight: 750; line-height: 1.2; transition: transform var(--transition),background var(--transition),color var(--transition),border-color var(--transition),box-shadow var(--transition); }
 .button:hover { transform: translateY(-2px); background: var(--color-accent-hover); border-color: var(--color-accent-hover); box-shadow: 0 10px 26px rgba(18,63,55,.15); }
+.button:active { transform: translateY(0); box-shadow: none; }
 .button-small { min-height: 42px; padding-inline: 1.15rem; font-size: .92rem; }
 .button-ghost { background: transparent; color: var(--color-accent); }
-.button-ghost:hover { background: var(--color-accent-soft); }
+.button-ghost:hover { background: var(--color-accent-soft); color: var(--color-accent); }
 .button:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(18,63,55,.25); outline-offset: 3px; }
 
 .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid transparent; background: rgba(245,247,244,.8); backdrop-filter: blur(18px); transition: background var(--transition),border-color var(--transition),box-shadow var(--transition); }
@@ -406,6 +407,51 @@ p:last-child { margin-bottom: 0; }
   }
 
   html, body { background: var(--color-bg); color: var(--color-text-strong); }
+
+  /* CTA system: filled = primary action, outline = secondary action. */
+  .button {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #0b2f28;
+    box-shadow: 0 10px 26px rgba(0,0,0,.16);
+  }
+  .button:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: #0b2f28;
+  }
+  .button-ghost {
+    background: transparent;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: none;
+  }
+  .button-ghost:hover {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent-hover);
+    color: var(--color-accent-hover);
+    box-shadow: none;
+  }
+  .create-own-button {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #0b2f28;
+  }
+  .create-own-button:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: #0b2f28;
+  }
+  .gallery-more {
+    background: transparent;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .gallery-more:hover {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent-hover);
+    color: var(--color-accent-hover);
+  }
   .site-header { background: rgba(13,21,19,.86); border-color: rgba(154,215,196,.08); }
   .site-header .brand-logo { content: url('../assets/images/logo-white.png'); filter: none; }
   .site-header.is-scrolled { background: rgba(13,21,19,.94); border-color: var(--color-border); box-shadow: 0 8px 30px rgba(0,0,0,.24); }
