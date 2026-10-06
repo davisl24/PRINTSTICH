@@ -117,7 +117,7 @@
       const extraClass = index >= compactCount ? ' is-extra-color' : '';
       return `
       <button class="color-swatch${extraClass}${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
-        <span class="swatch" aria-hidden="true" style="background-color:${color.hex}"></span>
+        <span class="swatch" aria-hidden="true" style="background-color:${color.hex};background-image:linear-gradient(${color.hex},${color.hex})"></span>
         <span class="color-swatch-label">${label}</span>
         <span class="color-swatch-code">${color.malfini || color.id}</span>
       </button>`;
