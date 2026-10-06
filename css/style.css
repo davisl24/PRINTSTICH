@@ -407,7 +407,7 @@ p:last-child { margin-bottom: 0; }
 
   html, body { background: var(--color-bg); color: var(--color-text-strong); }
   .site-header { background: rgba(13,21,19,.86); border-color: rgba(154,215,196,.08); }
-  .site-header .brand-logo { filter: brightness(0) invert(1); }
+  .site-header .brand-logo { content: url('../assets/images/logo-white.png'); filter: none; }
   .site-header.is-scrolled { background: rgba(13,21,19,.94); border-color: var(--color-border); box-shadow: 0 8px 30px rgba(0,0,0,.24); }
   .menu-toggle { background: var(--color-surface); }
   .site-nav { background: rgba(21,31,28,.98); }
