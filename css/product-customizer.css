@@ -1321,15 +1321,115 @@
 .customizer-design-tools[hidden] { display: none !important; }
 .customizer-design-tools { margin-top: .15rem; }
 
-/* PrintStich uses one controlled light theme on every device.
-   Do not follow the phone/browser dark-mode preference: the brand UI must stay consistent. */
-.customizer-page {
-  color-scheme: only light;
-}
+/* Preserve literal garment swatch colours while the surrounding UI follows the site theme. */
 .customizer-page .color-swatch .swatch {
-  color-scheme: only light;
   forced-color-adjust: none;
 }
 .customizer-page .swatch-white {
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+}
+
+
+/* === Configurator dark theme === */
+@media (prefers-color-scheme: dark) {
+  .customizer-page { background: var(--color-bg); color: var(--color-text); }
+
+  .customizer-side-switch button,
+  .customizer-mobile-side-nav button,
+  .customizer-product-stats .product-stat,
+  .size-stepper,
+  .customizer-library-select,
+  .customizer-library-remove,
+  .position-presets button,
+  .customizer-summary-mockups figure,
+  .customizer-form-fields input,
+  .customizer-form-fields textarea,
+  .direct-edit-controls button,
+  .size-guide-dialog,
+  .size-guide-close,
+  .size-guide-products button,
+  .product-visual-option {
+    background: var(--color-surface);
+    color: var(--color-text-strong);
+  }
+
+  .customizer-preview {
+    background: #18211e;
+    border-color: var(--color-border);
+  }
+  .customizer-mockup-placeholder {
+    background: linear-gradient(145deg, #18211e, #101815);
+    color: var(--color-text-muted);
+  }
+
+  /* Product/mockup canvases stay neutral so white and black garments remain visually accurate. */
+  .customizer-final-preview,
+  .product-visual-option img {
+    background: #f4f4f1;
+  }
+  .customizer-summary-mockups figure { border-color: var(--color-border); }
+
+  .customizer-controls,
+  .customizer-product-info,
+  .customizer-order-info,
+  .customizer-price-note,
+  .customizer-summary,
+  .customizer-summary-quantities,
+  .upload-zone,
+  .customizer-file-actions,
+  .customizer-library-vector {
+    background: var(--color-surface);
+  }
+
+  .customizer-navigation {
+    background: rgba(21,31,28,.96);
+    border-color: var(--color-border);
+  }
+
+  .customizer-summary-sides section,
+  [data-step-panel="3"] .customizer-summary-sides section {
+    background: var(--color-surface);
+  }
+
+  .customizer-form-fields input::placeholder,
+  .customizer-form-fields textarea::placeholder { color: var(--color-text-muted); }
+
+  .customizer-form-fields input:focus,
+  .customizer-form-fields textarea:focus {
+    background: var(--color-surface);
+    border-color: var(--color-accent);
+    outline-color: rgba(154,215,196,.22);
+  }
+
+  .customizer-side-switch button.is-active,
+  .customizer-mobile-side-nav button.is-active,
+  .position-presets button.is-active {
+    background: #21483d;
+    border-color: #6fbda5;
+    color: #f2f7f5;
+  }
+
+  .color-swatch.is-active,
+  .size-options button.is-active,
+  .size-choice-grid button.is-active,
+  .product-visual-option.is-active,
+  .size-guide-products button.is-active {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .color-swatch,
+  .size-options button,
+  .size-choice-grid button {
+    background: var(--color-surface);
+    color: var(--color-text-strong);
+  }
+
+  .swatch-white { background: #fff; }
+  .swatch-black { background: #151515; }
+  .customizer-page .color-swatch .swatch { forced-color-adjust: none; }
+
+  .size-guide-diagram { background: #121b18; }
+  .size-guide-dialog::backdrop { background: rgba(0,0,0,.72); }
 }
