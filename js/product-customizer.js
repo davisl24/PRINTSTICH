@@ -117,13 +117,19 @@
       const extraClass = index >= compactCount ? ' is-extra-color' : '';
       return `
       <button class="color-swatch${extraClass}${color.id === state.color ? ' is-active' : ''}" type="button" data-color="${color.id}" aria-pressed="${color.id === state.color}" aria-label="${label}, krāsas kods ${color.malfini || color.id}">
-        <span class="swatch" aria-hidden="true" style="background-color:${color.hex};background-image:linear-gradient(${color.hex},${color.hex})"></span>
+        <canvas class="swatch" aria-hidden="true" data-swatch-color="${color.hex}" width="36" height="36"></canvas>
         <span class="color-swatch-label">${label}</span>
         <span class="color-swatch-code">${color.malfini || color.id}</span>
       </button>`;
     };
 
     group.innerHTML = (product.krasas || []).map(buttonMarkup).join('');
+    group.querySelectorAll('canvas[data-swatch-color]').forEach(canvas => {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.fillStyle = canvas.dataset.swatchColor || '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    });
     group.classList.toggle('is-expanded', state.colorListExpanded);
     els.colorButtons = $$('[data-color]', group);
 
@@ -487,7 +493,61 @@
       if (group) group.style.display = key === sideKey ? 'block' : 'none';
     });
   }
-  function updateSvgColor() { applySvgAppearance(state.svgRoot, state.activeSide); updatePrintArea(); }
+  let garmentRenderToken = 0;
+  function ensureGarmentCanvas() {
+    let canvas = $('[data-garment-canvas]');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.className = 'customizer-garment-canvas';
+      canvas.dataset.garmentCanvas = '';
+      Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' });
+      els.preview.insertBefore(canvas, els.printArea);
+    }
+    return canvas;
+  }
+  function renderGarmentCanvas() {
+    const svg = state.svgRoot;
+    if (!svg) return;
+    const canvas = ensureGarmentCanvas();
+    const rect = els.preview.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(rect.width * dpr));
+    canvas.height = Math.max(1, Math.round(rect.height * dpr));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    const clone = svg.cloneNode(true);
+    clone.style.opacity = '1';
+    clone.setAttribute('width', '100%');
+    clone.setAttribute('height', '100%');
+    const markup = new XMLSerializer().serializeToString(clone);
+    const blob = new Blob([markup], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const token = ++garmentRenderToken;
+    const image = new Image();
+    image.onload = () => {
+      if (token !== garmentRenderToken) { URL.revokeObjectURL(url); return; }
+      const vb = svg.viewBox?.baseVal;
+      const sourceW = vb?.width || image.naturalWidth || 600;
+      const sourceH = vb?.height || image.naturalHeight || 700;
+      const scale = Math.min(rect.width / sourceW, rect.height / sourceH);
+      const drawW = sourceW * scale;
+      const drawH = sourceH * scale;
+      const x = (rect.width - drawW) / 2;
+      const y = (rect.height - drawH) / 2;
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.drawImage(image, x, y, drawW, drawH);
+      svg.style.opacity = '0';
+      URL.revokeObjectURL(url);
+    };
+    image.onerror = () => URL.revokeObjectURL(url);
+    image.src = url;
+  }
+  function updateSvgColor() { applySvgAppearance(state.svgRoot, state.activeSide); renderGarmentCanvas(); updatePrintArea(); }
   async function getSvgMarkup(sideKey) { const path = getSvgPath(sideKey); if (!path) throw new Error(`${SIDE_LABELS[sideKey]} SVG ceļš nav definēts.`); if (svgMarkupCache.has(path)) return svgMarkupCache.get(path); const response = await fetch(path, { cache: 'no-cache' }); if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`); const markup = await response.text(); svgMarkupCache.set(path, markup); return markup; }
   async function loadActiveSvg() { const sideKey = state.activeSide; const path = getSvgPath(sideKey); try { const markup = await getSvgMarkup(sideKey); if (sideKey !== state.activeSide) return; let host = $('[data-shirt-svg-host]'); if (!host) { host = document.createElement('div'); host.className = 'customizer-shirt-svg'; host.dataset.shirtSvgHost = ''; Object.assign(host.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none' }); els.preview.insertBefore(host, els.printArea); } host.innerHTML = markup; const svg = $('svg', host); if (!svg) throw new Error(`${path} nesatur <svg>.`); if (!svg.getAttribute('viewBox')) { const sourceWidth = parseFloat(svg.getAttribute('width')) || 600; const sourceHeight = parseFloat(svg.getAttribute('height')) || 700; svg.setAttribute('viewBox', `0 0 ${sourceWidth} ${sourceHeight}`); } svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); Object.assign(svg.style, { width: '100%', height: '100%', display: 'block' }); state.svgRoot = svg; state.svgPath = path; state.svgLoaded = true; if (els.placeholder) els.placeholder.hidden = true; updateSvgColor(); updatePrintArea(); renderDesign(); } catch (cause) { state.svgLoaded = false; state.svgRoot = null; if (els.placeholder) els.placeholder.hidden = false; console.error('PrintStich konfigurators: SVG neizdevās ielādēt.', cause); } }
   function drawVectorFallback(ctx, width, height) { ctx.save(); ctx.strokeStyle = '#8d9692'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]); ctx.strokeRect(1, 1, width - 2, height - 2); ctx.setLineDash([]); ctx.fillStyle = '#53615d'; ctx.font = '600 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('vektora fails pielikumā', width / 2, height / 2); ctx.restore(); }
@@ -1008,6 +1068,7 @@
   if ('ResizeObserver' in window) {
     const previewResizeObserver = new ResizeObserver(() => {
       updatePrintArea();
+      renderGarmentCanvas();
       renderDesign();
     });
     previewResizeObserver.observe(els.preview);
