@@ -390,6 +390,7 @@ p:last-child { margin-bottom: 0; }
 /* === PrintStich controlled dark theme === */
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
     --color-bg: #0d1513;
     --color-surface: #151f1c;
     --color-text: #d7e5e0;
@@ -434,4 +435,13 @@ p:last-child { margin-bottom: 0; }
   .gallery-more { background: var(--color-surface); }
   .site-footer { background: #08110f; }
   .scroll-top { background: #21483d; color: #fff; }
+}
+
+
+/* Mobile reliability: do not leave sections invisible if a long screenshot or browser misses IntersectionObserver. */
+@media (max-width: 768px) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
