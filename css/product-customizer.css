@@ -1511,3 +1511,26 @@ html[data-theme="dark"] .customizer-submit:disabled { background: #345447; borde
 html[data-theme="dark"] .customizer-page .color-swatch .swatch,
 html[data-theme="dark"] .customizer-preview svg,
 html[data-theme="dark"] .customizer-preview svg * { forced-color-adjust: none; }
+
+/* Final configurator dark-mode contrast and action-state pass. */
+html[data-theme="dark"] .customizer-controls { background:#17251f; }
+html[data-theme="dark"] .customizer-product-info,
+html[data-theme="dark"] .customizer-order-info,
+html[data-theme="dark"] .customizer-price-note,
+html[data-theme="dark"] .customizer-summary { background:#1d3027; }
+html[data-theme="dark"] .customizer-preview { background:#1c2421; }
+html[data-theme="dark"] .customizer-navigation { background:#17251f; }
+html[data-theme="dark"] .customizer-navigation .button:not(:disabled):not(.button-ghost),
+html[data-theme="dark"] .customizer-submit:not(:disabled) { background:var(--color-accent); color:#0c241b; border-color:var(--color-accent); }
+html[data-theme="dark"] .customizer-navigation .button-ghost:not(:disabled) { color:var(--color-accent); border-color:var(--color-accent); }
+html[data-theme="dark"] .customizer-navigation button:disabled,
+html[data-theme="dark"] .customizer-submit:disabled { background:#2b4237; color:#b8c8be; border-color:#40584b; opacity:1; cursor:not-allowed; }
+html[data-theme="dark"] .customizer-side-switch button.is-active,
+html[data-theme="dark"] .customizer-mobile-side-nav button.is-active { background:#294d3f; border-color:var(--color-accent); color:#fff; }
+html[data-theme="dark"] .customizer-steps li.is-active { color:var(--color-accent); }
+html[data-theme="dark"] .customizer-steps li.is-active::after { background:var(--color-accent); }
+html[data-theme="dark"] .customizer-form-fields input,
+html[data-theme="dark"] .customizer-form-fields textarea { background:#101c17; }
+html[data-theme="dark"] .customizer-page button:focus-visible,
+html[data-theme="dark"] .customizer-page input:focus-visible,
+html[data-theme="dark"] .customizer-page textarea:focus-visible { outline:2px solid var(--color-accent); outline-offset:2px; }
