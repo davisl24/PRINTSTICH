@@ -617,3 +617,29 @@ html[data-theme="dark"] .scroll-top { background: #21483d; color: #fff; }
 @media (max-width: 767px) {
   html[data-theme="dark"] .site-nav { background: var(--color-surface); border-color: var(--color-border); }
 }
+
+/* Final dark-mode contrast pass: neutral hierarchy instead of green-on-green. */
+html[data-theme="dark"] {
+  --color-bg:#0b1210; --color-surface:#17211d; --color-mint:#1d2b25;
+  --color-border:#394a42; --color-text:#dbe5df;
+  --color-text-muted:#b5c4bb; --color-text-strong:#f6f8f5;
+  --color-accent:#a2ddcb; --color-accent-hover:#bdebdc;
+  --color-accent-soft:#263c32;
+}
+html[data-theme="dark"] .create-own,
+html[data-theme="dark"] .quote,
+html[data-theme="dark"] .portfolio,
+html[data-theme="dark"] .services { color:var(--color-text-strong); }
+html[data-theme="dark"] .create-own p,
+html[data-theme="dark"] .services p,
+html[data-theme="dark"] .portfolio p,
+html[data-theme="dark"] .quote p { color:var(--color-text-muted); }
+html[data-theme="dark"] .site-nav > a:not(.button) { color:var(--color-text); }
+html[data-theme="dark"] .site-nav > a:not(.button):focus-visible,
+html[data-theme="dark"] .theme-toggle:focus-visible,
+html[data-theme="dark"] .button:focus-visible { outline:2px solid var(--color-accent); outline-offset:3px; }
+html[data-theme="dark"] .inquiry-form,
+html[data-theme="dark"] .quote-shell { background:#17251f; }
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field textarea { background:#101c17; }
+html[data-theme="dark"] .button-ghost:disabled { color:var(--color-text-muted); border-color:var(--color-border); background:transparent; }
