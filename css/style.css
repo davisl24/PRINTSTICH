@@ -916,9 +916,9 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
 }
 .site-header .header-inner {
   position: relative;
-  width: min(calc(100% - 32px), 1440px);
-  min-height: 76px;
-  padding: 10px clamp(16px, 2.2vw, 32px);
+  width: min(calc(100% - 32px), 1240px);
+  min-height: 68px;
+  padding: 8px clamp(16px, 1.6vw, 24px);
   gap: clamp(1rem, 2vw, 2rem);
   border: 1px solid rgba(18,63,55,.10);
   border-radius: 999px;
