@@ -1,14 +1,13 @@
 <!doctype html>
-<html lang="lv">
+<html lang="lv" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sīkdatņu politika | PrintStich</title>
   <meta name="description" content="Informācija par sīkdatņu un līdzīgu tehnoloģiju izmantošanu PrintStich tīmekļvietnē.">
-  <meta name="theme-color" content="#123f37" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d1513" media="(prefers-color-scheme: dark)">
-  <meta name="color-scheme" content="light dark">
-  <meta name="supported-color-schemes" content="light dark">
+  <meta name="theme-color" content="#f5f7f4">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
   <link rel="canonical" href="https://printstich.vercel.app/sikdatnu-politika.html">
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -18,14 +17,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>try{if(localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="PrintStich sākumlapa">
-        <img src="assets/images/logo.png" class="brand-logo" alt="PrintStich logo" width="2008" height="2008">
+        <span class="brand-logo-pair"><img src="assets/images/logo.png" class="brand-logo theme-logo-light" alt="PrintStich logo" width="2008" height="2008"><img src="assets/images/logo-white.png" class="brand-logo theme-logo-dark" alt="" aria-hidden="true"></span>
         <span class="brand-name">PrintStich</span>
       </a>
+      <div class="header-actions"><button class="theme-toggle" type="button" data-theme-toggle aria-label="Ieslēgt tumšo režīmu" title="Ieslēgt tumšo režīmu" aria-pressed="false"><svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.5A8.7 8.7 0 0 1 8.5 3.8 8.8 8.8 0 1 0 20.2 15.5Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button></div>
       <nav class="site-nav" aria-label="Galvenā navigācija">
         <a href="index.html#darbi">Darbi</a>
         <a href="index.html#pakalpojumi">Pakalpojumi</a>
