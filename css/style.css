@@ -891,3 +891,9 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
 @media (max-width: 767px) {
   .services.services-catalog { padding-top: clamp(3rem, 8vw, 4rem); }
 }
+
+/* Review supports the final enquiry instead of occupying a separate section. */
+.inquiry-review { margin: clamp(2rem,4vw,3rem) 0 0; padding: 1.25rem 0 0; border-top: 1px solid var(--color-border); max-width: 34rem; }
+.inquiry-review blockquote { margin: 0 0 .85rem; font-size: clamp(1.15rem,1.7vw,1.55rem); font-weight: 550; line-height: 1.4; letter-spacing: -.02em; color: var(--color-text-strong); }
+.inquiry-review figcaption { color: var(--color-text-muted); font-size: .88rem; }
+@media (max-width: 767px) { .inquiry-review { margin-top: 1.75rem; padding-top: 1.15rem; } }
