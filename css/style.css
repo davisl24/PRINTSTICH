@@ -978,28 +978,52 @@ html[data-theme="dark"] .site-header .site-nav { background: transparent; }
 }
 
 
-/* PrintStich monochrome palette — four brand colors, with green reserved for small accents. */
-:root { --color-bg:#f5f5f3; --color-surface:#ffffff; --color-text:#111312; --color-text-strong:#111312; --color-text-muted:#606562; --color-border:#dedfdb; --color-accent:#111312; --color-accent-hover:#183b32; --color-accent-soft:#f5f5f3; --color-mint:#f5f5f3; }
-html[data-theme="dark"] { color-scheme:dark; --color-bg:#111312; --color-surface:#1b1d1c; --color-text:#ffffff; --color-text-strong:#ffffff; --color-text-muted:#b7bab8; --color-border:#383d3a; --color-accent:#ffffff; --color-accent-hover:#f5f5f3; --color-accent-soft:#252a27; --color-mint:#1b1d1c; }
-/* Neutral page structure, including the formerly solid green process and footer. */
-.process, .site-footer { background:#111312; color:#ffffff; }
+/* Unified PrintStich palette: same hierarchy in light and dark. */
+:root {
+ --color-bg:#f5f7f4; --color-surface:#ffffff; --color-text:#123f37;
+ --color-text-strong:#0b2f28; --color-text-muted:#606d67;
+ --color-border:#dbe3de; --color-accent:#123f37;
+ --color-accent-hover:#0b2f28; --color-accent-soft:#e8efea; --color-mint:#e8efea;
+}
+html[data-theme="dark"] {
+ color-scheme:dark; --color-bg:#101312; --color-surface:#1b211e;
+ --color-text:#f5f7f4; --color-text-strong:#ffffff;
+ --color-text-muted:#b7c0ba; --color-border:#38413c;
+ --color-accent:#123f37; --color-accent-hover:#0b2f28;
+ --color-accent-soft:#242f29; --color-mint:#1b211e;
+}
+/* Process remains a strong dark band in both modes. */
+.process,.site-footer { background:#101312; color:#ffffff; }
 .process h2,.process h3,.process .eyebrow { color:#ffffff; }
-html[data-theme="dark"] .process,html[data-theme="dark"] .site-footer { background:#111312; }
-/* Floating navigation: no second contrasting dark-green band. */
-html[data-theme="dark"] .site-header,html[data-theme="dark"] .site-header.is-scrolled { background:#111312; }
-html[data-theme="dark"] .site-header .header-inner { background:#1b1d1c; border-color:#383d3a; }
+html[data-theme="dark"] .process,html[data-theme="dark"] .site-footer { background:#101312; }
+html[data-theme="dark"] .site-header,html[data-theme="dark"] .site-header.is-scrolled { background:#101312; }
+html[data-theme="dark"] .site-header .header-inner { background:#1b211e; border-color:#38413c; }
 html[data-theme="dark"] .site-header .site-nav { background:transparent; }
-/* Consistent primary and secondary actions; no mint buttons. */
-.button,.create-own-button,.portfolio-filter.is-active { background:#111312; border-color:#111312; color:#ffffff; }
-.button:hover,.create-own-button:hover { background:#183b32; border-color:#183b32; color:#ffffff; }
-.button-ghost { background:transparent; color:#111312; border-color:#111312; }
-.hero-actions .button { background:#111312; border-color:#111312; color:#ffffff; }
-.hero-actions .button-ghost { background:transparent; border-color:#111312; color:#111312; }
-html[data-theme="dark"] .button,html[data-theme="dark"] .create-own-button,html[data-theme="dark"] .portfolio-filter.is-active,html[data-theme="dark"] .site-nav .button { background:#ffffff; border-color:#ffffff; color:#111312; }
-html[data-theme="dark"] .button:hover,html[data-theme="dark"] .create-own-button:hover { background:#f5f5f3; border-color:#f5f5f3; color:#111312; }
+/* Light: original dark-green brand actions. Dark: white primary actions. */
+.button,.create-own-button,.portfolio-filter.is-active { background:#123f37; border-color:#123f37; color:#ffffff; }
+.button:hover,.create-own-button:hover { background:#0b2f28; border-color:#0b2f28; color:#ffffff; }
+.button-ghost { background:transparent; color:#123f37; border-color:#123f37; }
+.hero-actions .button { background:#123f37; border-color:#123f37; color:#ffffff; }
+.hero-actions .button-ghost { background:transparent; border-color:#123f37; color:#123f37; }
+html[data-theme="dark"] .button,html[data-theme="dark"] .create-own-button,
+html[data-theme="dark"] .portfolio-filter.is-active,html[data-theme="dark"] .site-nav .button {
+ background:#ffffff; border-color:#ffffff; color:#101312;
+}
+html[data-theme="dark"] .button:hover,html[data-theme="dark"] .create-own-button:hover {
+ background:#e7ebe8; border-color:#e7ebe8; color:#101312;
+}
 html[data-theme="dark"] .button-ghost { background:transparent; border-color:#ffffff; color:#ffffff; }
-html[data-theme="dark"] .hero-actions .button { background:#111312; border-color:#111312; color:#ffffff; }
-html[data-theme="dark"] .hero-actions .button-ghost { background:transparent; border-color:#111312; color:#111312; }
-html[data-theme="dark"] .site-header .theme-toggle,html[data-theme="dark"] .site-header .menu-toggle { background:#1b1d1c; border-color:#383d3a; color:#ffffff; }
-html[data-theme="dark"] .portfolio-filter.is-active { color:#111312; }
-/* Keep photos, clothing swatches, spacing and layouts intact. */
+html[data-theme="dark"] .hero-actions .button { background:#123f37; border-color:#123f37; color:#ffffff; }
+html[data-theme="dark"] .hero-actions .button-ghost { background:transparent; border-color:#123f37; color:#123f37; }
+html[data-theme="dark"] .site-header .theme-toggle,html[data-theme="dark"] .site-header .menu-toggle {
+ background:#1b211e; border-color:#38413c; color:#ffffff;
+}
+/* Enquiry: neutral surface instead of green slab in dark mode. */
+html[data-theme="dark"] .quote-shell,html[data-theme="dark"] .inquiry-form,
+html[data-theme="dark"] .inquiry-form-shell { background:var(--color-surface); border-color:var(--color-border); }
+html[data-theme="dark"] .inquiry-form input,html[data-theme="dark"] .inquiry-form textarea {
+ background:#101312; border-color:var(--color-border); color:#ffffff;
+}
+html[data-theme="dark"] .inquiry-form .button { background:#ffffff; border-color:#ffffff; color:#101312; }
+html[data-theme="dark"] .portfolio-filter.is-active { color:#101312; }
+/* Preserve layout, product images, swatches and light hero photograph. */
