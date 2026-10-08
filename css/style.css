@@ -904,84 +904,75 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
 @media (max-width: 767px) { .inquiry-copy > h2 { font-size: clamp(2.35rem, 9vw, 3.2rem); } }
 
 
-/* Floating pill navigation — shared by homepage and configurator.
-   Header only; preserves the approved page sections and both themes. */
+/* Integrated compact floating navigation — homepage and configurator. */
 .site-header,
-.site-header.is-scrolled {
-  padding: 12px 0 8px;
+.site-header.is-scrolled,
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-header.is-scrolled {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 10px 0;
   border: 0;
-  background: transparent;
+  background: var(--color-bg);
   box-shadow: none;
   backdrop-filter: none;
 }
 .site-header .header-inner {
-  position: relative;
-  width: min(calc(100% - 32px), 1240px);
-  min-height: 68px;
-  padding: 8px clamp(16px, 1.6vw, 24px);
-  gap: clamp(1rem, 2vw, 2rem);
-  border: 1px solid rgba(18,63,55,.10);
+  width: min(calc(100% - 36px), 1240px);
+  min-height: 64px;
+  padding: 7px 18px;
+  gap: 1rem;
+  border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: rgba(255,255,255,.94);
-  box-shadow: 0 8px 32px rgba(13,44,35,.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: var(--color-surface);
+  box-shadow: 0 3px 14px rgba(13,44,35,.035);
 }
 .site-header .header-actions { margin-left: auto; }
-.site-header .site-nav { gap: clamp(.8rem,1.45vw,1.55rem); }
-.site-header .site-nav > a:not(.button) { white-space: nowrap; }
-.site-header .site-nav .button { white-space: nowrap; }
-.site-header .theme-toggle { width: 44px; height: 44px; border-radius: 50%; }
-html[data-theme="dark"] .site-header,
-html[data-theme="dark"] .site-header.is-scrolled {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-}
+.site-header .site-nav { gap: clamp(.75rem,1.2vw,1.3rem); }
+.site-header .site-nav > a { white-space: nowrap; }
+.site-header .theme-toggle { width: 42px; height: 42px; border-radius: 50%; }
 html[data-theme="dark"] .site-header .header-inner {
-  background: rgba(15,28,23,.96);
-  border-color: rgba(167,211,191,.16);
-  box-shadow: 0 10px 34px rgba(0,0,0,.20);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: 0 3px 14px rgba(0,0,0,.1);
 }
 html[data-theme="dark"] .site-header .site-nav { background: transparent; }
 @media (max-width: 1100px) and (min-width: 768px) {
-  .site-header .header-inner { gap: .75rem; padding-inline: 18px; }
-  .site-header .site-nav { gap: .75rem; font-size: .83rem; }
-  .site-header .site-nav .button-small { padding-inline: .8rem; font-size: .82rem; }
-  .site-header .brand { gap: .4rem; }
+  .site-header .header-inner { gap: .65rem; padding-inline: 14px; }
+  .site-header .site-nav { gap: .65rem; font-size: .82rem; }
+  .site-header .site-nav .button-small { padding-inline: .75rem; font-size: .8rem; }
 }
 @media (max-width: 767px) {
-  .site-header, .site-header.is-scrolled { padding: 8px 0 6px; }
+  .site-header, .site-header.is-scrolled,
+  html[data-theme="dark"] .site-header,
+  html[data-theme="dark"] .site-header.is-scrolled { padding: 8px 0; }
   .site-header .header-inner {
     width: calc(100% - 20px);
-    min-height: 64px;
-    padding: 8px 12px;
-    gap: .6rem;
-    border-radius: 28px;
+    min-height: 60px;
+    padding: 7px 12px;
+    gap: .5rem;
+    border-radius: 24px;
   }
-  .site-header .brand-logo { width: 40px; height: 40px; }
-  .site-header .brand-name { font-size: .92rem; }
-  .site-header .theme-toggle { width: 40px; height: 40px; }
+  .site-header .header-actions { gap: .4rem; }
+  .site-header .theme-toggle,
   .site-header .menu-toggle { width: 40px; height: 40px; border-radius: 50%; }
   .site-header .site-nav,
   html[data-theme="dark"] .site-header .site-nav {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     left: 0;
     right: 0;
+    display: none;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: .8rem;
+    padding: .75rem;
     border: 1px solid var(--color-border);
-    border-radius: 22px;
+    border-radius: 20px;
     background: var(--color-surface);
-    box-shadow: 0 14px 35px rgba(0,0,0,.13);
+    box-shadow: var(--shadow-soft);
   }
-  .site-header .site-nav:not(.is-open) { display: none; }
   .site-header .site-nav.is-open { display: flex; }
   .site-header .site-nav > a:not(.button) { padding: .9rem .8rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-header .header-inner { transition: none; }
 }
