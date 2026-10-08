@@ -1,6 +1,27 @@
 (() => {
   'use strict';
 
+  const THEME_KEY = 'printstich-theme';
+  const themeToggle = document.querySelector('[data-theme-toggle]');
+  const applyTheme = (theme) => {
+    const isDark = theme === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-pressed', String(isDark));
+      const label = isDark ? 'Ieslēgt gaišo režīmu' : 'Ieslēgt tumšo režīmu';
+      themeToggle.setAttribute('aria-label', label);
+      themeToggle.title = label;
+    }
+    const browserColor = document.querySelector('meta[name="theme-color"]');
+    if (browserColor) browserColor.content = isDark ? '#0d1513' : '#f5f7f4';
+  };
+  applyTheme(document.documentElement.getAttribute('data-theme'));
+  themeToggle?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (error) { /* Storage can be unavailable. */ }
+  });
+
   const header = document.querySelector('[data-header]');
   const menuToggle = document.querySelector('[data-menu-toggle]');
   const nav = document.querySelector('[data-nav]');
