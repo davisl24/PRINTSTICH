@@ -679,3 +679,18 @@ html[data-theme="dark"] .audience-card a { color:var(--color-accent); }
   .audience-grid { grid-template-columns:1fr; }
   .audience-card { min-height:0; }
 }
+
+/* Audience-to-services rhythm refinement; no structural changes. */
+.audience { padding-bottom:clamp(2rem,3.5vw,3.25rem); }
+.services { padding-top:clamp(2.5rem,4vw,4rem); }
+.audience-heading { margin-bottom:clamp(1.25rem,2vw,1.75rem); }
+.audience-heading h2 { font-size:clamp(2.2rem,4.1vw,4rem); line-height:1.09; max-width:740px; }
+.audience-card { min-height:205px; padding:clamp(1.35rem,2.4vw,2rem); }
+.audience-card h3 { margin:1rem 0 .5rem; }
+.audience-card p { margin-bottom:1.2rem; }
+@media (max-width:600px) {
+ .audience { padding-bottom:2rem; }
+ .services { padding-top:2.5rem; }
+ .audience-heading h2 { font-size:clamp(2rem,9vw,2.75rem); }
+ .audience-card { min-height:0; }
+}
