@@ -871,3 +871,15 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
 .audience { padding-bottom:clamp(.25rem,.8vw,.75rem); }
 .services.services-catalog { padding-top:clamp(1rem,1.8vw,1.8rem); }
 @media(max-width:767px) { .audience { padding-bottom:.75rem; } .services.services-catalog { padding-top:1.25rem; } }
+
+/* Final compact rhythm for the approved audience-to-services flow. */
+@media (min-width: 768px) {
+  .audience-heading { margin-bottom: clamp(.75rem, 1.35vw, 1.25rem); }
+  .audience-card, html[data-theme="dark"] .audience-card {
+    gap: .6rem;
+    padding-block: clamp(.85rem, 1.5vw, 1.35rem);
+  }
+  .audience-card a, html[data-theme="dark"] .audience-card a { margin-top: .25rem; }
+  .audience { padding-bottom: clamp(.15rem, .5vw, .5rem); }
+  .services.services-catalog { padding-top: clamp(.85rem, 1.35vw, 1.4rem); }
+}
