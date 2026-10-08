@@ -1091,3 +1091,21 @@ html[data-theme="dark"] .site-footer small { color:inherit; }
 html[data-theme="dark"] .scroll-top { background:#123f37; color:#ffffff; }
 html[data-theme="dark"] .hero-actions .button { background:#123f37; border-color:#123f37; color:#ffffff; }
 html[data-theme="dark"] .hero-actions .button-ghost { background:transparent; border-color:#123f37; color:#123f37; }
+
+/* Final dark direction: monochrome first, green reserved for brand bands and details. */
+html[data-theme="dark"] {
+  --color-surface:#252d29;
+  --color-border:#414b45;
+  --color-accent-soft:#303833;
+}
+html[data-theme="dark"] .portfolio { background:#171c19; }
+html[data-theme="dark"] .inquiry,
+html[data-theme="dark"] .quote { background:#101312; }
+html[data-theme="dark"] .site-header .header-inner,
+html[data-theme="dark"] .quote-shell,
+html[data-theme="dark"] .inquiry-form,
+html[data-theme="dark"] .inquiry-form-shell { background:#252d29; border-color:#414b45; }
+html[data-theme="dark"] .portfolio-filter:not(.is-active),
+html[data-theme="dark"] .topic-option span { background:#252d29; border-color:#414b45; }
+html[data-theme="dark"] .process { background:#19483e; }
+html[data-theme="dark"] .site-footer { background:#123f37; }
