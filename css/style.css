@@ -1,14 +1,14 @@
 :root {
-  --color-bg: #f5f7f4;
+  --color-bg: #f5f5f3;
   --color-surface: #ffffff;
-  --color-text: #123f37;
-  --color-text-strong: #0b2f28;
-  --color-text-muted: #65736e;
-  --color-border: #dbe4df;
-  --color-accent: #123f37;
-  --color-accent-hover: #0b3029;
-  --color-accent-soft: #e8f1ec;
-  --color-mint: #edf4ef;
+  --color-text: #111312;
+  --color-text-strong: #111312;
+  --color-text-muted: #606562;
+  --color-border: #dedfdb;
+  --color-accent: #111312;
+  --color-accent-hover: #183b32;
+  --color-accent-soft: #f5f5f3;
+  --color-mint: #f5f5f3;
   --shadow-soft: 0 22px 70px rgba(18,63,55,.08);
   --shadow-card: 0 14px 40px rgba(18,63,55,.07);
   --font-heading: "Manrope", Arial, sans-serif;
@@ -543,7 +543,7 @@ html[data-theme="dark"] {
   --color-text-strong: #f3faf6;
   --color-text-muted: #a9bfb5;
   --color-border: #355046;
-  --color-accent: #9bd9c5;
+  --color-accent: #183b32;
   --color-accent-hover: #b3e6d6;
   --color-accent-soft: #24483c;
   --color-mint: #1b3029;
@@ -557,9 +557,9 @@ html[data-theme="dark"] .site-nav > a:not(.button):hover { color: #fff; }
 html[data-theme="dark"] .theme-toggle,
 html[data-theme="dark"] .menu-toggle { background: #1b3029; color: #effaf5; border-color: #355046; }
 html[data-theme="dark"] .menu-toggle span:not(.sr-only) { background: #effaf5; }
-html[data-theme="dark"] .button { background: #9bd9c5; color: #10271f; border-color: #9bd9c5; }
+html[data-theme="dark"] .button { background: #183b32; color: #10271f; border-color: #183b32; }
 html[data-theme="dark"] .button:hover { background: #b3e6d6; border-color: #b3e6d6; color: #10271f; }
-html[data-theme="dark"] .button-ghost { background: transparent; color: #a8e4d1; border-color: #77b8a4; }
+html[data-theme="dark"] .button-ghost { background: transparent; color: #ffffff; border-color: #77b8a4; }
 html[data-theme="dark"] .button-ghost:hover { background: #24483c; color: #f3faf6; }
 html[data-theme="dark"] .button:disabled { background: #37584c; border-color: #37584c; color: #c5d9d0; box-shadow: none; }
 @media (max-width: 767px) {
@@ -574,7 +574,7 @@ html[data-theme="dark"] {
   --color-text-strong: #f4f6f3;
   --color-text-muted: #b0c4b9;
   --color-border: #2b443b;
-  --color-accent: #9bd8c6;
+  --color-accent: #183b32;
   --color-accent-hover: #b5e8d9;
   --color-accent-soft: #203e33;
   --color-mint: #142b23;
@@ -976,3 +976,30 @@ html[data-theme="dark"] .site-header .site-nav { background: transparent; }
   .site-header .site-nav.is-open { display: flex; }
   .site-header .site-nav > a:not(.button) { padding: .9rem .8rem; }
 }
+
+
+/* PrintStich monochrome palette — four brand colors, with green reserved for small accents. */
+:root { --color-bg:#f5f5f3; --color-surface:#ffffff; --color-text:#111312; --color-text-strong:#111312; --color-text-muted:#606562; --color-border:#dedfdb; --color-accent:#111312; --color-accent-hover:#183b32; --color-accent-soft:#f5f5f3; --color-mint:#f5f5f3; }
+html[data-theme="dark"] { color-scheme:dark; --color-bg:#111312; --color-surface:#1b1d1c; --color-text:#ffffff; --color-text-strong:#ffffff; --color-text-muted:#b7bab8; --color-border:#383d3a; --color-accent:#ffffff; --color-accent-hover:#f5f5f3; --color-accent-soft:#252a27; --color-mint:#1b1d1c; }
+/* Neutral page structure, including the formerly solid green process and footer. */
+.process, .site-footer { background:#111312; color:#ffffff; }
+.process h2,.process h3,.process .eyebrow { color:#ffffff; }
+html[data-theme="dark"] .process,html[data-theme="dark"] .site-footer { background:#111312; }
+/* Floating navigation: no second contrasting dark-green band. */
+html[data-theme="dark"] .site-header,html[data-theme="dark"] .site-header.is-scrolled { background:#111312; }
+html[data-theme="dark"] .site-header .header-inner { background:#1b1d1c; border-color:#383d3a; }
+html[data-theme="dark"] .site-header .site-nav { background:transparent; }
+/* Consistent primary and secondary actions; no mint buttons. */
+.button,.create-own-button,.portfolio-filter.is-active { background:#111312; border-color:#111312; color:#ffffff; }
+.button:hover,.create-own-button:hover { background:#183b32; border-color:#183b32; color:#ffffff; }
+.button-ghost { background:transparent; color:#111312; border-color:#111312; }
+.hero-actions .button { background:#111312; border-color:#111312; color:#ffffff; }
+.hero-actions .button-ghost { background:transparent; border-color:#111312; color:#111312; }
+html[data-theme="dark"] .button,html[data-theme="dark"] .create-own-button,html[data-theme="dark"] .portfolio-filter.is-active,html[data-theme="dark"] .site-nav .button { background:#ffffff; border-color:#ffffff; color:#111312; }
+html[data-theme="dark"] .button:hover,html[data-theme="dark"] .create-own-button:hover { background:#f5f5f3; border-color:#f5f5f3; color:#111312; }
+html[data-theme="dark"] .button-ghost { background:transparent; border-color:#ffffff; color:#ffffff; }
+html[data-theme="dark"] .hero-actions .button { background:#111312; border-color:#111312; color:#ffffff; }
+html[data-theme="dark"] .hero-actions .button-ghost { background:transparent; border-color:#111312; color:#111312; }
+html[data-theme="dark"] .site-header .theme-toggle,html[data-theme="dark"] .site-header .menu-toggle { background:#1b1d1c; border-color:#383d3a; color:#ffffff; }
+html[data-theme="dark"] .portfolio-filter.is-active { color:#111312; }
+/* Keep photos, clothing swatches, spacing and layouts intact. */
