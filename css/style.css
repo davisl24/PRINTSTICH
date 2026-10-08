@@ -643,3 +643,6 @@ html[data-theme="dark"] .quote-shell { background:#17251f; }
 html[data-theme="dark"] .field input,
 html[data-theme="dark"] .field textarea { background:#101c17; }
 html[data-theme="dark"] .button-ghost:disabled { color:var(--color-text-muted); border-color:var(--color-border); background:transparent; }
+
+/* Section separators removed; retain internal component borders. */
+.divider { display: none !important; }
