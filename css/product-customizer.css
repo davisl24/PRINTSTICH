@@ -1468,3 +1468,46 @@ html[data-theme="dark"] .customizer-form-fields input,
 html[data-theme="dark"] .customizer-form-fields textarea { background: #14231d; color: #f3faf6; border-color: #426052; }
 html[data-theme="dark"] .upload-zone { background: #162820; border-color: #426052; }
 html[data-theme="dark"] .customizer-page .color-swatch .swatch { forced-color-adjust: none; }
+
+/* Configurator uses the same dark tokens as the rest of PrintStich. */
+html[data-theme="dark"] .customizer-controls,
+html[data-theme="dark"] .customizer-product-info,
+html[data-theme="dark"] .customizer-order-info,
+html[data-theme="dark"] .customizer-price-note,
+html[data-theme="dark"] .customizer-summary,
+html[data-theme="dark"] .customizer-summary-quantities,
+html[data-theme="dark"] .customizer-summary-sides section,
+html[data-theme="dark"] [data-step-panel="3"] .customizer-summary-sides section {
+  background: var(--color-surface); border-color: var(--color-border);
+}
+html[data-theme="dark"] .customizer-product-info,
+html[data-theme="dark"] .customizer-summary,
+html[data-theme="dark"] .customizer-order-info { background: #1b3027; }
+html[data-theme="dark"] .customizer-preview { background: #18231e; border-color: var(--color-border); }
+html[data-theme="dark"] .customizer-navigation { background: var(--color-surface); border-color: var(--color-border); }
+html[data-theme="dark"] .customizer-navigation .button:not(:disabled) { color: #0b241c; }
+html[data-theme="dark"] .customizer-navigation .button-ghost:not(:disabled) { color: var(--color-accent); background: transparent; }
+html[data-theme="dark"] .customizer-side-switch button,
+html[data-theme="dark"] .customizer-mobile-side-nav button,
+html[data-theme="dark"] .color-swatch,
+html[data-theme="dark"] .size-options button,
+html[data-theme="dark"] .size-choice-grid button,
+html[data-theme="dark"] .position-presets button { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text-strong); }
+html[data-theme="dark"] .customizer-side-switch button.is-active,
+html[data-theme="dark"] .customizer-mobile-side-nav button.is-active,
+html[data-theme="dark"] .position-presets button.is-active { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-text-strong); }
+html[data-theme="dark"] .color-swatch.is-active,
+html[data-theme="dark"] .size-options button.is-active,
+html[data-theme="dark"] .size-choice-grid button.is-active,
+html[data-theme="dark"] .product-visual-option.is-active { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-accent); }
+html[data-theme="dark"] .customizer-form-fields input,
+html[data-theme="dark"] .customizer-form-fields textarea { background: #1b3027; color: var(--color-text-strong); border-color: #426052; }
+html[data-theme="dark"] .customizer-form-fields input:focus,
+html[data-theme="dark"] .customizer-form-fields textarea:focus { background: #1b3027; border-color: var(--color-accent); outline-color: rgba(155,216,198,.25); }
+html[data-theme="dark"] .upload-zone,
+html[data-theme="dark"] .customizer-file-actions { background: #1b3027; border-color: #426052; }
+html[data-theme="dark"] .customizer-navigation button:disabled,
+html[data-theme="dark"] .customizer-submit:disabled { background: #345447; border-color: #426052; color: #d1e0d8; opacity: .65; }
+html[data-theme="dark"] .customizer-page .color-swatch .swatch,
+html[data-theme="dark"] .customizer-preview svg,
+html[data-theme="dark"] .customizer-preview svg * { forced-color-adjust: none; }
