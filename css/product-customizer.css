@@ -1338,105 +1338,108 @@
 
 
 /* === Configurator dark theme === */
-@media (prefers-color-scheme: dark) {
-  .customizer-page { background: var(--color-bg); color: var(--color-text); }
+/* Manual dark theme (independent of device preference) */
+html[data-theme="dark"] .customizer-page { background: var(--color-bg); color: var(--color-text); }
 
-  .customizer-side-switch button,
-  .customizer-mobile-side-nav button,
-  .customizer-product-stats .product-stat,
-  .size-stepper,
-  .customizer-library-select,
-  .customizer-library-remove,
-  .position-presets button,
-  .customizer-summary-mockups figure,
-  .customizer-form-fields input,
-  .customizer-form-fields textarea,
-  .direct-edit-controls button,
-  .size-guide-dialog,
-  .size-guide-close,
-  .size-guide-products button,
-  .product-visual-option {
+html[data-theme="dark"] .customizer-side-switch button,
+html[data-theme="dark"] .customizer-mobile-side-nav button,
+html[data-theme="dark"] .customizer-product-stats .product-stat,
+html[data-theme="dark"] .size-stepper,
+html[data-theme="dark"] .customizer-library-select,
+html[data-theme="dark"] .customizer-library-remove,
+html[data-theme="dark"] .position-presets button,
+html[data-theme="dark"] .customizer-summary-mockups figure,
+html[data-theme="dark"] .customizer-form-fields input,
+html[data-theme="dark"] .customizer-form-fields textarea,
+html[data-theme="dark"] .direct-edit-controls button,
+html[data-theme="dark"] .size-guide-dialog,
+html[data-theme="dark"] .size-guide-close,
+html[data-theme="dark"] .size-guide-products button,
+html[data-theme="dark"] .product-visual-option {
     background: var(--color-surface);
     color: var(--color-text-strong);
   }
 
-  .customizer-preview {
+html[data-theme="dark"] .customizer-preview {
     background: #18211e;
     border-color: var(--color-border);
   }
-  .customizer-mockup-placeholder {
+
+html[data-theme="dark"] .customizer-mockup-placeholder {
     background: linear-gradient(145deg, #18211e, #101815);
     color: var(--color-text-muted);
   }
 
-  /* Product/mockup canvases stay neutral so white and black garments remain visually accurate. */
-  .customizer-final-preview,
-  .product-visual-option img {
+html[data-theme="dark"] .customizer-final-preview,
+html[data-theme="dark"] .product-visual-option img {
     background: #f4f4f1;
   }
-  .customizer-summary-mockups figure { border-color: var(--color-border); }
 
-  .customizer-controls,
-  .customizer-product-info,
-  .customizer-order-info,
-  .customizer-price-note,
-  .customizer-summary,
-  .customizer-summary-quantities,
-  .upload-zone,
-  .customizer-file-actions,
-  .customizer-library-vector {
+html[data-theme="dark"] .customizer-summary-mockups figure { border-color: var(--color-border); }
+
+html[data-theme="dark"] .customizer-controls,
+html[data-theme="dark"] .customizer-product-info,
+html[data-theme="dark"] .customizer-order-info,
+html[data-theme="dark"] .customizer-price-note,
+html[data-theme="dark"] .customizer-summary,
+html[data-theme="dark"] .customizer-summary-quantities,
+html[data-theme="dark"] .upload-zone,
+html[data-theme="dark"] .customizer-file-actions,
+html[data-theme="dark"] .customizer-library-vector {
     background: var(--color-surface);
   }
 
-  .customizer-navigation {
+html[data-theme="dark"] .customizer-navigation {
     background: #101815 !important;
     border-color: var(--color-border);
   }
 
-  .customizer-summary-sides section,
-  [data-step-panel="3"] .customizer-summary-sides section {
+html[data-theme="dark"] .customizer-summary-sides section,
+html[data-theme="dark"] [data-step-panel="3"] .customizer-summary-sides section {
     background: var(--color-surface);
   }
 
-  .customizer-form-fields input::placeholder,
-  .customizer-form-fields textarea::placeholder { color: var(--color-text-muted); }
+html[data-theme="dark"] .customizer-form-fields input::placeholder,
+html[data-theme="dark"] .customizer-form-fields textarea::placeholder { color: var(--color-text-muted); }
 
-  .customizer-form-fields input:focus,
-  .customizer-form-fields textarea:focus {
+html[data-theme="dark"] .customizer-form-fields input:focus,
+html[data-theme="dark"] .customizer-form-fields textarea:focus {
     background: var(--color-surface);
     border-color: var(--color-accent);
     outline-color: rgba(154,215,196,.22);
   }
 
-  .customizer-side-switch button.is-active,
-  .customizer-mobile-side-nav button.is-active,
-  .position-presets button.is-active {
+html[data-theme="dark"] .customizer-side-switch button.is-active,
+html[data-theme="dark"] .customizer-mobile-side-nav button.is-active,
+html[data-theme="dark"] .position-presets button.is-active {
     background: #21483d;
     border-color: #6fbda5;
     color: #f2f7f5;
   }
 
-  .color-swatch.is-active,
-  .size-options button.is-active,
-  .size-choice-grid button.is-active,
-  .product-visual-option.is-active,
-  .size-guide-products button.is-active {
+html[data-theme="dark"] .color-swatch.is-active,
+html[data-theme="dark"] .size-options button.is-active,
+html[data-theme="dark"] .size-choice-grid button.is-active,
+html[data-theme="dark"] .product-visual-option.is-active,
+html[data-theme="dark"] .size-guide-products button.is-active {
     background: var(--color-accent-soft);
     border-color: var(--color-accent);
     color: var(--color-accent);
   }
 
-  .color-swatch,
-  .size-options button,
-  .size-choice-grid button {
+html[data-theme="dark"] .color-swatch,
+html[data-theme="dark"] .size-options button,
+html[data-theme="dark"] .size-choice-grid button {
     background: var(--color-surface);
     color: var(--color-text-strong);
   }
 
-  .swatch-white { background: #fff; }
-  .swatch-black { background: #151515; }
-  .customizer-page .color-swatch .swatch { forced-color-adjust: none; }
+html[data-theme="dark"] .swatch-white { background: #fff; }
 
-  .size-guide-diagram { background: #121b18; }
-  .size-guide-dialog::backdrop { background: rgba(0,0,0,.72); }
-}
+html[data-theme="dark"] .swatch-black { background: #151515; }
+
+html[data-theme="dark"] .customizer-page .color-swatch .swatch { forced-color-adjust: none; }
+
+html[data-theme="dark"] .size-guide-diagram { background: #121b18; }
+
+html[data-theme="dark"] .size-guide-dialog::backdrop { background: rgba(0,0,0,.72); }
