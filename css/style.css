@@ -993,7 +993,7 @@ html[data-theme="dark"] {
  --color-accent-soft:#242f29; --color-mint:#1b211e;
 }
 /* Process remains a strong dark band in both modes. */
-.process,.site-footer { background:#101312; color:#ffffff; }
+.process,.site-footer { background:#123f37; color:#ffffff; }
 .process h2,.process h3,.process .eyebrow { color:#ffffff; }
 html[data-theme="dark"] .process,html[data-theme="dark"] .site-footer { background:#101312; }
 html[data-theme="dark"] .site-header,html[data-theme="dark"] .site-header.is-scrolled { background:#101312; }
