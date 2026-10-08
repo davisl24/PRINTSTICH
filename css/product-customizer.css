@@ -1443,3 +1443,28 @@ html[data-theme="dark"] .customizer-page .color-swatch .swatch { forced-color-ad
 html[data-theme="dark"] .size-guide-diagram { background: #121b18; }
 
 html[data-theme="dark"] .size-guide-dialog::backdrop { background: rgba(0,0,0,.72); }
+
+
+/* Dark Green configurator polish. Product photos and swatches remain untouched. */
+html[data-theme="dark"] .customizer-controls { background: #182721; border-color: #355046; }
+html[data-theme="dark"] .customizer-product-info,
+html[data-theme="dark"] .customizer-order-info,
+html[data-theme="dark"] .customizer-price-note,
+html[data-theme="dark"] .customizer-summary,
+html[data-theme="dark"] .customizer-summary-quantities { background: #1d3029; border-color: #355046; }
+html[data-theme="dark"] .customizer-navigation { background: transparent; border-color: #355046; }
+html[data-theme="dark"] .customizer-navigation .button:not(:disabled) { color: #10271f; }
+html[data-theme="dark"] .customizer-navigation .button-ghost:not(:disabled) { color: #a8e4d1; background: transparent; }
+html[data-theme="dark"] .customizer-navigation button:disabled,
+html[data-theme="dark"] .customizer-submit:disabled { opacity: .6; color: #d4e5dd; background: #37584c; border-color: #46695b; }
+html[data-theme="dark"] .customizer-side-switch button,
+html[data-theme="dark"] .customizer-mobile-side-nav button { background: #1b3029; color: #f0faf5; border-color: #355046; }
+html[data-theme="dark"] .customizer-side-switch button.is-active,
+html[data-theme="dark"] .customizer-mobile-side-nav button.is-active { background: #285a4b; border-color: #9bd9c5; color: #fff; }
+html[data-theme="dark"] .customizer-side-switch button.is-active small { color: #d2e9df; }
+html[data-theme="dark"] .customizer-steps li.is-active { color: #a8e4d1; }
+html[data-theme="dark"] .customizer-steps li.is-active::after { background: #9bd9c5; }
+html[data-theme="dark"] .customizer-form-fields input,
+html[data-theme="dark"] .customizer-form-fields textarea { background: #14231d; color: #f3faf6; border-color: #426052; }
+html[data-theme="dark"] .upload-zone { background: #162820; border-color: #426052; }
+html[data-theme="dark"] .customizer-page .color-swatch .swatch { forced-color-adjust: none; }
