@@ -722,3 +722,21 @@ html[data-theme="dark"] .audience-card a { color:var(--color-text-strong); }
  .audience-card a span { width:42px; height:42px; }
 }
 @media(prefers-reduced-motion:reduce) { .audience-card, .audience-card a span { transition:none; } }
+
+/* Compact audience hierarchy: short heading, concise actionable rows. */
+.audience { padding-top:clamp(2.25rem,4vw,4rem); padding-bottom:clamp(1.75rem,3vw,3rem); }
+.audience-heading { margin-bottom:clamp(1rem,2vw,1.5rem); }
+.audience-heading h2 { font-size:clamp(1.9rem,3vw,3.1rem); max-width:none; line-height:1.12; margin-bottom:.5rem; }
+.audience-heading p:last-child { margin-bottom:0; }
+.audience-card { grid-template-columns:minmax(200px,.8fr) minmax(0,1.1fr) auto; min-height:0; padding:clamp(1rem,1.6vw,1.4rem) .5rem; column-gap:clamp(1rem,2.5vw,2.5rem); }
+.audience-card h3 { grid-column:1; grid-row:1; margin:0; font-size:clamp(1.25rem,1.8vw,1.65rem); }
+.audience-card p { grid-column:2; grid-row:1; font-size:clamp(.9rem,1.05vw,1rem); }
+.audience-card a { grid-column:3; grid-row:1; }
+.audience-card a span { width:40px; height:40px; font-size:1.2rem; }
+@media(max-width:767px) {
+ .audience-heading h2 { font-size:clamp(1.85rem,7vw,2.5rem); }
+ .audience-card { grid-template-columns:minmax(0,1fr) auto; gap:.4rem 1rem; padding:1.15rem .25rem; }
+ .audience-card h3 { grid-column:1; grid-row:1; }
+ .audience-card p { grid-column:1; grid-row:2; }
+ .audience-card a { grid-column:2; grid-row:1 / span 2; }
+}
