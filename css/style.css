@@ -32,15 +32,15 @@
 
 * { box-sizing: border-box; }
 :root {
-  color-scheme: light dark;
+  color-scheme: only light;
 }
 html {
   scroll-behavior: smooth;
-  color-scheme: light dark;
+  color-scheme: only light;
   background: var(--color-bg);
 }
 body {
-  color-scheme: light dark;
+  color-scheme: only light;
 }
 body { margin: 0; font-family: var(--font-body); background: var(--color-bg); color: var(--color-text-strong); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 img, picture, svg { display: block; max-width: 100%; }
@@ -389,8 +389,8 @@ p:last-child { margin-bottom: 0; }
 
 
 /* === PrintStich controlled dark theme === */
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Manual dark theme (independent of device preference) */
+html[data-theme="dark"] {
     color-scheme: dark;
     --color-bg: #0d1513;
     --color-surface: #151f1c;
@@ -406,82 +406,108 @@ p:last-child { margin-bottom: 0; }
     --shadow-card: 0 14px 40px rgba(0,0,0,.24);
   }
 
-  html, body { background: var(--color-bg); color: var(--color-text-strong); }
+html[data-theme="dark"],
+html[data-theme="dark"] body { background: var(--color-bg); color: var(--color-text-strong); }
 
-  /* CTA system: filled = primary action, outline = secondary action. */
-  .button {
+html[data-theme="dark"] .button {
     background: var(--color-accent);
     border-color: var(--color-accent);
     color: #0b2f28;
     box-shadow: 0 10px 26px rgba(0,0,0,.16);
   }
-  .button:hover {
+
+html[data-theme="dark"] .button:hover {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
     color: #0b2f28;
   }
-  .button-ghost {
+
+html[data-theme="dark"] .button-ghost {
     background: transparent;
     border-color: var(--color-accent);
     color: var(--color-accent);
     box-shadow: none;
   }
-  .button-ghost:hover {
+
+html[data-theme="dark"] .button-ghost:hover {
     background: var(--color-accent-soft);
     border-color: var(--color-accent-hover);
     color: var(--color-accent-hover);
     box-shadow: none;
   }
-  .create-own-button {
+
+html[data-theme="dark"] .create-own-button {
     background: var(--color-accent);
     border-color: var(--color-accent);
     color: #0b2f28;
   }
-  .create-own-button:hover {
+
+html[data-theme="dark"] .create-own-button:hover {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
     color: #0b2f28;
   }
-  .gallery-more {
+
+html[data-theme="dark"] .gallery-more {
     background: transparent;
     border-color: var(--color-accent);
     color: var(--color-accent);
   }
-  .gallery-more:hover {
+
+html[data-theme="dark"] .gallery-more:hover {
     background: var(--color-accent-soft);
     border-color: var(--color-accent-hover);
     color: var(--color-accent-hover);
   }
-  .site-header { background: rgba(13,21,19,.86); border-color: rgba(154,215,196,.08); }
-  .site-header.is-scrolled { background: rgba(13,21,19,.94); border-color: var(--color-border); box-shadow: 0 8px 30px rgba(0,0,0,.24); }
-  .menu-toggle { background: var(--color-surface); }
-  .site-nav { background: rgba(21,31,28,.98); }
-  .site-nav > a:not(.button) { color: var(--color-text-muted); }
 
-  /* Keep the photographic hero readable without recolouring the image. */
-  .hero-copy h1, .hero-copy .eyebrow, .hero-lead { color: #0b2f28; }
-  .hero-actions .button { background: #123f37; border-color: #123f37; color: #fff; }
-  .hero-actions .button-ghost { background: rgba(245,247,244,.72); border-color: #123f37; color: #123f37; }
+html[data-theme="dark"] .site-header { background: rgba(13,21,19,.86); border-color: rgba(154,215,196,.08); }
 
-  .create-own { background: var(--color-surface); color: var(--color-text-strong); }
-  .process { background: #08110f; }
-  .quote-shell { background: rgba(21,31,28,.72); }
-  .inquiry-form { background: rgba(21,31,28,.78); }
-  .field input, .field textarea,
-  .field input:focus, .field textarea:focus {
+html[data-theme="dark"] .site-header.is-scrolled { background: rgba(13,21,19,.94); border-color: var(--color-border); box-shadow: 0 8px 30px rgba(0,0,0,.24); }
+
+html[data-theme="dark"] .menu-toggle { background: var(--color-surface); }
+
+html[data-theme="dark"] .site-nav { background: rgba(21,31,28,.98); }
+
+html[data-theme="dark"] .site-nav > a:not(.button) { color: var(--color-text-muted); }
+
+html[data-theme="dark"] .hero-copy h1,
+html[data-theme="dark"] .hero-copy .eyebrow,
+html[data-theme="dark"] .hero-lead { color: #0b2f28; }
+
+html[data-theme="dark"] .hero-actions .button { background: #123f37; border-color: #123f37; color: #fff; }
+
+html[data-theme="dark"] .hero-actions .button-ghost { background: rgba(245,247,244,.72); border-color: #123f37; color: #123f37; }
+
+html[data-theme="dark"] .create-own { background: var(--color-surface); color: var(--color-text-strong); }
+
+html[data-theme="dark"] .process { background: #08110f; }
+
+html[data-theme="dark"] .quote-shell { background: rgba(21,31,28,.72); }
+
+html[data-theme="dark"] .inquiry-form { background: rgba(21,31,28,.78); }
+
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field textarea,
+html[data-theme="dark"] .field input:focus,
+html[data-theme="dark"] .field textarea:focus {
     background: var(--color-surface);
     color: var(--color-text-strong);
     border-color: var(--color-border);
   }
-  .field input::placeholder, .field textarea::placeholder { color: var(--color-text-muted); }
-  .file-drop { background: rgba(21,31,28,.72); border-color: #43564f; }
-  .file-drop:hover { background: var(--color-accent-soft); }
 
-  .portfolio-grid > article,
-  .gallery-more { background: transparent; }
-  .site-footer { background: #08110f; }
-  .scroll-top { background: #21483d; color: #fff; }
-}
+html[data-theme="dark"] .field input::placeholder,
+html[data-theme="dark"] .field textarea::placeholder { color: var(--color-text-muted); }
+
+html[data-theme="dark"] .file-drop { background: rgba(21,31,28,.72); border-color: #43564f; }
+
+html[data-theme="dark"] .file-drop:hover { background: var(--color-accent-soft); }
+
+html[data-theme="dark"] .portfolio-grid > article,
+html[data-theme="dark"] .gallery-more { background: transparent; }
+
+html[data-theme="dark"] .site-footer { background: #08110f; }
+
+html[data-theme="dark"] .scroll-top { background: #21483d; color: #fff; }
 
 
 /* Mobile reliability: do not leave sections invisible if a long screenshot or browser misses IntersectionObserver. */
@@ -491,3 +517,19 @@ p:last-child { margin-bottom: 0; }
     transform: none;
   }
 }
+
+/* User-controlled theme switch and consistent header logo. */
+.header-actions { display: flex; align-items: center; gap: .55rem; margin-left: auto; }
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; flex: none; padding: 0; border: 1px solid var(--color-border); border-radius: 15px; background: var(--color-surface); color: var(--color-text-strong); cursor: pointer; transition: background var(--transition), border-color var(--transition), color var(--transition); }
+.theme-toggle:hover { border-color: var(--color-accent); background: var(--color-accent-soft); }
+.theme-toggle svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .theme-icon-sun { display: none; }
+html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .theme-icon-sun { display: block; }
+.brand-logo-pair { display: block; flex: none; }
+.brand-logo-pair .theme-logo-dark { display: none; }
+html[data-theme="dark"] .brand-logo-pair .theme-logo-light { display: none; }
+html[data-theme="dark"] .brand-logo-pair .theme-logo-dark { display: block; }
+html[data-theme="dark"] { color-scheme: dark; }
+html[data-theme="dark"] body { color-scheme: dark; }
+@media (max-width: 767px) { .header-inner { gap: .6rem; } .header-actions { gap: .5rem; } }
