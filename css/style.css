@@ -785,3 +785,14 @@ html[data-theme="dark"] .audience-card:focus-within { background:transparent; }
  .audience-grid { grid-template-columns:1fr; gap:.75rem; }
  .audience-card, html[data-theme="dark"] .audience-card { padding:1.3rem .5rem; }
 }
+
+/* Final homepage spacing polish — audience to services and process. */
+.audience-heading { margin-bottom:clamp(1.35rem,2.25vw,2rem); }
+.audience { padding-bottom:clamp(1rem,2vw,1.75rem); }
+.services { padding-top:clamp(1.75rem,3vw,3rem); }
+.process-flow { border-top:0; padding-top:0; }
+@media(max-width:767px) {
+ .audience-heading { margin-bottom:1.25rem; }
+ .audience { padding-bottom:1.25rem; }
+ .services { padding-top:2rem; }
+}
