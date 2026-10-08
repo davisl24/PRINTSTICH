@@ -1027,3 +1027,65 @@ html[data-theme="dark"] .inquiry-form input,html[data-theme="dark"] .inquiry-for
 html[data-theme="dark"] .inquiry-form .button { background:#ffffff; border-color:#ffffff; color:#101312; }
 html[data-theme="dark"] .portfolio-filter.is-active { color:#101312; }
 /* Preserve layout, product images, swatches and light hero photograph. */
+
+/* PrintStich dark-mode hierarchy — approved; light styles and layout untouched. */
+html[data-theme="dark"] {
+  color-scheme:dark;
+  --color-bg:#101312;
+  --color-surface:#1b211e;
+  --color-text:#f5f7f4;
+  --color-text-strong:#ffffff;
+  --color-text-muted:#b7c0ba;
+  --color-border:#38413c;
+  --color-accent:#123f37;
+  --color-accent-hover:#0b2f28;
+  --color-accent-soft:#242f29;
+  --color-mint:#1b211e;
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] .audience,
+html[data-theme="dark"] .services,
+html[data-theme="dark"] .services-catalog,
+html[data-theme="dark"] .portfolio,
+html[data-theme="dark"] .inquiry,
+html[data-theme="dark"] .quote,
+html[data-theme="dark"] .create-own,
+html[data-theme="dark"] .customizer-page { background:#101312; color:#f5f7f4; }
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-header.is-scrolled { background:#101312; }
+html[data-theme="dark"] .site-header .header-inner { background:#1b211e; border-color:#38413c; }
+html[data-theme="dark"] .site-header .site-nav { background:transparent; }
+html[data-theme="dark"] .site-header .theme-toggle,
+html[data-theme="dark"] .site-header .menu-toggle { background:#1b211e; border-color:#38413c; color:#ffffff; }
+html[data-theme="dark"] .audience-card,
+html[data-theme="dark"] .service-item,
+html[data-theme="dark"] .service-item-featured,
+html[data-theme="dark"] .quote-shell,
+html[data-theme="dark"] .inquiry-form,
+html[data-theme="dark"] .inquiry-form-shell,
+html[data-theme="dark"] .portfolio-item { border-color:#38413c; }
+html[data-theme="dark"] .quote-shell,
+html[data-theme="dark"] .inquiry-form,
+html[data-theme="dark"] .inquiry-form-shell { background:#1b211e; }
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field textarea,
+html[data-theme="dark"] .inquiry-form input,
+html[data-theme="dark"] .inquiry-form textarea,
+html[data-theme="dark"] .file-drop { background:#101312; border-color:#38413c; color:#ffffff; }
+html[data-theme="dark"] .topic-option span,
+html[data-theme="dark"] .portfolio-filter { background:#1b211e; border-color:#38413c; color:#ffffff; }
+html[data-theme="dark"] .topic-option input:checked + span { background:#242f29; border-color:#ffffff; color:#ffffff; }
+html[data-theme="dark"] .button,
+html[data-theme="dark"] .create-own-button,
+html[data-theme="dark"] .site-nav .button,
+html[data-theme="dark"] .inquiry-form .button,
+html[data-theme="dark"] .portfolio-filter.is-active { background:#ffffff; border-color:#ffffff; color:#101312; }
+html[data-theme="dark"] .button:hover,
+html[data-theme="dark"] .create-own-button:hover { background:#e7ebe8; border-color:#e7ebe8; color:#101312; }
+html[data-theme="dark"] .button-ghost { background:transparent; border-color:#ffffff; color:#ffffff; }
+html[data-theme="dark"] .process { background:#123f37; color:#ffffff; }
+html[data-theme="dark"] .site-footer { background:#101312; color:#d6dcd8; }
+html[data-theme="dark"] .scroll-top { background:#123f37; color:#ffffff; }
+/* The hero image remains in its original light presentation. */
+html[data-theme="dark"] .hero-actions .button { background:#123f37; border-color:#123f37; color:#ffffff; }
+html[data-theme="dark"] .hero-actions .button-ghost { background:transparent; border-color:#123f37; color:#123f37; }
