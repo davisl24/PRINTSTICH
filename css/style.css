@@ -533,3 +533,35 @@ html[data-theme="dark"] .brand-logo-pair .theme-logo-dark { display: block; }
 html[data-theme="dark"] { color-scheme: dark; }
 html[data-theme="dark"] body { color-scheme: dark; }
 @media (max-width: 767px) { .header-inner { gap: .6rem; } .header-actions { gap: .5rem; } }
+
+
+/* Dark Green polish: coherent surfaces, readable navigation and actions. */
+html[data-theme="dark"] {
+  --color-bg: #0d1714;
+  --color-surface: #182721;
+  --color-text: #dcebe5;
+  --color-text-strong: #f3faf6;
+  --color-text-muted: #a9bfb5;
+  --color-border: #355046;
+  --color-accent: #9bd9c5;
+  --color-accent-hover: #b3e6d6;
+  --color-accent-soft: #24483c;
+  --color-mint: #1b3029;
+  --shadow-card: 0 16px 40px rgba(0,0,0,.18);
+}
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-header.is-scrolled { background: rgba(13,23,20,.96); }
+html[data-theme="dark"] .site-nav { background: transparent; }
+html[data-theme="dark"] .site-nav > a:not(.button) { color: #c4d7cf; }
+html[data-theme="dark"] .site-nav > a:not(.button):hover { color: #fff; }
+html[data-theme="dark"] .theme-toggle,
+html[data-theme="dark"] .menu-toggle { background: #1b3029; color: #effaf5; border-color: #355046; }
+html[data-theme="dark"] .menu-toggle span:not(.sr-only) { background: #effaf5; }
+html[data-theme="dark"] .button { background: #9bd9c5; color: #10271f; border-color: #9bd9c5; }
+html[data-theme="dark"] .button:hover { background: #b3e6d6; border-color: #b3e6d6; color: #10271f; }
+html[data-theme="dark"] .button-ghost { background: transparent; color: #a8e4d1; border-color: #77b8a4; }
+html[data-theme="dark"] .button-ghost:hover { background: #24483c; color: #f3faf6; }
+html[data-theme="dark"] .button:disabled { background: #37584c; border-color: #37584c; color: #c5d9d0; box-shadow: none; }
+@media (max-width: 767px) {
+  html[data-theme="dark"] .site-nav { background: #182721; border-color: #355046; }
+}
