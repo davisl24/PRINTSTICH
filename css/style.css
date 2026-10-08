@@ -897,3 +897,8 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
 .inquiry-review blockquote { margin: 0 0 .85rem; font-size: clamp(1.15rem,1.7vw,1.55rem); font-weight: 550; line-height: 1.4; letter-spacing: -.02em; color: var(--color-text-strong); }
 .inquiry-review figcaption { color: var(--color-text-muted); font-size: .88rem; }
 @media (max-width: 767px) { .inquiry-review { margin-top: 1.75rem; padding-top: 1.15rem; } }
+
+/* Final inquiry typography refinement: no layout or theme changes. */
+.inquiry-copy > h2 { font-size: clamp(2.7rem, 4.3vw, 4.6rem); }
+.inquiry-review blockquote { font-size: clamp(1.08rem, 1.4vw, 1.35rem); line-height: 1.5; font-weight: 500; }
+@media (max-width: 767px) { .inquiry-copy > h2 { font-size: clamp(2.35rem, 9vw, 3.2rem); } }
