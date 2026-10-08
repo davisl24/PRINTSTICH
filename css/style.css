@@ -883,3 +883,11 @@ html[data-theme="dark"] .services-catalog .services-catalog-cta { color:var(--co
   .audience { padding-bottom: clamp(.15rem, .5vw, .5rem); }
   .services.services-catalog { padding-top: clamp(.85rem, 1.35vw, 1.4rem); }
 }
+
+/* Give the audience choice a clear ending before the services catalog begins. */
+@media (min-width: 768px) {
+  .services.services-catalog { padding-top: clamp(4rem, 5vw, 5.5rem); }
+}
+@media (max-width: 767px) {
+  .services.services-catalog { padding-top: clamp(3rem, 8vw, 4rem); }
+}
