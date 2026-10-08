@@ -646,3 +646,21 @@ html[data-theme="dark"] .button-ghost:disabled { color:var(--color-text-muted); 
 
 /* Section separators removed; retain internal component borders. */
 .divider { display: none !important; }
+
+/* Compact audience paths — inherits existing theme tokens. */
+.audience-shell { display:grid; grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr); gap:clamp(2rem,6vw,5rem); align-items:start; }
+.audience-heading h2 { margin-bottom:1rem; }
+.audience-heading p:last-child { color:var(--color-text-muted); max-width:28rem; }
+.audience-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.audience-card { display:flex; flex-direction:column; align-items:flex-start; min-width:0; padding:clamp(1.35rem,2.5vw,2rem); border:1px solid var(--color-border); border-radius:var(--radius-lg); background:var(--color-surface); }
+.audience-index { font-size:.68rem; letter-spacing:.11em; font-weight:700; color:var(--color-text-muted); }
+.audience-card h3 { margin:1.5rem 0 .65rem; color:var(--color-text-strong); font-size:clamp(1.25rem,1.8vw,1.65rem); line-height:1.2; }
+.audience-card p { color:var(--color-text-muted); margin:0 0 1.75rem; }
+.audience-card a { margin-top:auto; font-weight:700; color:var(--color-accent); text-decoration:none; }
+.audience-card a:hover { text-decoration:underline; text-underline-offset:4px; }
+.audience-card a:focus-visible { outline:2px solid var(--color-accent); outline-offset:4px; }
+.services-intro > p:last-child { margin-top:1rem; color:var(--color-text-muted); }
+@media (max-width: 1023px) { .audience-shell { grid-template-columns:1fr; gap:2rem; } }
+@media (max-width: 600px) { .audience-grid { grid-template-columns:1fr; } .audience-card { padding:1.5rem; } .audience-card h3 { margin-top:1rem; } }
+html[data-theme="dark"] .audience-card { background:#17251f; border-color:var(--color-border); }
+html[data-theme="dark"] .audience-card a { color:var(--color-accent); }
