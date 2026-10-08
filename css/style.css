@@ -757,3 +757,31 @@ html[data-theme="dark"] .audience-card a { color:var(--color-text-strong); }
  .process-step:last-child { border-bottom:0; }
  .process-number { margin:0; padding-top:.2rem; }
 }
+
+/* Approved audience layout: centered heading and two equal centered columns. */
+.audience-heading { max-width:900px; margin:0 auto clamp(1.8rem,3vw,2.7rem); text-align:center; }
+.audience-heading h2 { max-width:900px; margin-inline:auto; }
+.audience-heading p:last-child { max-width:none; margin-inline:auto; }
+.audience-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(1.5rem,4vw,4rem); border:0; }
+.audience-card, html[data-theme="dark"] .audience-card {
+ display:flex; flex-direction:column; align-items:center; justify-content:center;
+ gap:.85rem; min-height:0; padding:clamp(1.25rem,2.8vw,2.5rem) 1rem;
+ border:0; border-radius:0; background:transparent; text-align:center;
+}
+.audience-card:hover, .audience-card:focus-within,
+html[data-theme="dark"] .audience-card:hover,
+html[data-theme="dark"] .audience-card:focus-within { background:transparent; }
+.audience-card h3 { margin:0; font-size:clamp(1.4rem,2vw,1.9rem); }
+.audience-card p { margin:0; max-width:26rem; font-size:clamp(.95rem,1.1vw,1.08rem); }
+.audience-card a, html[data-theme="dark"] .audience-card a {
+ display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
+ margin-top:.5rem; font-size:1rem; font-weight:700; color:var(--color-text-strong);
+ text-decoration:none;
+}
+.audience-card a span { display:inline; width:auto; height:auto; border:0; border-radius:0; font-size:1.1rem; }
+.audience-card:hover a span { transform:translate(2px,-2px); }
+.audience-card a:hover { text-decoration:underline; text-underline-offset:4px; }
+@media(max-width:767px) {
+ .audience-grid { grid-template-columns:1fr; gap:.75rem; }
+ .audience-card, html[data-theme="dark"] .audience-card { padding:1.3rem .5rem; }
+}
