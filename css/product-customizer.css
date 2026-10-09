@@ -1545,7 +1545,7 @@ html[data-theme="dark"] .customizer-summary,
 html[data-theme="dark"] .customizer-summary-quantities,
 html[data-theme="dark"] .customizer-summary-sides section,
 html[data-theme="dark"] [data-step-panel="3"] .customizer-summary-sides section,
-html[data-theme="dark"] .customizer-navigation { background:var(--color-surface); border-color:var(--color-border); }
+html[data-theme="dark"] .customizer-navigation { background:transparent; border-color:var(--color-border); }
 html[data-theme="dark"] .customizer-preview { background:#252c28; border-color:var(--color-border); }
 html[data-theme="dark"] .customizer-side-switch button,
 html[data-theme="dark"] .customizer-mobile-side-nav button,
@@ -1578,3 +1578,35 @@ html[data-theme="dark"] .customizer-page textarea:focus-visible { outline:2px so
 html[data-theme="dark"] .customizer-page .color-swatch .swatch,
 html[data-theme="dark"] .customizer-preview svg,
 html[data-theme="dark"] .customizer-preview svg * { forced-color-adjust:none; }
+
+/* Consistent dark configurator navigation across steps. */
+html[data-theme="dark"] .customizer-controls .customizer-navigation {
+  background: transparent;
+  border-top-color: var(--color-border);
+  box-shadow: none;
+}
+html[data-theme="dark"] .customizer-controls .customizer-navigation .button:disabled,
+html[data-theme="dark"] .customizer-controls .customizer-submit:disabled {
+  background: #35413b;
+  border-color: #35413b;
+  color: #c0ccc5;
+  opacity: 1;
+  cursor: not-allowed;
+}
+html[data-theme="dark"] .customizer-controls .customizer-navigation .button-ghost:not(:disabled) {
+  background: transparent;
+  border: 1px solid #d7e2dc;
+  color: #f4f7f5;
+}
+html[data-theme="dark"] .customizer-controls .customizer-navigation .button:not(.button-ghost):not(:disabled) {
+  background: #fff;
+  border-color: #fff;
+  color: #101312;
+}
+@media (max-width: 768px) {
+  html[data-theme="dark"] .customizer-controls .customizer-navigation {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: none;
+  }
+}
