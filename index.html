@@ -70,6 +70,19 @@
   .inquiry .form-footer .button{max-width:100%;white-space:normal}
 }
 </style>
+<style>
+/* Keep the approved desktop hierarchy on mobile: heading, then numbered steps, then form */
+@media(max-width:767px){
+ .process .process-shell{display:block}
+ .process .section-heading{display:block;text-align:center;margin-bottom:32px}
+ .process .section-heading h2{max-width:100%;font-size:clamp(2rem,8vw,3rem)}
+ .process .process-flow.live-timeline{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;border:0;padding:0}
+ .process .process-flow.live-timeline .process-step{display:block;border:0;padding:0;text-align:left}
+ .process .process-flow.live-timeline .process-number{display:inline-flex;align-items:center;justify-content:center;vertical-align:top;width:42px;height:42px;margin:0 0 14px;padding:0;border:1px solid rgba(255,255,255,.45);border-radius:50%;color:#fff}
+ .process .process-flow.live-timeline h3{margin:0 0 8px}
+ .process .process-flow.live-timeline p{margin:0;max-width:100%}
+}
+</style>
 </head>
 <body>
   <header class="site-header" data-header>
