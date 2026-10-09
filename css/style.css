@@ -1062,3 +1062,10 @@ html[data-theme="dark"] .portfolio-footer a { color:#d8eee4; }
  .audience-card a span,.services-catalog-cta span { flex:none; font-size:1em; }
 }
 html[data-theme="dark"] .audience-card a,html[data-theme="dark"] .services-catalog-cta { color:var(--color-text-strong); }
+
+/* Desktop hero: keep the complete headline on one line without changing mobile. */
+@media (min-width: 1200px) {
+  .hero-copy { max-width: 62%; }
+  .hero-copy h1 { max-width: none; white-space: nowrap; font-size: clamp(3rem, 4.2vw, 4.85rem); text-wrap: nowrap; }
+  .hero-lead { max-width: 34rem; }
+}
