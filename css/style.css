@@ -1069,3 +1069,63 @@ html[data-theme="dark"] .audience-card a,html[data-theme="dark"] .services-catal
   .hero-copy h1 { max-width: none; white-space: nowrap; font-size: clamp(3rem, 4.2vw, 4.85rem); text-wrap: nowrap; }
   .hero-lead { max-width: 34rem; }
 }
+
+/* PrintStich responsive hierarchy: one source of truth for the live homepage.
+   Preserve the approved desktop layout and section order. */
+.process .process-flow.live-timeline {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(1.5rem,4vw,4.5rem);
+  border:0;
+  padding:0;
+}
+.process .live-timeline .process-step { display:block; min-width:0; border:0; padding:0; }
+.process .live-timeline .process-number {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:42px; height:42px; padding:0; margin:0 0 1.35rem;
+  border:1px solid rgba(255,255,255,.48); border-radius:50%;
+  color:#fff; font-size:.85rem;
+}
+@media (max-width:767px) {
+  /* Keep the full brand statement as on desktop without horizontal overflow. */
+  .hero-copy { max-width:100%; }
+  .hero-copy h1 {
+    max-width:none;
+    width:max-content;
+    max-inline-size:100%;
+    white-space:nowrap;
+    text-wrap:nowrap;
+    font-size:clamp(1.7rem,7.1vw,2.35rem);
+    line-height:1.1;
+    letter-spacing:-.04em;
+  }
+  .hero-lead { max-width:min(15.5rem,72vw); }
+  /* One consistent mobile vertical rhythm across the homepage. */
+  .create-own.section { padding-block:2.8rem; }
+  .create-own-shell { gap:1.5rem; }
+  .create-own-copy { gap:1.25rem; }
+  .audience.section { padding-block:2.8rem 1.35rem; }
+  .audience-heading { margin-bottom:1.1rem; }
+  .audience-grid { gap:.25rem; }
+  .audience-card,html[data-theme="dark"] .audience-card { padding:1rem .5rem; }
+  .services.services-catalog.section { padding-block:2.8rem 3rem; }
+  .services-catalog .services-catalog-heading { margin-bottom:1.5rem; }
+  .work.section { padding-block:3rem; }
+  .work .section-heading { margin-bottom:1.5rem; }
+  .process.section { padding-block:3rem 3.3rem; }
+  .process .process-shell { display:block; width:min(calc(100% - 32px),var(--container)); }
+  .process .section-heading { margin:0 auto 2rem; text-align:center; }
+  .process .section-heading h2 { max-width:100%; margin:0; font-size:clamp(2rem,8vw,3rem); }
+  .process .process-flow.live-timeline { grid-template-columns:minmax(0,1fr); gap:1.85rem; }
+  .process .live-timeline .process-step { display:block; min-width:0; padding:0; border:0; }
+  .process .live-timeline .process-number { margin:0 0 .75rem; }
+  .process .live-timeline h3 { margin:0 0 .4rem; font-size:clamp(1.2rem,5vw,1.45rem); }
+  .process .live-timeline p { margin:0; max-width:100%; overflow-wrap:break-word; }
+  .inquiry.section { padding-block:3rem; }
+  .inquiry .inquiry-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:1.5rem; width:min(calc(100% - 32px),var(--container)); }
+  .inquiry .inquiry-copy,.inquiry .inquiry-form { width:100%; min-width:0; max-width:100%; box-sizing:border-box; }
+  .inquiry .field,.inquiry .field-full { min-width:0; }
+  .inquiry input,.inquiry textarea { max-width:100%; box-sizing:border-box; }
+  .inquiry .inquiry-topic-options { display:flex; flex-wrap:wrap; gap:8px; }
+  .inquiry .form-footer .button { max-width:100%; white-space:normal; }
+}
