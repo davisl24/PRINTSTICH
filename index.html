@@ -53,6 +53,23 @@
 .live-timeline .process-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.45);border-radius:50%;color:#fff;margin-bottom:24px}
 @media(max-width:700px){.live-timeline{grid-template-columns:1fr;gap:28px}.live-timeline .process-number{margin-bottom:12px}}
 </style>
+<style>
+/* Mobile visibility for approved process and inquiry */
+@media(max-width:767px){
+  .process .process-shell,.inquiry .inquiry-grid{width:100%;min-width:0}
+  .process .live-timeline{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+  .process .live-timeline .process-step{display:block;min-width:0}
+  .process .live-timeline .process-number{display:inline-flex;margin-bottom:12px}
+  .process .live-timeline h3,.process .live-timeline p{max-width:100%;overflow-wrap:break-word}
+  .inquiry .inquiry-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+  .inquiry .inquiry-copy,.inquiry .inquiry-form{width:100%;min-width:0;max-width:100%}
+  .inquiry .inquiry-form{box-sizing:border-box}
+  .inquiry .field,.inquiry .field-full{min-width:0}
+  .inquiry input,.inquiry textarea{max-width:100%;box-sizing:border-box}
+  .inquiry .inquiry-topic-options{display:flex;flex-wrap:wrap;gap:8px}
+  .inquiry .form-footer .button{max-width:100%;white-space:normal}
+}
+</style>
 </head>
 <body>
   <header class="site-header" data-header>
