@@ -1052,3 +1052,13 @@ html[data-theme="dark"] .scroll-top { background:#123f37; color:#fff; }
 html[data-theme="dark"] .form-privacy a { color:#d8eee4; }
 html[data-theme="dark"] .portfolio .button-ghost { border-color:#fff; color:#fff; }
 html[data-theme="dark"] .portfolio-footer a { color:#d8eee4; }
+
+/* Minimal mobile action links: no emoji-style icon or oversized controls. */
+.audience-card a,.services-catalog-cta { display:inline-flex; align-items:center; justify-content:flex-start; gap:.45rem; width:fit-content; font-size:inherit; font-weight:650; text-decoration:none; color:var(--color-text-strong); background:transparent; border:0; box-shadow:none; }
+.audience-card a span,.services-catalog-cta span { display:inline-block; width:auto; height:auto; border:0; border-radius:0; background:transparent; font-size:1.05em; line-height:1; color:inherit; transition:transform .2s ease; }
+.audience-card a:hover span,.services-catalog-cta:hover span { transform:translateX(3px); }
+@media(max-width:767px) {
+ .audience-card a,.services-catalog-cta { font-size:clamp(.88rem,3.5vw,1rem); gap:.35rem; white-space:normal; }
+ .audience-card a span,.services-catalog-cta span { flex:none; font-size:1em; }
+}
+html[data-theme="dark"] .audience-card a,html[data-theme="dark"] .services-catalog-cta { color:var(--color-text-strong); }
