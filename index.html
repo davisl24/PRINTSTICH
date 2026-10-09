@@ -48,6 +48,11 @@
   }
   </script>
   <script>try{if(localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<style>/* PrintStich process timeline: markers only, no connecting line */
+.live-timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,72px)}
+.live-timeline .process-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.45);border-radius:50%;color:#fff;margin-bottom:24px}
+@media(max-width:700px){.live-timeline{grid-template-columns:1fr;gap:28px}.live-timeline .process-number{margin-bottom:12px}}
+</style>
 </head>
 <body>
   <header class="site-header" data-header>
@@ -178,7 +183,7 @@
           
           <h2>Kā tas notiek</h2>
         </div>
-        <div class="process-flow" aria-label="PrintStich darba process">
+        <div class="process-flow live-timeline" aria-label="PrintStich darba process">
           <div class="process-step">
             <span class="process-number">01</span>
             <div>
@@ -205,7 +210,7 @@
     </section>
     
 
-    <section class="section inquiry" id="piedavajums"><div class="container inquiry-grid"><div class="inquiry-copy"><h2>Pastāsti savu ideju</h2><p>Apraksti, ko vēlies izgatavot, un pievieno piemēru, ja tāds ir. Palīdzēsim izvēlēties piemērotāko risinājumu un sagatavosim piedāvājumu.</p><figure class="inquiry-review"><blockquote>“Ļoti kvalitatīvi un skaisti izgatavo! Palīdzēja gan ar dizainu, gan risinājumiem!”</blockquote><figcaption>Google klienta atsauksme</figcaption></figure></div>
+    <section class="section inquiry" id="piedavajums"><div class="container inquiry-grid"><div class="inquiry-copy"><h2>Saņem piedāvājumu</h2><p>Aizpildi īsu pieteikumu. Sazināsimies, lai precizētu detaļas un sagatavotu piedāvājumu.</p></div>
       <form class="inquiry-form" id="inquiry-form" method="POST" action="https://formsubmit.co/davislocs135@gmail.com" enctype="multipart/form-data" novalidate>
         <input type="hidden" name="_subject" value="Jauns pieprasījums no printstich.lv">
         <input type="hidden" name="_template" value="table">
@@ -223,7 +228,7 @@
         </div>
 
         <fieldset class="field field-full inquiry-topic">
-          <legend>Par ko vēlies izrunāt?</legend>
+          <legend>Kas nepieciešams?</legend>
           <div class="inquiry-topic-options">
             <label class="topic-option"><input type="radio" name="temats" value="Apģērba apdruka" required><span>Apģērba apdruka</span></label>
             <label class="topic-option"><input type="radio" name="temats" value="Dizaina izveide"><span>Dizaina izveide</span></label>
@@ -239,7 +244,7 @@
         </div>
 
         <div class="field field-full">
-          <label for="zina">Pastāsti īsumā, ko vēlies izveidot</label>
+          <label for="zina">Apraksti savu pasūtījumu</label>
           <textarea id="zina" name="zina" rows="5" minlength="10" required aria-describedby="message-error" placeholder="Piem., 20 T-krekli komandai ar logo priekšpusē un uzrakstu aizmugurē."></textarea>
           <p class="form-status" id="message-error" role="status" hidden></p>
         </div>
