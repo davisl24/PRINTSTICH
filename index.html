@@ -48,7 +48,7 @@
     ]
   }
   </script>
-  <script>try{if(localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <script>try{const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');if(c&&c.version===1&&c.preferences===true&&localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 
 </head>
 <body>
@@ -403,5 +403,6 @@
       });
     })();
   </script>
+  <script src="js/cookie-consent.js"></script>
 </body>
 </html>
