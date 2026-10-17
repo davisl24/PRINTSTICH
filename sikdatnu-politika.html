@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script>try{if(localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <script>try{const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');if(c&&c.version===1&&c.preferences===true&&localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 </head>
 <body>
   <header class="site-header">
@@ -40,7 +40,7 @@
       <header class="legal-head">
         <p class="eyebrow">JURIDISKĀ INFORMĀCIJA</p>
         <h1>Sīkdatņu politika</h1>
-        <p class="legal-updated">Spēkā no 2026. gada 30. septembra.</p>
+        <p class="legal-updated">Atjaunināts 2026. gada 17. oktobrī.</p>
       </header>
       <div class="legal-content">
         <section>
@@ -49,19 +49,21 @@
         </section>
         <section>
           <h2>2. Ko PrintStich izmanto šobrīd</h2>
-          <p>PrintStich tīmekļvietnes pašreizējā versijā nav ieviestas reklāmas vai mārketinga sīkdatnes un nav ieviesta uz piekrišanu balstīta analītika. Tīmekļvietnes hostinga un drošības infrastruktūra var izmantot tehniski nepieciešamus identifikatorus vai žurnālus, kas vajadzīgi pakalpojuma darbībai un aizsardzībai.</p>
+          <p>Tīmekļvietne saglabā tavu sīkdatņu izvēli pārlūka lokālajā krātuvē (<code>printstich-consent-v1</code>), lai neatkārtotu jautājumu katrā apmeklējumā. Šī glabāšana ir nepieciešama izvēles ievērošanai.</p>
+          <p>Ja atļauj izskata preferences, pārlūka lokālajā krātuvē tiek saglabāts <code>printstich-theme</code> — gaišā vai tumšā režīma izvēle. Ja preferences neatļauj, režīmu joprojām vari pārslēgt, taču izvēle netiek saglabāta nākamajam apmeklējumam.</p>
+          <p>Pašlaik neizmantojam reklāmas vai uz piekrišanu balstītas analītikas sīkdatnes. Hostinga un drošības pakalpojumi var apstrādāt tehniski nepieciešamus pieprasījumu žurnālus vai identifikatorus.</p>
         </section>
         <section>
-          <h2>3. Ārējie pakalpojumi</h2>
-          <p>Tīmekļvietne var ielādēt ārējus tehniskus resursus, piemēram, fontus, un satur saites uz Instagram un Facebook. Atverot ārēju vietni, uz tās darbību attiecas attiecīgā pakalpojuma privātuma un sīkdatņu noteikumi.</p>
+          <h2>3. Kā mainīt izvēli</h2>
+          <p>Lapas apakšdaļā izvēlies “Sīkdatņu iestatījumi”. Tur vari atļaut vai atteikt izskata preferenču saglabāšanu. Atsakoties saglabāt preferences, iepriekš saglabātais izskata iestatījums tiek izdzēsts.</p>
         </section>
         <section>
-          <h2>4. Ja nākotnē ieviesīsim analītiku</h2>
-          <p>Ja tiks ieviestas analītikas, reklāmas vai citas nebūtiskas sīkdatnes, pirms to izmantošanas tiks ieviests atbilstošs piekrišanas risinājums un šī politika tiks atjaunināta.</p>
+          <h2>4. Ārējie pakalpojumi</h2>
+          <p>Tīmekļvietne ielādē Google Fonts fontu resursus un satur saites uz Instagram un Facebook. Ārējo resursu ielāde var ietvert tehnisko datu, piemēram, IP adreses, nodošanu pakalpojuma sniedzējam. Atverot ārēju vietni, uz tās darbību attiecas tās privātuma noteikumi. Šī izvēlne nepārvalda ārējo resursu tehniskos pieprasījumus.</p>
         </section>
         <section>
-          <h2>5. Pārlūka iestatījumi</h2>
-          <p>Sīkdatnes vari pārvaldīt vai dzēst sava pārlūka iestatījumos. Tehniski nepieciešamu sīkdatņu bloķēšana var ietekmēt atsevišķu tīmekļvietnes funkciju darbību.</p>
+          <h2>5. Ja nākotnē ieviesīsim analītiku</h2>
+          <p>Ja ieviesīsim nebūtiskas analītikas vai reklāmas sīkdatnes, pirms to izmantošanas atjaunināsim šo izvēles risinājumu un politiku. Pārlūka iestatījumos vari pārvaldīt vai dzēst saglabātos vietnes datus.</p>
         </section>
         <section>
           <h2>6. Saziņa</h2>
@@ -109,5 +111,6 @@
   </footer>
   <button class="scroll-top" type="button" aria-label="Uz augšu" hidden>↑</button>
   <script src="js/main.js"></script>
+  <script src="js/cookie-consent.js"></script>
 </body>
 </html>
