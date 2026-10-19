@@ -1399,7 +1399,7 @@ html[data-theme="light"] .hero .hero-actions .button:not(.button-ghost) {
 }
 html[data-theme="dark"] .hero .hero-actions .button-ghost,
 html[data-theme="light"] .hero .hero-actions .button-ghost {
-  background: rgba(255,255,255,.76); border-color: #123f37; color: #123f37;
+  background: transparent; border-color: #123f37; color: #123f37;
 }
 html[data-theme="dark"] .hero .hero-actions .button:not(.button-ghost):hover,
 html[data-theme="light"] .hero .hero-actions .button:not(.button-ghost):hover {
@@ -1408,4 +1408,41 @@ html[data-theme="light"] .hero .hero-actions .button:not(.button-ghost):hover {
 html[data-theme="dark"] .hero .hero-actions .button-ghost:hover,
 html[data-theme="light"] .hero .hero-actions .button-ghost:hover {
   background: #fff; border-color: #123f37; color: #123f37;
+}
+
+/* Consistent dark-green main CTA in the navigation on all pages and themes. */
+.site-header .site-nav > a.button,
+.site-header .header-mobile-cta,
+html[data-theme="dark"] .site-header .site-nav > a.button,
+html[data-theme="dark"] .site-header .header-mobile-cta {
+  background: #123f37;
+  border-color: #123f37;
+  color: #fff;
+}
+.site-header .site-nav > a.button:hover,
+.site-header .header-mobile-cta:hover,
+html[data-theme="dark"] .site-header .site-nav > a.button:hover,
+html[data-theme="dark"] .site-header .header-mobile-cta:hover {
+  background: #0b2f28;
+  border-color: #0b2f28;
+  color: #fff;
+}
+/* On phones the two hero actions form one clear vertical group, without overlapping the bag image. */
+@media (max-width: 767px) {
+  .hero .hero-copy .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .hero .hero-copy .hero-actions > .button {
+    width: auto;
+    min-width: min(215px, 100%);
+    max-width: 100%;
+    min-height: 48px;
+    padding: .75rem 1rem;
+    text-align: center;
+  }
 }
