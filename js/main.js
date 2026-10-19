@@ -1,6 +1,12 @@
 (() => {
   'use strict';
 
+  // Preserve existing links to the form after moving it to the contact page.
+  if (window.location.hash === '#piedavajums' && !document.getElementById('piedavajums')) {
+    window.location.replace('kontakti.html#piedavajums');
+    return;
+  }
+
   const THEME_KEY = 'printstich-theme';
   const themeToggle = document.querySelector('[data-theme-toggle]');
   const applyTheme = (theme) => {
@@ -30,7 +36,7 @@
   const scrollTopButton = document.querySelector('.scroll-top');
   const portfolioGrid = document.querySelector('[data-portfolio-grid]');
   const portfolioFilters = [...document.querySelectorAll('.portfolio-filter')];
-  const galleryMoreButton = document.querySelector('.gallery-more');
+  const galleryMoreButton = document.querySelector('button.gallery-more');
   const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   let activePortfolioCategory = 'Visi';
@@ -90,7 +96,7 @@
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) closeMenu({ returnFocus: false });
+      if (window.innerWidth > 1100) closeMenu({ returnFocus: false });
     });
   };
 

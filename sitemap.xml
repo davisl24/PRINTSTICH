@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://printstich.vercel.app/</loc>
-    <lastmod>2026-09-29</lastmod>
-  </url>
-  <url>
-    <loc>https://printstich.vercel.app/konfigurators.html</loc>
-    <lastmod>2026-09-29</lastmod>
-  </url>
+  <url><loc>https://printstich.vercel.app/</loc><lastmod>2026-10-19</lastmod></url>
+  <url><loc>https://printstich.vercel.app/pakalpojumi.html</loc><lastmod>2026-10-19</lastmod></url>
+  <url><loc>https://printstich.vercel.app/konfigurators.html</loc><lastmod>2026-10-19</lastmod></url>
+  <url><loc>https://printstich.vercel.app/musu-darbi.html</loc><lastmod>2026-10-19</lastmod></url>
+  <url><loc>https://printstich.vercel.app/kontakti.html</loc><lastmod>2026-10-19</lastmod></url>
 </urlset>
