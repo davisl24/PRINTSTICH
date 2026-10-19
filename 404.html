@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="lv" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lapa nav atrasta (404) | PrintStich</title>
+  <meta name="description" content="Pieprasītā PrintStich lapa nav atrasta. Atgriezies sākumlapā vai apskati pakalpojumus.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .not-found-main {
+      min-height: min(760px, calc(100svh - 95px));
+      display: flex;
+      align-items: center;
+      padding-block: clamp(5rem, 12vw, 9rem);
+      background: var(--color-bg);
+    }
+    .not-found-inner { width: 100%; }
+    .not-found-code {
+      margin: 0 0 1.25rem;
+      color: var(--color-text-muted);
+      font-size: .875rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+    }
+    .not-found-main h1 {
+      max-width: 17ch;
+      margin-bottom: 1.25rem;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1.04;
+      text-wrap: balance;
+    }
+    .not-found-description {
+      max-width: 34rem;
+      margin-bottom: 2rem;
+      color: var(--color-text-muted);
+      font-size: clamp(1rem, 1.7vw, 1.125rem);
+      line-height: 1.6;
+    }
+    .not-found-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .not-found-actions .button:first-child,
+    html[data-theme="dark"] .not-found-actions .button:first-child {
+      background: #123f37;
+      color: #fff;
+      border-color: #123f37;
+    }
+    .not-found-actions .button:first-child:hover,
+    html[data-theme="dark"] .not-found-actions .button:first-child:hover {
+      background: #0b2f28;
+      border-color: #0b2f28;
+    }
+    .not-found-actions .button-ghost { background: transparent; }
+    @media (max-width: 600px) {
+      .not-found-main { min-height: 65svh; padding-block: 5rem; }
+      .not-found-actions { align-items: stretch; flex-direction: column; }
+      .not-found-actions .button { width: 100%; justify-content: center; text-align: center; }
+    }
+  </style>
+  <script>try{const key='printstich-theme';const selected=sessionStorage.getItem(key);const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');const saved=c&&c.version===1&&c.preferences===true?localStorage.getItem(key):null;const theme=selected||saved;if(theme==='dark'||theme==='light')document.documentElement.setAttribute('data-theme',theme)}catch(e){}</script>
+</head>
+<body>
+  <a class="skip-link" href="#top">Pāriet uz saturu</a>
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="PrintStich sākumlapa">
+        <span class="brand-logo-pair"><img src="assets/images/logo.png" class="brand-logo theme-logo-light" alt="PrintStich logo" loading="lazy" width="2008" height="2008"><img src="assets/images/logo-white.png" class="brand-logo theme-logo-dark" alt="" aria-hidden="true"></span>
+        <span class="brand-name">PrintStich</span>
+      </a>
+      <div class="header-actions"><a class="button button-small header-mobile-cta" href="konfigurators.html">Izveido savu dizainu</a><button class="theme-toggle" type="button" data-theme-toggle aria-label="Ieslēgt tumšo režīmu" title="Ieslēgt tumšo režīmu" aria-pressed="false"><svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.5A8.7 8.7 0 0 1 8.5 3.8 8.8 8.8 0 1 0 20.2 15.5Z"/></svg><svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <span class="sr-only">Atvērt izvēlni</span><span></span><span></span>
+      </button></div>
+      <nav class="site-nav" id="site-nav" aria-label="Galvenā navigācija" data-nav><a href="index.html" aria-current="page">Sākumlapa</a><a href="pakalpojumi.html">Pakalpojumi</a><a href="konfigurators.html">Izveido pats</a><a href="musu-darbi.html">Mūsu darbi</a><a href="kontakti.html">Kontakti</a><a class="button button-small" href="konfigurators.html">Izveido savu dizainu</a></nav>
+    </div>
+  </header>
+
+  <main class="not-found-main" id="top">
+    <section class="container not-found-inner" aria-labelledby="not-found-title">
+      <p class="not-found-code">KĻŪDA 404</p>
+      <h1 id="not-found-title">Šī lapa nav atrasta.</h1>
+      <p class="not-found-description">Iespējams, saite ir mainīta vai ievadītā adrese nav pareiza. Vari atgriezties sākumlapā vai apskatīt mūsu pakalpojumus.</p>
+      <div class="not-found-actions">
+        <a class="button" href="index.html">Atgriezties sākumlapā</a>
+        <a class="button button-ghost" href="pakalpojumi.html">Skatīt pakalpojumus</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="kontakti">
+    <div class="container footer-grid footer-grid-legal">
+      <div class="footer-about">
+        <a class="brand footer-brand" href="index.html" aria-label="PrintStich sākumlapa">
+          <img src="assets/images/logo-white.png" class="brand-logo" alt="PrintStich logo" loading="lazy" width="2008" height="2008">
+          <span class="brand-name">PrintStich</span>
+        </a>
+        <p>Druka un dizains Limbažos.</p>
+      </div>
+      <div class="footer-links">
+        <span>Kontakti</span>
+        <a href="tel:+37127333112">+371 27 333 112</a>
+        <a href="mailto:printstich@inbox.lv">printstich@inbox.lv</a>
+        <address>Cēsu iela 20, Limbaži, LV-4001</address>
+      </div>
+      <div class="footer-links footer-company">
+        <span>Uzņēmums</span>
+        <p><strong>SIA PrintStich</strong></p>
+        <p>Reģ. Nr. 40203727557</p>
+
+        <p>Juridiskā adrese: Katrīnas iela 3 - 12, Viļķene, Viļķenes pag., Limbažu nov., LV-4050</p>
+      </div>
+      <div class="footer-links">
+        <span>Seko</span>
+        <a href="https://www.instagram.com/printstich/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.facebook.com/profile.php?id=61590085437483" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 SIA PrintStich. Visas tiesības aizsargātas.</span>
+      <nav class="footer-legal-links" aria-label="Juridiskā informācija">
+        <a href="privatuma-politika.html">Privātuma politika</a>
+        <a href="sikdatnu-politika.html">Sīkdatņu politika</a>
+        <a href="lietosanas-noteikumi.html">Lietošanas noteikumi</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/cookie-consent.js"></script>
+</body>
+</html>
