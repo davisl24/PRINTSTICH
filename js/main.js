@@ -74,6 +74,7 @@
     menuToggle.setAttribute('aria-expanded', 'true');
     nav.classList.add('is-open');
     document.body.classList.add('menu-open');
+    nav.querySelector('a')?.focus();
   };
 
   const initMenu = () => {
@@ -183,9 +184,8 @@
       image.height = 1200;
       image.decoding = 'async';
 
-      if (index >= 6) {
-        image.loading = 'lazy';
-      }
+      // Gallery is below the hero; avoid fetching every visible card eagerly.
+      image.loading = 'lazy';
 
       article.appendChild(image);
       fragment.appendChild(article);
