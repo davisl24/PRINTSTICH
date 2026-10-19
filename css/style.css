@@ -1216,6 +1216,25 @@ html[data-theme="dark"] .cookie-btn-primary { background:#d8f4e8; border-color:#
 .page-intro h1 { max-width: 18ch; }
 .page-intro .hero-lead { max-width: 42rem; }
 .section-page-link { margin-top: 2rem; }
+.portfolio-intro > .container { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.portfolio-intro h1 { margin: 0; }
+.portfolio-intro .hero-actions { flex-shrink: 0; margin: 0; }
+.portfolio-page-gallery.section { padding-top: 1rem; }
+.page-intro h1, .contact-details h1 { font-size: clamp(2.5rem, 4.2vw, 4rem); line-height: 1.08; max-width: none; }
+main .create-own h2, main .services-catalog .services-catalog-heading h2, main .work h2,
+main .process .section-heading h2, main .inquiry-copy h2 {
+  font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.12; letter-spacing: -.035em;
+}
+.contact-details h1 { margin-bottom: 2rem; }
+.contact-details-grid h2 { max-width: none; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; margin-bottom: .75rem; }
+.contact-details a { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--color-border); }
+.contact-details a:hover { text-decoration-color: currentColor; }
+main > .process:last-child { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.cookie-banner { max-height: calc(100dvh - 24px); overflow-y: auto; }
+@media (max-width: 900px) {
+  .portfolio-intro > .container { align-items: flex-start; flex-direction: column; gap: 1.25rem; }
+  .portfolio-intro .hero-actions { flex-wrap: wrap; }
+}
 a.gallery-more { display: block; width: fit-content; text-align: center; }
 .contact-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .contact-details address { font-style: normal; }
