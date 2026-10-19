@@ -48,7 +48,7 @@
     ]
   }
   </script>
-  <script>try{const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');if(c&&c.version===1&&c.preferences===true&&localStorage.getItem('printstich-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+  <script>try{const key='printstich-theme';const selected=sessionStorage.getItem(key);const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');const saved=c&&c.version===1&&c.preferences===true?localStorage.getItem(key):null;const theme=selected||saved;if(theme==='dark'||theme==='light')document.documentElement.setAttribute('data-theme',theme)}catch(e){}</script>
 
 </head>
 <body>
