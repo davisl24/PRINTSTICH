@@ -1279,8 +1279,8 @@ html[data-theme="dark"] .page-intro .hero-actions .button-ghost { background: tr
 html[data-theme="dark"] .create-own-actions .button-ghost { background: transparent; border-color: var(--color-text-strong); color: var(--color-text-strong); }
 @media (max-width: 767px) {
   /* Keep both actions readable while revealing more of the product image. */
-  .hero.section { min-height: clamp(510px, 76svh, 600px); padding-top: clamp(5.75rem, 16svh, 7rem); padding-bottom: 1.5rem; }
-  .hero-shell { align-self: flex-start; }
+  .hero.section { min-height: clamp(510px, 76svh, 600px); align-items: center; padding-top: 2rem; padding-bottom: 2rem; }
+  .hero-shell { align-self: center; }
   .hero-copy h1 { max-width: none; font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.08; margin-bottom: 1.25rem; }
   .hero-copy .eyebrow { margin-bottom: .75rem; }
   .hero-copy .hero-actions { margin-top: 0; }
@@ -1333,7 +1333,7 @@ html[data-theme="dark"] .create-own-actions .button-ghost { background: transpar
 }
 @media (max-width:390px) {
   .services-catalog .heading-side-link .heading-link-short { display:none; }
-  .hero.section { padding-top:clamp(5.25rem,15svh,6.5rem); }
+  .hero.section { padding-top:2rem; padding-bottom:2rem; }
 }
 
 /* Restrained monochrome dark mode across all five pages.
@@ -1391,3 +1391,21 @@ html[data-theme="dark"] .hero-actions .button-ghost { background: rgba(255,255,2
 html[data-theme="dark"] .scroll-top { background: #34735f; color: #fff; }
 html[data-theme="dark"] .portfolio-filter:not(.is-active),
 html[data-theme="dark"] .topic-option span { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text-strong); }
+
+/* Hero image is deliberately light in both modes; its CTAs keep the same brand treatment. */
+html[data-theme="dark"] .hero .hero-actions .button:not(.button-ghost),
+html[data-theme="light"] .hero .hero-actions .button:not(.button-ghost) {
+  background: #123f37; border-color: #123f37; color: #fff;
+}
+html[data-theme="dark"] .hero .hero-actions .button-ghost,
+html[data-theme="light"] .hero .hero-actions .button-ghost {
+  background: rgba(255,255,255,.76); border-color: #123f37; color: #123f37;
+}
+html[data-theme="dark"] .hero .hero-actions .button:not(.button-ghost):hover,
+html[data-theme="light"] .hero .hero-actions .button:not(.button-ghost):hover {
+  background: #0b2f28; border-color: #0b2f28; color: #fff;
+}
+html[data-theme="dark"] .hero .hero-actions .button-ghost:hover,
+html[data-theme="light"] .hero .hero-actions .button-ghost:hover {
+  background: #fff; border-color: #123f37; color: #123f37;
+}
