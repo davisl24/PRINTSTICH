@@ -28,6 +28,7 @@
   <script>try{const key='printstich-theme';const selected=sessionStorage.getItem(key);const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');const saved=c&&c.version===1&&c.preferences===true?localStorage.getItem(key):null;const theme=selected||saved;if(theme==='dark'||theme==='light')document.documentElement.setAttribute('data-theme',theme)}catch(e){}</script>
 </head>
 <body class="customizer-page">
+  <a class="skip-link" href="#top">Pāriet uz saturu</a>
   <header class="site-header" data-header>
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="PrintStich sākumlapa">
@@ -41,7 +42,7 @@
     </div>
   </header>
 
-  <main class="customizer-main">
+  <main class="customizer-main" id="top">
     <section class="customizer-intro" aria-labelledby="customizer-title"><div class="container"><a class="customizer-back-link" href="index.html">← Atpakaļ uz sākumlapu</a><h1 id="customizer-title">Izveido pats</h1><p>Vispirms izvēlies produktu. Nākamajā solī izvēlies krāsu un izmērus, pievieno dizainu un apskati rezultātu. Kad viss gatavs, nosūti variantu PrintStich piedāvājumam.</p></div></section>
 
     <section class="customizer-workspace" aria-label="Krekla konfigurators"><div class="container">
