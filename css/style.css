@@ -1281,7 +1281,7 @@ html[data-theme="dark"] .create-own-actions .button-ghost { background: transpar
   /* Keep both actions readable while revealing more of the product image. */
   .hero.section { min-height: clamp(510px, 76svh, 600px); align-items: center; padding-top: 2rem; padding-bottom: 2rem; }
   .hero-shell { align-self: center; }
-  .hero-copy h1 { max-width: none; font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.08; margin-bottom: 1.25rem; }
+  .hero-copy h1 { max-width: none; font-size: clamp(2.55rem, 10.3vw, 2.9rem); line-height: 1.05; margin-bottom: 1.15rem; }
   .hero-copy .eyebrow { margin-bottom: .75rem; }
   .hero-copy .hero-actions { margin-top: 0; }
   .hero-actions, .feature-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; width: 100%; max-width: 28rem; align-items: stretch; }
@@ -1540,12 +1540,12 @@ main { scroll-margin-top: 100px; }
   }
   .hero .hero-copy .hero-actions > .button {
     box-sizing: border-box;
-    width: min(235px, 100%);
+    width: min(220px, 100%);
     min-width: 0;
     max-width: 100%;
-    min-height: 50px;
-    padding: .65rem 1rem;
-    font-size: .875rem;
+    min-height: 48px;
+    padding: .625rem .9rem;
+    font-size: .8125rem;
     line-height: 1.25;
   }
 }
