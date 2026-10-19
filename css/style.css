@@ -66,7 +66,7 @@ p:last-child { margin-bottom: 0; }
 .button-ghost:hover { background: var(--color-accent-soft); color: var(--color-accent); }
 .button:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(18,63,55,.25); outline-offset: 3px; }
 
-.site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid transparent; background: rgba(245,247,244,.8); backdrop-filter: blur(18px); transition: background var(--transition),border-color var(--transition),box-shadow var(--transition); }
+.site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid transparent; background: rgba(255,255,255,.84); backdrop-filter: blur(18px); transition: background var(--transition),border-color var(--transition),box-shadow var(--transition); }
 .site-header.is-scrolled { background: rgba(255,255,255,.9); border-color: rgba(18,63,55,.08); box-shadow: 0 8px 30px rgba(18,63,55,.05); }
 .header-inner { min-height: var(--header-height); display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 .brand { display: inline-flex; align-items: center; gap: .8rem; font-weight: 750; }
@@ -980,7 +980,7 @@ html[data-theme="dark"] .site-header .site-nav { background: transparent; }
 
 /* Approved PrintStich palette. Light mode remains the visual reference. */
 :root {
-  --color-bg:#f5f7f4; --color-surface:#ffffff; --color-text:#123f37;
+  --color-bg:#ffffff; --color-surface:#ffffff; --color-text:#123f37;
   --color-text-strong:#0b2f28; --color-text-muted:#606d67;
   --color-border:#dbe3de; --color-accent:#123f37;
   --color-accent-hover:#0b2f28; --color-accent-soft:#e8efea; --color-mint:#e8efea;
@@ -1134,14 +1134,15 @@ html[data-theme="dark"] .audience-card a,html[data-theme="dark"] .services-catal
 /* Mobile hero balance: stronger headline, less empty space and restrained CTAs. */
 @media (max-width:767px) {
   .hero.section {
-    min-height:clamp(620px,85svh,790px);
+    min-height:clamp(570px,80svh,710px);
     align-items:flex-start;
-    padding-top:clamp(3.5rem,12svh,6.5rem);
-    padding-bottom:3rem;
+    padding-top:clamp(2.75rem,7svh,4rem);
+    padding-bottom:2rem;
   }
-  .hero-copy .eyebrow { margin-bottom:1rem; font-size:.7rem; }
+  .hero-copy .eyebrow { margin-bottom:.75rem; font-size:.7rem; }
   .hero-lead { max-width:min(20rem,83vw); font-size:clamp(.92rem,3.8vw,1.04rem); line-height:1.55; }
   .hero-actions { gap:.7rem; }
+  .hero-media img { object-position:center 62%; }
   .hero-actions .button {
     width:fit-content;
     max-width:100%;
@@ -1216,6 +1217,13 @@ html[data-theme="dark"] .cookie-btn-primary { background:#d8f4e8; border-color:#
 .page-intro h1 { max-width: 18ch; }
 .page-intro .hero-lead { max-width: 42rem; }
 .section-page-link { margin-top: 2rem; }
+/* Editorial heading links: one row on desktop, natural wrap on mobile. */
+main .heading-with-link { display:flex; align-items:baseline; justify-content:space-between; gap:1rem 2rem; max-width:none; }
+main .services-catalog .heading-with-link { max-width:none; }
+.heading-side-link { flex-shrink:0; display:inline-flex; align-items:center; gap:.45rem; color:var(--color-text-strong); font-size:.95rem; font-weight:650; text-decoration:none; white-space:nowrap; }
+.heading-side-link:hover { text-decoration:underline; text-underline-offset:4px; }
+.heading-side-link:focus-visible { outline:2px solid var(--color-accent); outline-offset:4px; }
+@media(max-width:600px) { main .heading-with-link { flex-wrap:wrap; align-items:flex-start; gap:.65rem; } .heading-side-link { font-size:.875rem; } }
 .portfolio-intro > .container { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 .portfolio-intro h1 { margin: 0; }
 .portfolio-intro .hero-actions { flex-shrink: 0; margin: 0; }
@@ -1227,10 +1235,10 @@ main .process .section-heading h2, main .inquiry-copy h2 {
   font-size: var(--type-section); line-height: 1.12; letter-spacing: -.035em; max-width: none; font-weight: 650; margin: 0;
 }
 main .work .section-heading, main .services-catalog .services-catalog-heading,
-main .process .section-heading { max-width: none; margin: 0 0 clamp(1.5rem, 3vw, 2.25rem); text-align: left; }
+main .process .section-heading { max-width: none; margin: 0 auto clamp(1.5rem, 3vw, 2.25rem); text-align: center; }
 main .process .section-heading h2 { margin: 0; }
 main .create-own h2, main .inquiry-copy h2 { margin-bottom: 1.25rem; }
-.contact-details h1 { margin-bottom: 2rem; }
+.contact-details h1 { margin: 0 0 2rem; text-align: center; }
 .contact-details-grid h2 { max-width: none; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; margin-bottom: .75rem; }
 .contact-details a { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--color-border); }
 .contact-details a:hover { text-decoration-color: currentColor; }
