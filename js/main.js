@@ -25,7 +25,10 @@
   themeToggle?.addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     applyTheme(next);
-    try { const consent = JSON.parse(localStorage.getItem('printstich-consent-v1') || 'null'); if (consent?.version === 1 && consent.preferences === true) localStorage.setItem(THEME_KEY, next); } catch (error) { /* Storage can be unavailable. */ }
+    // Remember the explicitly selected appearance while navigating, even without optional cookies.
+    try { sessionStorage.setItem(THEME_KEY, next); } catch (error) { /* Storage may be unavailable. */ }
+    // Remember it across visits only when appearance preferences were allowed.
+    try { const consent = JSON.parse(localStorage.getItem('printstich-consent-v1') || 'null'); if (consent?.version === 1 && consent.preferences === true) localStorage.setItem(THEME_KEY, next); } catch (error) { /* Storage may be unavailable. */ }
   });
 
   const header = document.querySelector('[data-header]');
