@@ -1279,7 +1279,7 @@ html[data-theme="dark"] .page-intro .hero-actions .button-ghost { background: tr
 html[data-theme="dark"] .create-own-actions .button-ghost { background: transparent; border-color: var(--color-text-strong); color: var(--color-text-strong); }
 @media (max-width: 767px) {
   /* Keep both actions readable while revealing more of the product image. */
-  .hero.section { min-height: clamp(510px, 76svh, 600px); padding-top: clamp(2rem, 6svh, 3rem); padding-bottom: 1.5rem; }
+  .hero.section { min-height: clamp(510px, 76svh, 600px); padding-top: clamp(4rem, 11svh, 5.25rem); padding-bottom: 1.5rem; }
   .hero-shell { align-self: flex-start; }
   .hero-copy h1 { max-width: none; font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.08; margin-bottom: 1.25rem; }
   .hero-copy .eyebrow { margin-bottom: .75rem; }
@@ -1318,4 +1318,20 @@ html[data-theme="dark"] .create-own-actions .button-ghost { background: transpar
   .site-header .brand-logo { width: 40px; height: 40px; }
   .site-header .header-mobile-cta { max-width: 138px; padding: .6rem .65rem; font-size: .75rem; line-height: 1.25; text-align: center; }
   .contact-details-grid { grid-template-columns: 1fr; }
+}
+
+/* Responsive heading actions: keep the title and compact link on one line. */
+.heading-link-short { display:none; }
+.portfolio-intro > .container.heading-with-link { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; }
+@media (max-width:767px) {
+  main .heading-with-link, .portfolio-intro > .container.heading-with-link { display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:.75rem; }
+  main .heading-with-link h1, main .heading-with-link h2 { min-width:0; }
+  .heading-link-long { display:none; }
+  .heading-link-short { display:inline; }
+  .heading-side-link { gap:.35rem; white-space:nowrap; font-size:clamp(.78rem,3.5vw,.9rem); }
+  .portfolio-intro > .container.heading-with-link { flex-direction:row; }
+}
+@media (max-width:390px) {
+  .services-catalog .heading-side-link .heading-link-short { display:none; }
+  .hero.section { padding-top:clamp(3.75rem,10svh,4.5rem); }
 }
