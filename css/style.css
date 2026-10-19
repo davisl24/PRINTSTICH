@@ -1279,7 +1279,7 @@ html[data-theme="dark"] .page-intro .hero-actions .button-ghost { background: tr
 html[data-theme="dark"] .create-own-actions .button-ghost { background: transparent; border-color: var(--color-text-strong); color: var(--color-text-strong); }
 @media (max-width: 767px) {
   /* Keep both actions readable while revealing more of the product image. */
-  .hero.section { min-height: clamp(510px, 76svh, 600px); padding-top: clamp(4rem, 11svh, 5.25rem); padding-bottom: 1.5rem; }
+  .hero.section { min-height: clamp(510px, 76svh, 600px); padding-top: clamp(5.75rem, 16svh, 7rem); padding-bottom: 1.5rem; }
   .hero-shell { align-self: flex-start; }
   .hero-copy h1 { max-width: none; font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.08; margin-bottom: 1.25rem; }
   .hero-copy .eyebrow { margin-bottom: .75rem; }
@@ -1333,5 +1333,61 @@ html[data-theme="dark"] .create-own-actions .button-ghost { background: transpar
 }
 @media (max-width:390px) {
   .services-catalog .heading-side-link .heading-link-short { display:none; }
-  .hero.section { padding-top:clamp(3.75rem,10svh,4.5rem); }
+  .hero.section { padding-top:clamp(5.25rem,15svh,6.5rem); }
 }
+
+/* Restrained monochrome dark mode across all five pages.
+   Brand green is reserved for key actions, not large section backgrounds. */
+html[data-theme="dark"] {
+  --color-bg: #101111;
+  --color-surface: #1a1c1b;
+  --color-text: #f0f1ef;
+  --color-text-strong: #f9faf8;
+  --color-text-muted: #adb3ae;
+  --color-border: #333836;
+  --color-accent: #3b806b;
+  --color-accent-hover: #4b977e;
+  --color-accent-soft: #25382f;
+  --color-mint: #1a1c1b;
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] main,
+html[data-theme="dark"] main .services,
+html[data-theme="dark"] main .services-catalog,
+html[data-theme="dark"] main .work,
+html[data-theme="dark"] main .portfolio,
+html[data-theme="dark"] main .process,
+html[data-theme="dark"] main .create-own,
+html[data-theme="dark"] main .inquiry,
+html[data-theme="dark"] main .quote,
+html[data-theme="dark"] main .page-intro,
+html[data-theme="dark"] main .contact-details {
+  background: var(--color-bg);
+  color: var(--color-text-strong);
+}
+html[data-theme="dark"] .site-footer { background: #171918; color: #e9ebe9; }
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .site-header.is-scrolled { background: var(--color-bg); }
+html[data-theme="dark"] .site-header .header-inner { background: var(--color-surface); }
+html[data-theme="dark"] .site-header .theme-toggle,
+html[data-theme="dark"] .site-header .menu-toggle { background: var(--color-surface); border-color: var(--color-border); }
+html[data-theme="dark"] .process h2,
+html[data-theme="dark"] .process h3,
+html[data-theme="dark"] .process .section-heading,
+html[data-theme="dark"] .process .live-timeline .process-number { color: var(--color-text-strong); }
+html[data-theme="dark"] .process .live-timeline p { color: var(--color-text-muted); }
+html[data-theme="dark"] .process .live-timeline .process-number { border-color: var(--color-border); }
+html[data-theme="dark"] .button,
+html[data-theme="dark"] .create-own-button,
+html[data-theme="dark"] .site-nav .button,
+html[data-theme="dark"] .inquiry-form .button,
+html[data-theme="dark"] .portfolio-filter.is-active { background: #34735f; border-color: #34735f; color: #fff; }
+html[data-theme="dark"] .button:hover,
+html[data-theme="dark"] .create-own-button:hover { background: #438a73; border-color: #438a73; color: #fff; }
+html[data-theme="dark"] .button-ghost,
+html[data-theme="dark"] .create-own-actions .button-ghost { background: transparent; border-color: #d2d7d3; color: #f3f5f2; }
+html[data-theme="dark"] .hero-actions .button { background: #34735f; border-color: #34735f; color: #fff; }
+html[data-theme="dark"] .hero-actions .button-ghost { background: rgba(255,255,255,.74); border-color: #284d42; color: #163d32; }
+html[data-theme="dark"] .scroll-top { background: #34735f; color: #fff; }
+html[data-theme="dark"] .portfolio-filter:not(.is-active),
+html[data-theme="dark"] .topic-option span { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text-strong); }
