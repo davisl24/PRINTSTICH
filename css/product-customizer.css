@@ -6,7 +6,7 @@
 .customizer-main { overflow: clip; }
 .customizer-intro { padding: clamp(2rem, 5vw, 4.5rem) 0 var(--space-xl); }
 .customizer-intro .container { max-width: 1200px; }
-.customizer-intro h1 { max-width: 12ch; margin-bottom: var(--space-sm); font-size: clamp(2.6rem, 6vw, 5.4rem); line-height: .95; letter-spacing: -.055em; }
+.customizer-intro h1 { max-width: none; margin-bottom: 1.25rem; font-size: var(--type-page); line-height: 1.08; letter-spacing: -.04em; }
 .customizer-intro p:last-child { max-width: 650px; margin-bottom: 0; color: var(--color-text-muted); font-size: clamp(1rem, 1.5vw, 1.15rem); }
 .customizer-back-link { display: inline-flex; margin-bottom: var(--space-lg); color: var(--color-text-muted); font-size: .9rem; font-weight: 650; }
 .customizer-back-link:hover { color: var(--color-accent); }
@@ -865,7 +865,7 @@
 
   .customizer-main { overflow: hidden; }
   .customizer-intro { padding: var(--space-lg) 0 var(--space-lg); }
-  .customizer-intro h1 { max-width: 9ch; font-size: clamp(2.4rem, 12vw, 3.7rem); }
+  .customizer-intro h1 { max-width: none; font-size: var(--type-page); }
   .customizer-back-link { margin-bottom: var(--space-md); }
   .customizer-workspace > .container { width: min(calc(100% - 24px), var(--container)); }
   .customizer-steps { width: 100%; margin-bottom: var(--space-md); overflow: hidden; }

@@ -1220,23 +1220,56 @@ html[data-theme="dark"] .cookie-btn-primary { background:#d8f4e8; border-color:#
 .portfolio-intro h1 { margin: 0; }
 .portfolio-intro .hero-actions { flex-shrink: 0; margin: 0; }
 .portfolio-page-gallery.section { padding-top: 1rem; }
-.page-intro h1, .contact-details h1 { font-size: clamp(2.5rem, 4.2vw, 4rem); line-height: 1.08; max-width: none; }
+:root { --type-page: clamp(2.25rem, 4.2vw, 3.5rem); --type-section: clamp(1.75rem, 3.2vw, 2.75rem); }
+.page-intro h1, .contact-details h1 { font-size: var(--type-page); line-height: 1.08; max-width: none; }
 main .create-own h2, main .services-catalog .services-catalog-heading h2, main .work h2,
 main .process .section-heading h2, main .inquiry-copy h2 {
-  font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.12; letter-spacing: -.035em;
+  font-size: var(--type-section); line-height: 1.12; letter-spacing: -.035em; max-width: none; font-weight: 650; margin: 0;
 }
+main .work .section-heading, main .services-catalog .services-catalog-heading,
+main .process .section-heading { max-width: none; margin: 0 0 clamp(1.5rem, 3vw, 2.25rem); text-align: left; }
+main .process .section-heading h2 { margin: 0; }
+main .create-own h2, main .inquiry-copy h2 { margin-bottom: 1.25rem; }
 .contact-details h1 { margin-bottom: 2rem; }
 .contact-details-grid h2 { max-width: none; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; margin-bottom: .75rem; }
 .contact-details a { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: var(--color-border); }
 .contact-details a:hover { text-decoration-color: currentColor; }
-main > .process:last-child { margin-bottom: clamp(2rem, 4vw, 3rem); }
+main .process, html[data-theme="dark"] main .process { background: var(--color-surface); color: var(--color-text-strong); }
+main .process h2, main .process h3, main .process .section-heading,
+main .process .live-timeline .process-number { color: var(--color-text-strong); }
+main .process .live-timeline p { color: var(--color-text-muted); }
+main .process .live-timeline .process-number { border-color: var(--color-border); }
 .cookie-banner { max-height: calc(100dvh - 24px); overflow-y: auto; }
 @media (max-width: 900px) {
   .portfolio-intro > .container { align-items: flex-start; flex-direction: column; gap: 1.25rem; }
   .portfolio-intro .hero-actions { flex-wrap: wrap; }
 }
 a.gallery-more { display: block; width: fit-content; text-align: center; }
-.contact-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.contact-details-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.contact-detail { border-top: 1px solid var(--color-border); padding-top: 1.25rem; min-width: 0; }
+.contact-detail > a { display: block; width: fit-content; margin-bottom: .35rem; }
+.contact-detail p { color: var(--color-text-muted); margin: .35rem 0 0; }
+.opening-hours { margin: 0; }
+.opening-hours > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .25rem 1rem; margin-bottom: .5rem; }
+.opening-hours dd { margin: 0; font-weight: 600; }
+.contact-details.section { padding-bottom: 1.5rem; }
+.feature-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+html[data-theme="dark"] .page-intro .hero-actions .button { background: #fff; border-color: #fff; color: #101312; }
+html[data-theme="dark"] .page-intro .hero-actions .button-ghost { background: transparent; color: #fff; }
+.hero-copy h1 { margin-bottom: 1.75rem; }
+.hero-copy .hero-actions { gap: .875rem; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-copy { max-width: 75%; }
+}
+@media (max-width: 767px) {
+  .hero.section { min-height: clamp(480px, 70svh, 600px); padding-top: clamp(2.5rem, 8svh, 4rem); padding-bottom: 2rem; }
+  .hero-copy h1 { max-width: none; font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.08; margin-bottom: 1.5rem; }
+  .hero-copy .eyebrow { margin-bottom: .875rem; }
+  .hero-actions, .feature-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; width: 100%; max-width: 28rem; align-items: stretch; }
+  .hero-actions .button, .feature-actions .button { width: 100%; max-width: none; min-height: 48px; padding: .75rem .4rem; font-size: clamp(.75rem, 3.5vw, .875rem); line-height: 1.25; text-align: center; }
+  .contact-details-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .contact-details.section, .page-intro.section { padding-top: 2.5rem; }
+}
 .contact-details address { font-style: normal; }
 @media (max-width: 1100px) {
   .site-header .header-inner { position: relative; gap: .5rem; }
