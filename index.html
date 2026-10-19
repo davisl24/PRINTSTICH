@@ -24,6 +24,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/hero-mobile.jpg" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/hero-tablet.jpg" media="(min-width: 768px) and (max-width: 1023px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/hero-desktop.jpg" media="(min-width: 1024px)" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
   <script type="application/ld+json">
   {
@@ -80,7 +83,7 @@
           <picture>
             <source media="(min-width: 1024px)" srcset="assets/images/hero-desktop.jpg" width="1672" height="941">
             <source media="(min-width: 768px)" srcset="assets/images/hero-tablet.jpg" width="1448" height="1086">
-            <img src="assets/images/hero-mobile.jpg" alt="PrintStich apdrukātas auduma somas" width="941" height="1672" fetchpriority="high" decoding="async">
+            <img src="assets/images/hero-mobile.jpg" alt="PrintStich apdrukātas auduma somas" width="941" height="1672" loading="eager" fetchpriority="high" decoding="async">
           </picture>
         </div>
       </div>
@@ -226,7 +229,7 @@
     </div>
   </footer>
   <button class="scroll-top" type="button" aria-label="Uz augšu" hidden>↑</button>
-  <script src="js/content.js"></script><script src="js/portfolio-data.js"></script><script src="js/main.js"></script>
+  <script src="js/portfolio-data.js"></script><script src="js/main.js"></script>
 
   <script src="js/cookie-consent.js"></script>
 </body>
