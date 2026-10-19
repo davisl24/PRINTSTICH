@@ -1446,3 +1446,28 @@ html[data-theme="dark"] .site-header .header-mobile-cta:hover {
     text-align: center;
   }
 }
+
+/* Fix dark-mode mobile nav: the dark hidden rule has higher specificity than .is-open. */
+@media (max-width: 1100px) {
+  html[data-theme="dark"] .site-header .site-nav.is-open,
+  html[data-theme="light"] .site-header .site-nav.is-open {
+    display: flex;
+    background: var(--color-surface);
+    z-index: 60;
+  }
+}
+/* Keep every primary "Izveido savu dizainu" action on the approved brand green. */
+html[data-theme="dark"] .create-own .create-own-button,
+html[data-theme="light"] .create-own .create-own-button,
+html[data-theme="dark"] .create-own-actions .create-own-button,
+html[data-theme="light"] .create-own-actions .create-own-button {
+  background: #123f37;
+  border-color: #123f37;
+  color: #fff;
+}
+html[data-theme="dark"] .create-own .create-own-button:hover,
+html[data-theme="light"] .create-own .create-own-button:hover {
+  background: #0b2f28;
+  border-color: #0b2f28;
+  color: #fff;
+}
