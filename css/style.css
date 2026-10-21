@@ -1756,3 +1756,6 @@ main { scroll-margin-top: 100px; }
   .homepage-benefit-summary { gap: .85rem; }
   .homepage-benefit-details { padding-left: calc(24px + .85rem); }
 }
+
+.homepage-benefit-summary .homepage-benefit-copy { position: relative; padding-right: 1.5rem; }
+.homepage-benefit-summary .homepage-benefit-chevron { position: absolute; right: 0; top: 0; font-size: 1.2rem; }
