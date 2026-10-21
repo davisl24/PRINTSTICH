@@ -1709,3 +1709,22 @@ main { scroll-margin-top: 100px; }
   .contact-details.section { padding-bottom: 2.5rem; }
   .contact-details + .inquiry.section { padding-top: 2.5rem; }
 }
+
+/* Homepage only — understated fulfilment and delivery information strip. */
+.homepage-benefits { background: var(--color-bg); }
+.homepage-benefits-inner {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--color-border);
+}
+.homepage-benefit { display: flex; flex-direction: column; gap: .35rem; }
+.homepage-benefit strong { color: var(--color-text-strong); font-size: clamp(.95rem, 1.2vw, 1.1rem); font-weight: 650; line-height: 1.35; }
+.homepage-benefit span { color: var(--color-text-muted); font-size: .875rem; line-height: 1.5; }
+@media (max-width: 767px) {
+  .homepage-benefits-inner { grid-template-columns: 1fr; gap: 1rem; padding-block: 1.35rem; }
+  .homepage-benefit { gap: .2rem; }
+  .homepage-benefit strong { font-size: .9rem; }
+  .homepage-benefit span { font-size: .8rem; }
+}
