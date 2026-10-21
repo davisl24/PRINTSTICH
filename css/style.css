@@ -1556,3 +1556,28 @@ main { scroll-margin-top: 100px; }
     font-size: .7rem;
   }
 }
+
+/* PrintStich: authentic single Google review and concise starting prices. */
+.customer-review { padding-block: clamp(4rem, 7vw, 7rem); background: var(--color-bg); }
+.customer-review-inner { max-width: 860px; text-align: center; }
+.customer-review-label { margin: 0 0 1.5rem; color: var(--color-text-muted); font-size: .875rem; }
+.customer-review-text { margin: 0; color: var(--color-text-strong); font-size: clamp(1.75rem, 3.2vw, 3.15rem); font-weight: 600; line-height: 1.24; letter-spacing: -.035em; }
+.customer-review-credit { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem 1rem; margin-top: 1.65rem; color: var(--color-text-muted); font-size: .875rem; }
+.customer-review-stars { color: #bc8a2a; letter-spacing: .12em; font-size: 1rem; }
+.starting-prices { padding-block: clamp(4rem, 7vw, 7rem); }
+.starting-prices-inner { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(2rem, 5vw, 6rem); align-items: start; }
+.starting-prices-heading h2 { margin: 0 0 1rem; color: var(--color-text-strong); font-size: clamp(2rem, 3.2vw, 3.4rem); letter-spacing: -.04em; line-height: 1.1; }
+.starting-prices-heading p { max-width: 28rem; margin: 0; color: var(--color-text-muted); line-height: 1.6; }
+.starting-prices-list { margin: 0; border-top: 1px solid var(--color-border); }
+.starting-prices-list > div { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--color-border); }
+.starting-prices-list dt { color: var(--color-text-strong); font-weight: 600; }
+.starting-prices-list dd { margin: 0; white-space: nowrap; color: var(--color-text-strong); font-weight: 700; }
+.starting-prices-note { margin: 1.1rem 0 1.5rem; color: var(--color-text-muted); font-size: .875rem; line-height: 1.6; }
+.starting-prices-button { min-height: 48px; }
+@media (max-width: 767px) {
+  .customer-review { padding-block: 3.5rem; }
+  .customer-review-text { font-size: clamp(1.65rem, 7vw, 2.3rem); }
+  .starting-prices-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .starting-prices-list > div { gap: .8rem; }
+  .starting-prices-list dt, .starting-prices-list dd { font-size: .875rem; }
+}
