@@ -1652,3 +1652,19 @@ html[data-theme="dark"] .customizer-controls .customizer-navigation .button-ghos
     min-width: 0;
   }
 }
+
+/* Product starting prices: orientation only, never a calculated quote. */
+.product-visual-option .product-starting-price {
+  display: block;
+  margin-top: .38rem;
+  color: var(--color-text-strong);
+  font-style: normal;
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: normal;
+}
+html[data-theme="dark"] .product-visual-option .product-starting-price { color: var(--color-text-strong); }
+@media (max-width: 767px) {
+  .product-visual-option .product-starting-price { font-size: .76rem; min-height: 2.1em; }
+}
