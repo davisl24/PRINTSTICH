@@ -1719,12 +1719,16 @@ main { scroll-margin-top: 100px; }
   padding-block: clamp(1.5rem, 3vw, 2.5rem);
   border-bottom: 1px solid var(--color-border);
 }
-.homepage-benefit { display: flex; flex-direction: column; gap: .35rem; }
+.homepage-benefit { display: flex; align-items: flex-start; gap: .95rem; }
+.homepage-benefit-icon { width: 26px; height: 26px; flex: 0 0 26px; color: var(--color-accent); margin-top: .08rem; }
+.homepage-benefit-copy { display: flex; min-width: 0; flex-direction: column; gap: .35rem; }
 .homepage-benefit strong { color: var(--color-text-strong); font-size: clamp(.95rem, 1.2vw, 1.1rem); font-weight: 650; line-height: 1.35; }
 .homepage-benefit span { color: var(--color-text-muted); font-size: .875rem; line-height: 1.5; }
 @media (max-width: 767px) {
   .homepage-benefits-inner { grid-template-columns: 1fr; gap: 1rem; padding-block: 1.35rem; }
-  .homepage-benefit { gap: .2rem; }
+  .homepage-benefit { gap: .85rem; }
+  .homepage-benefit-icon { width: 24px; height: 24px; flex-basis: 24px; margin-top: .04rem; }
+  .homepage-benefit-copy { gap: .2rem; }
   .homepage-benefit strong { font-size: .9rem; }
   .homepage-benefit span { font-size: .8rem; }
 }
