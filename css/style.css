@@ -1745,3 +1745,14 @@ main { scroll-margin-top: 100px; }
 .homepage-benefit-details p { margin: 0; color: var(--color-text-muted); font-size: .875rem; line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) { .homepage-benefit-chevron { transition: none; } }
 @media (max-width: 767px) { .homepage-benefit-copy summary { gap: .2rem; } .homepage-benefit-details p { font-size: .8rem; } }
+
+.homepage-benefit { display: block; }
+.homepage-benefit-summary { display: flex; align-items: flex-start; gap: .95rem; cursor: pointer; list-style: none; }
+.homepage-benefit-summary::-webkit-details-marker { display: none; }
+.homepage-benefit-summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; border-radius: 2px; }
+.homepage-benefit-summary .homepage-benefit-copy { flex: 1; }
+.homepage-benefit-details { padding-left: calc(26px + .95rem); }
+@media (max-width: 767px) {
+  .homepage-benefit-summary { gap: .85rem; }
+  .homepage-benefit-details { padding-left: calc(24px + .85rem); }
+}
