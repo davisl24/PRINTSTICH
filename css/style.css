@@ -1678,3 +1678,34 @@ main { scroll-margin-top: 100px; }
     line-height: 1.55;
   }
 }
+
+/* Consistent mobile rhythm across PrintStich's approved page layouts. */
+@media (max-width: 767px) {
+  /* The repeated configurator feature remains one component on all pages. */
+  .create-own .create-own-intro h2 { margin-bottom: .75rem; }
+  .create-own .create-own-lead { font-size: .9375rem; line-height: 1.6; }
+  .create-own .create-own-shell { gap: 1.5rem; }
+  .create-own .create-own-media img { display: block; width: 100%; height: auto; }
+  /* One primary CTA on mobile; retain secondary choice on desktop. */
+  .create-own .create-own-actions, .create-own .feature-actions {
+    display: flex;
+    width: auto;
+    align-items: center;
+    gap: .5rem;
+  }
+  .create-own .create-own-actions .create-own-button,
+  .create-own .feature-actions .create-own-button {
+    width: auto;
+    min-width: 0;
+    min-height: 48px;
+    padding: .75rem 1.25rem;
+    font-size: .875rem;
+  }
+  .create-own .create-own-actions .button-ghost,
+  .create-own .feature-actions .button-ghost { display: none; }
+  /* Let each section breathe without extending the overall page. */
+  .portfolio-page-gallery.section { padding-bottom: 2.75rem; }
+  .portfolio-page-gallery + .create-own.section { padding-top: 2.75rem; }
+  .contact-details.section { padding-bottom: 2.5rem; }
+  .contact-details + .inquiry.section { padding-top: 2.5rem; }
+}
