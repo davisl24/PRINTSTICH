@@ -1581,3 +1581,100 @@ main { scroll-margin-top: 100px; }
   .starting-prices-list > div { gap: .8rem; }
   .starting-prices-list dt, .starting-prices-list dd { font-size: .875rem; }
 }
+
+/* Services page only: compact, readable mobile journey; desktop stays locked. */
+@media (max-width: 767px) {
+  .services-page-intro.section { padding-bottom: 1.25rem; }
+  .services-page-intro + .services.services-catalog.section {
+    padding-top: 0;
+    padding-bottom: 1.3rem;
+  }
+  .services-page-intro + .services-catalog .services-catalog-grid {
+    gap: 1.65rem .85rem;
+    align-items: stretch;
+  }
+  .services-page-intro + .services-catalog .services-catalog-copy {
+    padding-top: .7rem;
+  }
+  .services-page-intro + .services-catalog .services-catalog-copy h3 {
+    font-size: clamp(.96rem, 3.8vw, 1.08rem);
+    line-height: 1.3;
+    margin-bottom: .4rem;
+    overflow-wrap: anywhere;
+  }
+  .services-page-intro + .services-catalog .services-catalog-copy p {
+    font-size: clamp(.82rem, 3.35vw, .91rem);
+    line-height: 1.5;
+    margin-bottom: .65rem;
+  }
+  .services-page-intro + .services-catalog .services-catalog-cta {
+    font-size: clamp(.78rem, 3.2vw, .87rem);
+    line-height: 1.35;
+    min-height: 44px;
+    padding-block: .65rem;
+    align-items: center;
+    margin-top: auto;
+  }
+  .services-page-intro ~ .starting-prices.section {
+    padding-block: 1.4rem 2.6rem;
+  }
+  .services-page-intro ~ .starting-prices .starting-prices-inner { gap: 1.25rem; }
+  .services-page-intro ~ .starting-prices .starting-prices-heading h2 {
+    font-size: clamp(1.8rem, 7vw, 2.15rem);
+    margin-bottom: .6rem;
+  }
+  .services-page-intro ~ .starting-prices .starting-prices-heading p {
+    font-size: .875rem;
+  }
+  .services-page-intro ~ .starting-prices .starting-prices-list > div {
+    padding: .95rem 0;
+  }
+  .services-page-intro ~ .starting-prices .starting-prices-button {
+    display: none;
+  }
+  .services-page-intro ~ .create-own.section { padding-block: 2.75rem; }
+  .services-page-intro ~ .create-own .create-own-copy { gap: 1rem; }
+  .services-page-intro ~ .create-own .create-own-actions {
+    display: flex;
+    width: auto;
+  }
+  .services-page-intro ~ .create-own .create-own-actions .create-own-button {
+    width: auto;
+    min-width: 0;
+    padding: .75rem 1.25rem;
+    font-size: .875rem;
+  }
+  .services-page-intro ~ .create-own .create-own-actions .button-ghost {
+    display: none;
+  }
+  .services-page-intro ~ .process.section { padding-block: 2.75rem 3.25rem; }
+  .services-page-intro ~ .process .section-heading { margin-bottom: 1.4rem; }
+  .services-page-intro ~ .process .process-flow.live-timeline {
+    gap: 0;
+  }
+  .services-page-intro ~ .process .live-timeline .process-step {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.18);
+  }
+  .services-page-intro ~ .process .live-timeline .process-step:last-child {
+    border-bottom: 0;
+  }
+  .services-page-intro ~ .process .live-timeline .process-number {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    font-size: .7rem;
+  }
+  .services-page-intro ~ .process .live-timeline h3 {
+    margin: 0 0 .3rem;
+    font-size: 1.05rem;
+  }
+  .services-page-intro ~ .process .live-timeline p {
+    font-size: .875rem;
+    line-height: 1.55;
+  }
+}
