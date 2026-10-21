@@ -1732,3 +1732,16 @@ main { scroll-margin-top: 100px; }
   .homepage-benefit strong { font-size: .9rem; }
   .homepage-benefit span { font-size: .8rem; }
 }
+
+/* Expandable production and delivery details; preserve existing icons and layout. */
+.homepage-benefit { display: flex; }
+.homepage-benefit-copy { flex: 1; }
+.homepage-benefit-copy summary { position: relative; display: flex; flex-direction: column; gap: .35rem; padding-right: 1.5rem; cursor: pointer; list-style: none; }
+.homepage-benefit-copy summary::-webkit-details-marker { display: none; }
+.homepage-benefit-copy summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; border-radius: 2px; }
+.homepage-benefit-chevron { position: absolute; right: 0; top: 0; font-size: 1.2rem !important; transition: transform .2s ease; }
+.homepage-benefit[open] .homepage-benefit-chevron { transform: rotate(180deg); }
+.homepage-benefit-details { padding-top: .75rem; }
+.homepage-benefit-details p { margin: 0; color: var(--color-text-muted); font-size: .875rem; line-height: 1.6; }
+@media (prefers-reduced-motion: reduce) { .homepage-benefit-chevron { transition: none; } }
+@media (max-width: 767px) { .homepage-benefit-copy summary { gap: .2rem; } .homepage-benefit-details p { font-size: .8rem; } }
