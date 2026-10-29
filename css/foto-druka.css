@@ -1,11 +1,11 @@
 
 /* Photo printing configurator demo. All selectors are scoped to the FP pages. */
 .fp-hero { padding: clamp(2rem,4vw,3rem) 0 clamp(2.4rem,5vw,4rem); }
-.fp-back { display: inline-block; margin: 0 0 clamp(2rem,4vw,3rem); font-size: .86rem; color: var(--color-text-muted); }
+.fp-back { display: inline-block; margin: 0 0 clamp(1.5rem,3vw,2.25rem); font-size: .86rem; color: var(--color-text-muted); }
 .fp-back:hover,.fp-price-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .fp-hero-body { display: flex; align-items: flex-end; justify-content: space-between; gap: 3.5rem; }
 .fp-overline { margin:0 0 1rem; color:var(--color-text-muted); font-size:.7rem; font-weight:700; letter-spacing:.15em; }
-.fp-hero h1 { max-width:none; font-size:clamp(2.7rem,5.5vw,5.35rem); line-height:1.06; font-weight:650; margin:0 0 1.25rem; letter-spacing:-.055em; }
+.fp-hero h1 { max-width:none; font-size:clamp(2.7rem,5.5vw,5.35rem); line-height:1.06; font-weight:650; margin:0; letter-spacing:-.055em; }
 .fp-lead { max-width:37rem; font-size:clamp(.98rem,1.3vw,1.09rem); line-height:1.65; color:var(--color-text-muted); margin:0; }
 .fp-demo-note { display:flex; align-items:flex-start; gap:.75rem; max-width:260px; padding:1rem 1.1rem; border:1px solid var(--color-border); border-radius:14px; background:var(--color-surface); flex:0 0 auto; }
 .fp-demo-dot { display:block; width:8px; height:8px; margin-top:.4rem; background:#a58037; border-radius:50%; flex:0 0 auto; }
