@@ -24,7 +24,7 @@
   const safe = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const state = { items: [], shown: 10, nextId: 1 };
   const defaults = () => ({
-    size: el.size.value, paper: el.paper.value, mode: el.fit.value,
+    size: el.size.value, paper: el.paper.value, mode: el.fit.checked ? 'contain' : 'cover',
     qty: Math.min(999, Math.max(1, Number.parseInt(el.qty.value,10) || 1))
   });
   const selectOptions = (values, selected) => Object.entries(values).map(([key,label]) => '<option value="'+key+'"'+(key===selected?' selected':'')+'>'+label+'</option>').join('');
@@ -55,12 +55,11 @@
 
   function rowMarkup(item,p,index) {
     const papers = {'gloss':'Glancēts','matte':'Matēts'};
-    const modes = {'contain':'Visa bilde','cover':'Aizpildīt'};
     return '<div class="fp-photo-row" data-pos="'+index+'">' +
       '<label>Izmērs<select data-field="size">'+selectOptions(sizeLabels,p.size)+'</select></label>'+
       '<label>Papīrs<select data-field="paper">'+selectOptions(papers,p.paper)+'</select></label>'+
       '<label>Kopijas<input data-field="qty" type="number" min="1" max="999" value="'+p.qty+'" inputmode="numeric"></label>'+
-      '<label>Kadrējums<select data-field="mode">'+selectOptions(modes,p.mode)+'</select></label>'+
+      '<label class="fp-photo-margin-toggle"><input type="checkbox" data-field="mode"'+(p.mode==='contain'?' checked':'')+'><span>Baltās malas</span></label>'+
       '<button class="fp-row-remove" data-action="remove-position" type="button" aria-label="Noņemt drukas variantu" title="Noņemt variantu"'+(item.positions.length===1?' disabled':'')+'>×</button>'+
       '</div>';
   }
@@ -69,12 +68,12 @@
     const first = item.positions[0];
     return '<article class="fp-photo" data-id="'+item.id+'">'+
       '<div class="fp-photo-top">'+
-        '<div class="fp-thumb" style="aspect-ratio:3 / 2"><img src="'+item.url+'" alt="'+safe(item.name)+'" loading="lazy" style="object-fit:'+(first.mode==='cover'?'cover':'contain')+'"></div>'+
+        '<div class="fp-thumb" data-size="'+first.size+'" style="aspect-ratio:3 / 2"><img src="'+item.url+'" alt="'+safe(item.name)+'" loading="lazy" style="object-fit:'+(first.mode==='cover'?'cover':'contain')+'"></div>'+
         '<div class="fp-photo-info"><strong class="fp-photo-name" title="'+safe(item.name)+'">'+safe(item.name)+'</strong>'+
         '<span class="fp-photo-meta">'+(item.bytes/1024/1024).toFixed(2).replace('.',',')+' MB · '+item.positions.length+' drukas variants'+(item.positions.length>1?'i':'')+'</span>'+
         '<div class="fp-photo-actions"><button type="button" data-action="add-position">+ Vēl viens izmērs</button><button type="button" data-action="remove-file">Noņemt</button></div></div></div>'+
         '<div class="fp-photo-rows">'+item.positions.map((p,i)=>rowMarkup(item,p,i)).join('')+'</div>'+
-        (item.positions.some(p=>p.mode==='cover')?'<p class="fp-photo-warning">Aizpildot papīru, attēla malas var tikt apgrieztas.</p>':'')+
+
       '</article>';
   }
 
@@ -90,7 +89,9 @@
     for (const img of el.list.querySelectorAll('.fp-thumb img')) {
       img.addEventListener('load',()=>{
         const box=img.parentElement;
-        if (img.naturalHeight>img.naturalWidth) box.style.aspectRatio='2 / 3';
+        const portrait=img.naturalHeight>img.naturalWidth;
+        const ratios={'10x15':portrait?'2 / 3':'3 / 2','12x15':portrait?'4 / 5':'5 / 4','15x20':portrait?'3 / 4':'4 / 3'};
+        box.style.aspectRatio=ratios[box.dataset.size]||(img.naturalWidth+' / '+img.naturalHeight);
       },{once:true});
     }
     summary();
@@ -115,9 +116,12 @@
     el.summaryPrints.textContent=String(quantity)+(linkPresent?' + jāprecizē':'');
     el.summaryLines.innerHTML=lines.length?lines.join(''):'<p>Izvēlies fotogrāfijas, lai redzētu aprēķinu.</p>';
     el.summaryTotal.textContent=!lines.length?'—':unknown?'Jāprecizē':formatEUR(sum);
+    const mixedSizes=grouped.size>1;
     el.summaryNote.textContent=unknown
-      ? 'Pasūtījumā ir nestandarta izmērs, 200+ izdrukas vai ārēja saite. Precīzo cenu noteiks PrintStich.'
-      : 'Provizoriski pēc publicētā cenrāža, skaitot katra izmēra kopijas atsevišķi. Atlaides un gala cenu vēl jāsaskaņo ar PrintStich.';
+      ? 'Daudzumu rēķinām katram izmēram atsevišķi. Nestandarta izmēriem, 200+ izdrukām vai ārējai saitei cenu precizēs PrintStich.'
+      : mixedSizes
+        ? 'Daudzuma cena rēķināta katram izmēram atsevišķi. Jauktiem izmēriem PrintStich var piešķirt 5 % atlaidi pēc individuālas saskaņošanas; tā nav automātiski atskaitīta.'
+        : 'Provizoriskā cena pēc PrintStich cenrāža. Galīgo summu apstiprinās PrintStich.';
   }
 
   el.picker.addEventListener('click',e=>{e.stopPropagation();el.files.click()});
@@ -156,7 +160,7 @@
     const pos=item?.positions[Number(input.closest('[data-pos]').dataset.pos)];
     if(!pos)return;
     const field=input.dataset.field;
-    pos[field]=field==='qty'?Math.min(999,Math.max(1,Number.parseInt(input.value,10)||1)):input.value;
+    pos[field]=field==='qty'?Math.min(999,Math.max(1,Number.parseInt(input.value,10)||1)):(field==='mode'?(input.checked?'contain':'cover'):input.value);
     render();
   });
   window.addEventListener('pagehide',()=>state.items.forEach(item=>URL.revokeObjectURL(item.url)));
