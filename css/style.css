@@ -1787,3 +1787,26 @@ main { scroll-margin-top: 100px; }
   .starting-prices + .service-order-details { padding-bottom: 2rem; }
   .starting-prices + .service-order-details h2 { margin-bottom: .75rem; }
 }
+
+/* PrintStich: photo-print pricing matrix within existing services pricing. */
+.photo-print-prices { margin-top: clamp(2.5rem, 5vw, 4.5rem); }
+.photo-print-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1.5rem; margin-bottom: 1.4rem; }
+.photo-print-heading h3 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2.1rem); letter-spacing: -.035em; line-height: 1.2; color: var(--color-text-strong); }
+.photo-print-heading p { margin: 0; color: var(--color-text-muted); line-height: 1.55; font-size: .925rem; }
+.photo-print-table-wrap { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.photo-print-table { width: 100%; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+.photo-print-table th, .photo-print-table td { padding: 1rem .85rem; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.photo-print-table thead th { border-top: 1px solid var(--color-border); font-size: .875rem; font-weight: 600; color: var(--color-text-muted); }
+.photo-print-table tbody th { font-weight: 600; color: var(--color-text-strong); }
+.photo-print-table tbody td { font-weight: 500; color: var(--color-text-strong); }
+.photo-print-table th:first-child, .photo-print-table td:first-child { padding-left: 0; }
+.photo-print-table th:last-child, .photo-print-table td:last-child { padding-right: 0; }
+.photo-print-note { margin: 1rem 0 0; font-size: .875rem; line-height: 1.65; color: var(--color-text-muted); }
+@media (max-width: 767px) {
+  .photo-print-prices { margin-top: 2.25rem; }
+  .photo-print-heading { gap: .5rem; margin-bottom: 1rem; }
+  .photo-print-heading p { font-size: .875rem; }
+  .photo-print-table { min-width: 370px; }
+  .photo-print-table th, .photo-print-table td { padding: .9rem .65rem; font-size: .8rem; }
+  .photo-print-table th:first-child { padding-right: .9rem; }
+}
