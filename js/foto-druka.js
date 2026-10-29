@@ -34,7 +34,8 @@
     let accepted = 0;
     for (const file of incoming) {
       if (!['image/jpeg','image/png','image/webp'].includes(file.type)) continue;
-      state.items.push({id: state.nextId++, name:file.name, bytes:file.size, url:URL.createObjectURL(file), positions:[defaults()]});
+      // Keep the original File in memory for the future R2 uploader; previews remain local.
+      state.items.push({id: state.nextId++, file, name:file.name, bytes:file.size, url:URL.createObjectURL(file), positions:[defaults()]});
       accepted++;
     }
     if (accepted) {
