@@ -5,6 +5,46 @@ Projekts: `davisl24/PRINTSTICH`
 Publiskā testa adrese: https://printstich.vercel.app/
 Plānotā gala adrese: `printstich.lv`
 
+## 2026-11-02 — nodošanas tikšanās ar Maiju
+
+**Šobrīd nav uzsākta pilnīga nodošana:** Vercel demo ir gatavs, foto augšupielāde R2 nav integrēta, foto pasūtījumu nosūtīšana ir atspējota; kontaktu un apģērbu formas vēl izmanto FormSubmit uz izstrādātāja Gmail. Tikšanās mērķis ir iegūt piekļuves un apstiprinājumus, nevis apgalvot, ka viss ir palaists.
+
+### Pirms tikšanās — izstrādātājs
+
+- [ ] Pārbaudīt Vercel demo uz telefona un datora; īpaši foto sadaļas 320–390 px platumā, navigāciju un cenas.
+- [ ] Saglabāt pilnu GitHub projekta rezerves kopiju; pārbaudīt, ka tajā nav API atslēgu vai privātu lietotāju datu.
+- [ ] Sagatavot domēna, Cloudflare, GitHub un Resend kontu izveides darbību secību.
+- [ ] Sagatavot klientam izskaidrojumu: kam pieder domēns/kods; kā nonāk pieteikumi; kas maina saturu; kā notiek tehniskā uzturēšana.
+- [ ] Pierakstīt piedāvāto izstrādes gala cenu, apmaksas nosacījumus un uzturēšanas pakalpojuma robežas — **nesaukt par jau apstiprinātu**.
+- [ ] Sagatavot iespējamo jautājumu sarakstu, bet neuzsākt jaunu dizaina/pakalpojumu pārplānošanu.
+
+### Tikšanās laikā — kopā ar Maiju
+
+- [ ] Apstiprināt precīzu uzņēmuma juridisko nosaukumu, rekvizītus, kontaktus un pasūtījumu saņēmēja e-pastu.
+- [ ] Vienoties par izstrādes samaksu, nodošanu, turpmāko uzturēšanu un atsevišķi apmaksājamiem darbiem.
+- [ ] Vienoties, vai satura izmaiņas veiks izstrādātājs, vai klientei vēlāk vajadzēs CMS; šo izvēli nepadarīt par nosacījumu palaišanai.
+- [ ] Noskaidrot foto pasūtījumu pieņemšanas procesu: apmaksas/priekšapmaksas kārtība; pabeigtā pasūtījuma statuss; drukas failu glabāšanas termiņš un dzēšanas kārtība.
+- [ ] Apstiprināt fotodrukas atlaides noteikumu: jaukto izmēru 5% atlaide iespējama, bet nav automātiska; cenas par izmēriem atsevišķi.
+- [ ] Vienoties par klienta domēna un ārējo pakalpojumu izmaksu apmaksu.
+- [ ] Pārbaudīt `printstich.lv` pieejamību un, ja pieejams, klientei reģistrēt to NIC.lv uz uzņēmuma vārda.
+- [ ] Klientei izveidot/pārbaudīt Cloudflare, Resend un GitHub kontus ar viņas kontrolētu e-pastu un 2FA.
+- [ ] Piešķirt izstrādātājam vajadzīgās atļaujas ar oficiāliem ielūgumiem, nevis koplietot paroles.
+- [ ] Pārrunāt nodošanas secību un to, ka Vercel demo saglabājas līdz pilnīgi pārbaudītai Cloudflare publicēšanai.
+
+### Pēc tikšanās — pirms pilnas palaišanas
+
+- [ ] Nodot vai organizēt repozitorija pārvietošanu klienta GitHub, pārbaudīt Cloudflare Git pieslēgumu.
+- [ ] Pabeigt R2 augšupielādi, privātu failu saņemšanu un glabāšanas termiņa pārvaldību.
+- [ ] Pabeigt Resend kontaktu, apģērbu un foto pieteikumu nosūtīšanu; veikt īstu testu uz Maijas e-pastu.
+- [ ] Tikai pēc sekmīgiem testiem aktivizēt foto pasūtīšanu un noņemt visus demo apzīmējumus.
+- [ ] Pieslēgt gala domēnu, mainīt SEO/sitemap/robots/canonical un sakārtot `/index.html` pāradresāciju uz `/`.
+- [ ] Reālā domēnā pārbaudīt mobilo/datora versiju, pasūtījumus, pielikumus, privātumu un drošu atkopšanu.
+- [ ] Nodot klientam piekļuves, ZIP rezerves kopiju (bez noslēpumiem), īsu instrukciju un rakstisku uzturēšanas vienošanos.
+
+**STOP nosacījums:** mājaslapu nedrīkst saukt par pilnībā nodotu, ja Maija vēl nesaņem īstus pasūtījumus vai nevar saņemt nepieciešamos drukas failus.
+
+---
+
 ## Fiksētie dizaina lēmumi (LOCKED)
 
 - [x] Apģērbu konfiguratora esošais vizuālais virziens ir apstiprināts.
