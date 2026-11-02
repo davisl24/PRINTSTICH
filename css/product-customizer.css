@@ -1668,3 +1668,28 @@ html[data-theme="dark"] .product-visual-option .product-starting-price { color: 
 @media (max-width: 767px) {
   .product-visual-option .product-starting-price { font-size: .76rem; min-height: 2.1em; }
 }
+
+/* PrintStich minimal product specifications: separate with whitespace, not cards. */
+.customizer-page .customizer-product-info {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: .85rem 0 0;
+}
+.customizer-page .customizer-product-stats {
+  column-gap: clamp(1rem, 2.5vw, 2rem);
+  row-gap: .7rem;
+}
+.customizer-page .customizer-product-stats .product-stat {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: .45rem 0;
+}
+html[data-theme="dark"] .customizer-page .customizer-product-info,
+html[data-theme="dark"] .customizer-page .customizer-product-stats .product-stat {
+  background: transparent;
+  border: 0;
+}
