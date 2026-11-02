@@ -8,7 +8,7 @@
     fileStatus: $('#fp-file-status'), clear: $('#fp-clear'), link: $('#fp-link'),
     size: $('#fp-default-size'), paper: $('#fp-default-paper'), qty: $('#fp-default-qty'), fit: $('#fp-default-fit'),
     apply: $('#fp-apply'), list: $('#fp-photos'), empty: $('#fp-empty'), more: $('#fp-more'),
-    summaryFiles: $('#fp-summary-files'), summaryPrints: $('#fp-summary-prints'),
+    summaryBox: $('.fp-summary'), summaryFiles: $('#fp-summary-files'), summaryPrints: $('#fp-summary-prints'),
     summaryLines: $('#fp-summary-lines'), summaryTotal: $('#fp-summary-total'), summaryNote: $('#fp-summary-note')
   };
   if (!el.files || !el.list) return;
@@ -103,6 +103,9 @@
     const grouped = new Map();
     state.items.forEach(item=>item.positions.forEach(p=>grouped.set(p.size,(grouped.get(p.size)||0)+p.qty)));
     const linkPresent = el.link.value.trim().length > 0;
+    // Compact the mobile summary until photos or an album link are selected.
+    el.summaryBox.classList.toggle('is-empty', state.items.length === 0 && !linkPresent);
+    el.summaryBox.classList.toggle('has-items', state.items.length > 0 || linkPresent);
     let sum=0,unknown=false;
     const lines = [...grouped.entries()].map(([size,qty])=>{
       const prices=tariffs[size];
