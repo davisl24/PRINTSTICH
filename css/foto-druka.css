@@ -111,3 +111,72 @@
   .fp-photo-row .fp-photo-margin-toggle { padding:.3rem .4rem; gap:.35rem; }
   .fp-photo-row .fp-photo-margin-toggle span { font-size:.69rem; }
 }
+
+/* Mobile polish: compact empty summary and legible photo-order controls. */
+@media (max-width: 800px) {
+  /* Keep the summary first, but make it a short status when no files are selected. */
+  .fp-summary { padding: 1rem 1.1rem; border-radius: 16px; }
+  .fp-summary-heading { display: flex; justify-content: space-between; align-items: baseline; gap: .7rem; margin-bottom: .7rem; }
+  .fp-summary-heading h2 { margin: 0; font-size: 1.15rem; }
+  .fp-summary-heading span { font-size: .62rem; white-space: nowrap; }
+  .fp-summary-stat { display: inline-flex; align-items: baseline; gap: .5rem; margin: 0 1.3rem .5rem 0; font-size: .85rem; }
+  .fp-summary-stat strong { font-size: 1rem; }
+  .fp-summary-total { align-items: center; margin-top: .45rem; padding-top: .7rem; }
+  .fp-summary-total span { font-size: .84rem; }
+  .fp-summary-total strong { font-size: 1.35rem; }
+  .fp-summary.is-empty .fp-summary-heading { margin-bottom: .75rem; }
+  .fp-summary.is-empty .fp-summary-divider,
+  .fp-summary.is-empty .fp-summary-lines,
+  .fp-summary.is-empty .fp-summary-note,
+  .fp-summary.is-empty .fp-price-link { display: none; }
+  .fp-summary.has-items .fp-summary-divider { display: none; }
+  .fp-summary.has-items .fp-summary-lines { display: grid; gap: .65rem; margin-top: .75rem; font-size: .86rem; line-height: 1.5; }
+  .fp-summary.has-items .fp-summary-line { flex-wrap: wrap; }
+  .fp-summary.has-items .fp-summary-line strong { font-size: .86rem; }
+  .fp-summary.has-items .fp-summary-note { font-size: .82rem; line-height: 1.55; margin: .8rem 0; }
+  .fp-summary.has-items .fp-price-link { display: inline-block; font-size: .84rem; padding: .25rem 0; }
+  /* Make the editor readable without changing step structure or desktop layout. */
+  .fp-step-head { gap: .85rem; margin-bottom: 1.3rem; }
+  .fp-step-head h2 { font-size: clamp(1.3rem, 4.4vw, 1.55rem); line-height: 1.25; }
+  .fp-step-head p { font-size: .89rem; line-height: 1.55; }
+  .fp-index { min-width: 34px; height: 34px; font-size: .8rem; }
+  .fp-field > span { font-size: .86rem; }
+  .fp-field input, .fp-field select { font-size: .9rem; min-height: 46px; }
+  .fp-drop strong { font-size: .98rem; }
+  .fp-drop > span:not(.fp-drop-symbol),
+  .fp-upload-meta, .fp-external summary,
+  .fp-external-body p { font-size: .84rem; }
+  .fp-external summary { min-height: 44px; }
+  .fp-small-button, .fp-outline-button { min-height: 44px; font-size: .88rem; }
+  .fp-default-footer p, .fp-empty p, .fp-not-live { font-size: .86rem; line-height: 1.6; }
+  .fp-empty strong { font-size: 1rem; }
+  .fp-photo-name { font-size: .89rem; }
+  .fp-photo-meta, .fp-photo-actions button { font-size: .8rem; }
+  .fp-photo-row label { font-size: .79rem; }
+  .fp-photo-row select, .fp-photo-row input { min-height: 44px; font-size: .85rem; }
+  .fp-photo-row .fp-photo-margin-toggle { min-height: 44px; }
+  .fp-photo-row .fp-photo-margin-toggle span { font-size: .81rem; }
+  .fp-row-remove { min-height: 44px; min-width: 40px; }
+}
+@media (max-width: 560px) {
+  .fp-main { gap: 1rem; }
+  .fp-panel { padding: 1.15rem; }
+  .fp-step-head { gap: .75rem; margin-bottom: 1.2rem; }
+  .fp-step-head h2 { font-size: 1.32rem; }
+  .fp-step-head p { font-size: .87rem; }
+  .fp-field > span { font-size: .83rem; }
+  .fp-fields, .fp-review-inputs { gap: 1rem .75rem; }
+  .fp-field input, .fp-field select { font-size: .87rem; padding: .7rem .65rem; }
+  .fp-field .fp-checkbox-label { font-size: .82rem; padding: .55rem .65rem; }
+  .fp-photo-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr) 68px; gap: .5rem; }
+  .fp-photo-row label { font-size: .78rem; }
+  .fp-photo-row select, .fp-photo-row input { font-size: .82rem; }
+  .fp-photo-row .fp-photo-margin-toggle span { font-size: .78rem; }
+  .fp-photo-name { font-size: .85rem; }
+  .fp-photo-meta { font-size: .77rem; }
+}
+@media (max-width: 370px) {
+  .fp-review-inputs { grid-template-columns: 1fr; }
+  .fp-summary-heading span { font-size: .58rem; }
+  .fp-summary-stat { margin-right: .8rem; }
+}
