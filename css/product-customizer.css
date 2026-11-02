@@ -1693,3 +1693,51 @@ html[data-theme="dark"] .customizer-page .customizer-product-stats .product-stat
   background: transparent;
   border: 0;
 }
+
+/* PrintStich mobile-only readability polish (approved configurator design preserved). */
+@media (max-width: 768px) {
+  .customizer-page .customizer-step-panel h2 { font-size: clamp(1.55rem, 6.5vw, 1.95rem); line-height: 1.18; }
+  .customizer-page .step-kicker { font-size: .8rem; line-height: 1.4; }
+  .customizer-page .customizer-step-intro,
+  .customizer-page [data-step-panel="1"] .customizer-step-intro,
+  .customizer-page [data-step-panel="2"] > p:not(.step-kicker):not(.customizer-error) {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+  .customizer-page .customizer-fieldset legend { font-size: .94rem; margin-bottom: .65rem; }
+  .customizer-page .customizer-selected-color { font-size: .84rem; line-height: 1.45; }
+  .customizer-page .size-choice-help { font-size: .86rem; line-height: 1.5; }
+  .customizer-page .size-choice-grid button {
+    min-height: 44px;
+    font-size: .81rem;
+    line-height: 1.25;
+    padding: .5rem .3rem;
+  }
+  .customizer-page .size-selected-label { font-size: .83rem; }
+  .customizer-page .customizer-info-toggle { font-size: .84rem; min-height: 44px; }
+  .customizer-page .customizer-color-catalog { font-size: .84rem; }
+  .customizer-page .customizer-side-file-label { font-size: .94rem; }
+  .customizer-page .upload-zone-label { min-height: 155px; }
+  .customizer-page .upload-zone-label strong { font-size: .96rem; }
+  .customizer-page .upload-zone-label span:last-child { font-size: .84rem; line-height: 1.5; }
+  .customizer-page .customizer-preview-hint { font-size: .8rem; line-height: 1.5; }
+  .customizer-page .color-swatch-label { font-size: .81rem; }
+  .customizer-page .color-swatch-code { font-size: .72rem; }
+  .customizer-page [data-step-panel="2"] .color-swatch { min-height: 44px; padding: .5rem .65rem; gap: .5rem; }
+  .customizer-page .color-list-toggle { min-height: 44px; font-size: .84rem; }
+}
+@media (max-width: 480px) {
+  /* Two columns give long colour names space without losing their selected state. */
+  .customizer-page [data-step-panel="2"] .swatch-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+  }
+  .customizer-page [data-step-panel="2"] .color-swatch { min-height: 46px; }
+  .customizer-page .size-choice-grid,
+  .customizer-page .size-choice-grid.is-kids-sizes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .55rem;
+  }
+  .customizer-page .customizer-fieldset + .customizer-fieldset { margin-top: 1.05rem; }
+  .customizer-page .customizer-fieldset legend { margin-bottom: .7rem; }
+}
