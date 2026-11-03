@@ -41,40 +41,30 @@
     el.size.innerHTML='<option value="">Izvēlies izmēru</option>'+sizes.map(size=>`<option value="${safe(size)}">${safe(size)}</option>`).join('');
     if(sizes.includes(wanted)) el.size.value=wanted;
   }
-  // Athletic block numerals, traced to match the customer's original sleeve number.
-  // SVG contours replace Georgia text so the typeface does not vary by device.
-  const JERSEY_NUMERALS = Object.freeze({
-    '0': 'M9 1 H30 L37 8 V50 L30 57 H9 L2 50 V8 Z M16 13 V45 H23 V13 Z',
-    '1': 'M3 14 L21 1 H33 V45 H38 V57 H4 V45 H19 V17 L10 23 Z',
-    '2': 'M9 1 H30 L37 8 V25 L12 44 H37 V57 H2 V41 L27 22 V13 H15 V20 H2 V8 Z',
-    '3': 'M8 1 H30 L37 8 V24 L32 29 L37 34 V50 L30 57 H8 L2 51 V42 H15 V45 H24 V35 H12 V23 H24 V13 H15 V20 H2 V8 Z',
-    '4': 'M24 1 H37 V57 H24 V40 H2 V28 L15 1 H28 L17 29 H24 Z',
-    '5': 'M3 1 H37 V13 H16 V22 H31 L37 29 V50 L31 57 H8 L2 51 V42 H15 V45 H24 V33 H2 Z',
-    // The 6's cut-out and squared inner counter follow Maija's original print.
-    '6': 'M32 1 H9 L2 8 V50 L8 57 H31 L37 51 V30 L32 23 H18 V14 H30 L37 18 V1 Z M17 35 V45 H23 V35 Z',
-    '7': 'M2 1 H37 V14 L20 57 H6 L23 14 H2 Z',
-    '8': 'M8 1 H31 L37 8 V23 L32 29 L37 35 V50 L31 57 H8 L2 50 V35 L7 29 L2 23 V8 Z M16 13 V23 H23 V13 Z M16 35 V45 H23 V35 Z',
-    '9': 'M8 1 H31 L37 8 V50 L31 57 H7 V45 H23 V35 H8 L2 28 V8 Z M16 13 V23 H23 V13 Z'
-  });
+  // Authentic jersey digit outlines from the client-supplied Kirsty Bold design.
+  // No font file is shipped: only the ten numeral contours used in this preview.
+  const JERSEY_NUMERALS = Object.freeze({"0":{"w":36.14,"d":"M0 47.54 4.37 56H31.69L36.14 47.54V8.46L31.69 0H4.37L0 8.53ZM13.84 44.46V11.76L14.7 9.97H21.3L22.23 11.76V44.46L21.44 46.1H14.63Z"},"1":{"w":24.52,"d":"M24.52 56 20.08 46.89V0H8.03L6.17 5.52L0 8.03V17.71H6.24V46.97L1.72 56Z"},"2":{"w":34.49,"d":"M18.5 43.38 34.49 18.5V8.53L30.19 0H1.51V14.56L10.47 9.97H22.01L22.73 11.47V12.62L0 46.82V56H34.49V41.44L25.45 46.1H15.27Z"},"3":{"w":32.19,"d":"M9.11 46.03 0 41.44V56H27.89L32.19 47.47V35.42L29.47 30.26L25.17 28.04L29.83 25.53L32.19 20.51V8.46L27.89 0H0.14V14.56L9.18 9.97H17.42L18.36 11.76V21.37L17.5 23.02H8.6V32.91H17.57L18.36 34.56V44.38L17.57 46.03Z"},"4":{"w":40.8,"d":"M40.08 56 35.56 46.97V40.66H40.8V30.69H35.56V9.11L40.15 0H24.24L0 31.05L4.59 40.66H21.65V46.97L17.21 56ZM11.76 30.69 21.65 17.64V30.69Z"},"5":{"w":34.56,"d":"M9.11 46.1 0 41.44V56H30.19L34.56 47.47V31.48L30.19 23.02H13.91L13.12 21.44V12.83L11.54 9.97H23.95L33.06 14.56V0H0V26.17L4.3 32.91H20.65L21.44 34.56V44.24L20.51 46.1Z"},"6":{"w":38.43,"d":"M0 47.54 4.37 56H34.13L38.43 47.54V31.55L34.13 23.02H13.84V11.76L14.7 9.97H26.03L34.99 14.56V0H4.37L0 8.53ZM23.52 32.91 24.59 35.28V44.46L23.88 46.1H14.63L13.84 44.46V32.91Z"},"7":{"w":33.77,"d":"M22.94 56 20.01 47.25 33.77 8.68 29.4 0H0.57V14.56L9.54 9.97H21.65L18.07 14.48L6.45 47.04L0 56Z"},"8":{"w":36.71,"d":"M0 47.54 4.3 56H32.41L36.71 47.54V35.42L33.99 30.26L29.69 28.04L34.35 25.53L36.71 20.51V8.46L32.41 0H4.3L0 8.46V20.51L2.37 25.53L7.03 28.04L2.72 30.26L0 35.42ZM13.84 44.46V34.56L14.63 32.91H22.08L22.87 34.56V44.46L22.08 46.1H14.63ZM13.84 21.37V11.76L14.77 9.97H21.94L22.87 11.76V21.37L22.01 23.02H14.7Z"},"9":{"w":38.36,"d":"M3.3 41.44V56H34.06L38.36 47.47V8.46L34.06 0H4.23L0 8.46V23.66L4.23 32.19H24.59V44.24L23.45 46.1H12.4ZM13.77 19.93V11.54L14.48 9.97H23.66L24.59 11.54V22.3H14.84Z"}});
 
   function numberArt() {
     const value = state.number;
     if (!/^\d{1,2}$/.test(value)) return '';
     const {x, y, font} = chosen().sleeve;
     const scale = font / 60 * (value.length === 2 ? 0.78 : 1);
-    const glyphWidth = 39;
     const gap = 4;
-    const fullWidth = glyphWidth * value.length + gap * (value.length - 1);
-    const paths = [...value].map((digit, index) => {
-      const d = JERSEY_NUMERALS[digit];
-      const xPosition = index * (glyphWidth + gap);
-      return '<g transform="translate(' + xPosition + ' 0)">' +
-        '<path class="lb-num-outer" d="' + d + '"/>' +
-        '<path class="lb-num-inner" d="' + d + '"/>' +
+    const fullWidth = [...value].reduce((sum, digit) => sum + JERSEY_NUMERALS[digit].w, 0)
+      + gap * (value.length - 1);
+    let offset = 0;
+    const paths = [...value].map(digit => {
+      const glyph = JERSEY_NUMERALS[digit];
+      const result = '<g transform="translate(' + offset + ' 0)">' +
+        '<path class="lb-num-outer" d="' + glyph.d + '"/>' +
+        '<path class="lb-num-inner" d="' + glyph.d + '"/>' +
         '</g>';
+      offset += glyph.w + gap;
+      return result;
     }).join('');
     return '<g data-lb-overlay transform="translate(' + x + ' ' + y + ') scale(' + scale + ') translate(' +
-      (-fullWidth / 2) + ' -29)">' + paths + '</g>';
+      (-fullWidth / 2) + ' -28)">' + paths + '</g>';
   }
 
   function numberSvg() {
