@@ -154,6 +154,8 @@
       state.color = normalizeColor(button.dataset.color);
       state.previewColor = state.color;
       setPressed(els.colorButtons, button);
+      renderSizeButtons();
+      afterSizeQuantityChange();
       renderProductInfo();
       renderSelectedColor();
       updateSvgColor();
@@ -181,6 +183,8 @@
     renderDesign();
   }
 
+  const isSizeAvailable = size => !product.sizeColorAvailability?.[size] || product.sizeColorAvailability[size].includes(state.color);
+
   function renderSizeButtons() {
     const group = $('[data-size-options]');
     const selectedList = els.selectedSizeQuantities;
@@ -188,14 +192,19 @@
 
     const validSizes = new Set(product.izmeri || []);
     state.sizeQuantities = Object.fromEntries(
-      Object.entries(state.sizeQuantities || {}).filter(([size, quantity]) => validSizes.has(size) && Number(quantity) > 0)
+      Object.entries(state.sizeQuantities || {}).filter(([size, quantity]) => validSizes.has(size) && isSizeAvailable(size) && Number(quantity) > 0)
     );
 
     group.classList.toggle('is-kids-sizes', product.id === 'kids');
     group.innerHTML = (product.izmeri || []).map(size => {
       const selected = Number(state.sizeQuantities[size] || 0) > 0;
-      return `<button type="button" class="${selected ? 'is-active' : ''}" data-size-choice="${size}" aria-pressed="${selected}">${size}</button>`;
+      const available = isSizeAvailable(size);
+      return `<button type="button" class="${selected ? 'is-active' : ''}" data-size-choice="${size}" aria-pressed="${selected}"${available ? '' : ' disabled title="Šis izmērs nav pieejams izvēlētajā krāsā"'}>${size}</button>`;
     }).join('');
+    const sizeHint = $('.size-choice-help');
+    if (sizeHint) sizeHint.textContent = product.id === 'womens'
+      ? 'Izvēlies vajadzīgos izmērus. 3XL ir pieejams tikai noteiktās krāsās.'
+      : 'Izvēlies vajadzīgos izmērus';
 
     const selectedEntries = selectedSizeEntries();
     selectedList.hidden = selectedEntries.length === 0;
