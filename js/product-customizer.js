@@ -12,9 +12,9 @@
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
   const MB = 1024 * 1024;
-  const FORM_LIMIT = 10 * MB;
+  const FORM_LIMIT = 10_000_000;
   const MAX_CLIENT_FILE_SIZE = 8 * MB;
-  const ORIGINALS_TOTAL_LIMIT = 8 * MB;
+  const ORIGINALS_TOTAL_LIMIT = 8_000_000;
   const LIBRARY_MAX_FILES = 6;
   const MIN_VALID_MOCKUP_SIZE = 5000;
 
@@ -30,6 +30,7 @@
   };
 
   if (!els.preview || !els.printArea || !els.scale) return;
+  const delivery = window.PrintStichDelivery.setup(els.form, $('.customizer-submit', els.form));
 
   const normalizeColor = value => ({ white: '00', balts: '00', black: '01', melns: '01', blue: '02', zils: '02' }[value] || value || '00');
   const colorById = id => (product.krasas || []).find(color => color.id === normalizeColor(id)) || product.krasas?.[0];
@@ -1045,10 +1046,10 @@
       canvas.height = 0;
       if (blob.size >= MIN_VALID_MOCKUP_SIZE && blob.size <= maxBytes) return blob;
     }
-    throw new Error('Darba lapas JPG neizdevās samazināt līdz FormSubmit limitam.');
+    throw new Error('Darba lapas JPG neizdevās samazināt līdz pielikumu limitam.');
   }
   function syncOriginalAttachments() { if (!els.originalAttachments) return false; if (typeof DataTransfer === 'undefined') { error('form', 'Šis pārlūks nevar sagatavot pielikumus.'); return false; } els.originalAttachments.innerHTML = ''; let attachmentIndex = 2; usedOriginalItems().forEach(item => { const input = document.createElement('input'); input.type = 'file'; input.name = `attachment${attachmentIndex}`; input.className = 'visually-hidden'; input.tabIndex = -1; input.setAttribute('aria-hidden', 'true'); input.dataset.originalAttachment = item.id; const dt = new DataTransfer(); dt.items.add(item.file); input.files = dt.files; els.originalAttachments.appendChild(input); attachmentIndex += 1; }); return true; }
-  async function prepareEmailAttachments() { if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.'); if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.'); const originalsTotal = usedOriginalsTotalSize(); if (originalsTotal >= ORIGINALS_TOTAL_LIMIT) throw new Error('Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); const worksheetBudget = FORM_LIMIT - originalsTotal; if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Izmantoto oriģinālo failu kopējais izmērs ir pārāk liels FormSubmit 10 MB limitam.'); const blob = await createWorksheetBlob(worksheetBudget); const date = new Date().toISOString().slice(0, 10); const file = new File([blob], `printstich-pasutijums-${date}.jpg`, { type: 'image/jpeg' }); const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files; if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.'); if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.'); return file; }
+  async function prepareEmailAttachments() { if (!els.worksheetInput) throw new Error('Darba lapas file input nav atrasts.'); if (typeof DataTransfer === 'undefined') throw new Error('DataTransfer nav pieejams.'); const originalsTotal = usedOriginalsTotalSize(); if (originalsTotal >= ORIGINALS_TOTAL_LIMIT) throw new Error('Izmantoto oriģinālo failu kopējam izmēram jābūt mazākam par 8 MB.'); const worksheetBudget = FORM_LIMIT - originalsTotal; if (worksheetBudget < MIN_VALID_MOCKUP_SIZE) throw new Error('Izmantoto oriģinālo failu kopējais izmērs ir pārāk liels 10 MB pielikumu limitam.'); const blob = await createWorksheetBlob(worksheetBudget); const date = new Date().toISOString().slice(0, 10); const file = new File([blob], `printstich-pasutijums-${date}.jpg`, { type: 'image/jpeg' }); const dt = new DataTransfer(); dt.items.add(file); els.worksheetInput.files = dt.files; if (!syncOriginalAttachments()) throw new Error('Oriģinālos failus neizdevās sagatavot.'); if (originalsTotal + file.size > FORM_LIMIT) throw new Error('Pielikumu kopējais izmērs pārsniedz 10 MB.'); return file; }
   const debugEnabled = new URLSearchParams(location.search).has('debug');
   if (els.debugMockup) { els.debugMockup.hidden = !debugEnabled; if (debugEnabled) els.debugMockup.addEventListener('click', async () => { error('form'); try { const blob = await createWorksheetBlob(FORM_LIMIT); const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); } catch (cause) { console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause); error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); } }); }
   if (els.form) els.form.addEventListener('submit', async event => {
@@ -1077,12 +1078,14 @@
     try {
       await prepareEmailAttachments();
       state.submitting = true;
-      els.form.submit();
+      await delivery.send('garment');
+      window.location.assign('/paldies');
     } catch (cause) {
-      console.error('PrintStich konfigurators: submit sagatavošana neizdevās.', cause);
+      state.submitting = false;
+      console.error('PrintStich konfigurators: nosūtīšana neizdevās.', cause);
       error('form', cause.message || 'Neizdevās sagatavot attēlu, mēģini vēlreiz');
       if (submitButton) {
-        submitButton.disabled = false;
+        submitButton.disabled = !delivery.active;
         submitButton.textContent = 'Nosūtīt savu dizainu';
       }
     }
