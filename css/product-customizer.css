@@ -1746,3 +1746,7 @@ html[data-theme="dark"] .customizer-page .customizer-product-stats .product-stat
 @media (min-width: 769px) and (max-width: 1150px) {
   .product-visual-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* Ready-made designs link stays secondary to the existing customizer. */
+.customizer-ready-design-link { margin: -.25rem 0 1.2rem; font-size: .86rem; line-height: 1.5; font-weight: 650; }
+.customizer-ready-design-link a { color: var(--color-accent-hover); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
