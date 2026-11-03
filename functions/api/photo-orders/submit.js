@@ -9,7 +9,7 @@
  *
  * Cloudflare environment:
  * PHOTO_ORDERS_ENABLED=true (only after testing)
- * RESEND_API_KEY, PHOTO_ORDER_FROM, PHOTO_ORDER_TO, TURNSTILE_SECRET_KEY
+ * RESEND_API_KEY, ORDER_FROM, ORDER_TO, TURNSTILE_SECRET_KEY
  */
 const LIMIT_BYTES = 20_000_000;
 const MAX_FILES = 25;
@@ -99,7 +99,7 @@ export async function onRequestPost({request, env}) {
   if (env.PHOTO_ORDERS_ENABLED !== "true") {
     return reply({error:"Fotogrāfiju pasūtīšana vēl ir demo režīmā."}, 503);
   }
-  if (!env.RESEND_API_KEY || !env.PHOTO_ORDER_FROM || !env.PHOTO_ORDER_TO || !env.TURNSTILE_SECRET_KEY) {
+  if (!env.RESEND_API_KEY || !env.ORDER_FROM || !env.ORDER_TO || !env.TURNSTILE_SECRET_KEY) {
     return reply({error:"Pasūtīšana vēl nav konfigurēta."}, 503);
   }
   const length = Number(request.headers.get("content-length") || 0);
@@ -183,8 +183,8 @@ export async function onRequestPost({request, env}) {
       attachments.push({filename: `${i + 1}-${filename}`, content: encodeBase64(await f.arrayBuffer())});
     }
     const payload = {
-      from: env.PHOTO_ORDER_FROM,
-      to: [env.PHOTO_ORDER_TO],
+      from: env.ORDER_FROM,
+      to: [env.ORDER_TO],
       subject: "PrintStich foto pieprasījums • " + id.slice(0, 8),
       text: body,
       ...(isEmail(contact) ? {reply_to: contact} : {}),
