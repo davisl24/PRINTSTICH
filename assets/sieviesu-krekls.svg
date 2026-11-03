@@ -1,0 +1,11 @@
+<svg id="ps-shirt-women" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" role="img" aria-label="Sieviešu T-krekla ilustratīvs priekšskatījums">
+  <!-- MALFINI Basic 134: illustrative, slim-fit silhouette for client design placement. -->
+  <g id="shirt-front">
+    <path class="shirt-body" d="M225 150 L160 185 L110 300 L165 320 L185 275 C193 330 210 360 210 410 C210 465 195 525 190 560 L410 560 C405 525 390 465 390 410 C390 360 407 330 415 275 L435 320 L490 300 L440 185 L375 150 C360 195 240 195 225 150 Z" fill="#fff" stroke="#c9c6bf" stroke-width="6" stroke-linejoin="round"/>
+    <path class="shirt-collar" d="M228 152 C240 198 360 198 372 152" fill="none" stroke="#c9c6bf" stroke-width="8"/>
+  </g>
+  <g id="shirt-back" style="display:none">
+    <path class="shirt-body" d="M225 150 L160 185 L110 300 L165 320 L185 275 C193 330 210 360 210 410 C210 465 195 525 190 560 L410 560 C405 525 390 465 390 410 C390 360 407 330 415 275 L435 320 L490 300 L440 185 L375 150 C368 176 232 176 225 150 Z" fill="#fff" stroke="#c9c6bf" stroke-width="6" stroke-linejoin="round"/>
+    <path class="shirt-collar" d="M232 154 C248 179 352 179 368 154" fill="none" stroke="#c9c6bf" stroke-width="8"/>
+  </g>
+</svg>
