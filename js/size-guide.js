@@ -2,7 +2,7 @@
   'use strict';
 
   const products = window.PRINTSTICH_PRODUCTS || {};
-  const PRODUCT_ORDER = ['tshirt', 'kids', 'hoodie', 'sweatshirt'];
+  const PRODUCT_ORDER = ['tshirt', 'womens', 'kids', 'hoodie', 'sweatshirt'];
   const $ = (selector, root = document) => root.querySelector(selector);
 
   const dialog = $('[data-size-guide-dialog]');
