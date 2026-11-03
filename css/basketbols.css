@@ -38,6 +38,26 @@
 }
 .lb-page .lb-num-outer { stroke: #fff; stroke-width: 4.2px; }
 .lb-page .lb-num-inner { stroke: #171717; stroke-width: 1.8px; }
+/* Changeable year on the client's original chest badge and back print.
+   Original garment photos are never modified or flattened. */
+.lb-page .lb-year-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.lb-page .lb-year-overlay .lb-year-outer,
+.lb-page .lb-year-overlay .lb-year-inner {
+  fill-rule: evenodd;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+}
+.lb-page .lb-year-back .lb-year-outer { fill: #ffc20a; stroke: #fff; stroke-width: 3.1px; }
+.lb-page .lb-year-back .lb-year-inner { fill: #ffc20a; stroke: #171717; stroke-width: 1.5px; }
+.lb-page .lb-year-front .lb-year-outer { fill: #fff; stroke: #fff; stroke-width: 2.2px; }
+.lb-page .lb-year-front .lb-year-inner { fill: #fff; stroke: #171717; stroke-width: .65px; }
 .lb-page .lb-view figcaption { padding: .55rem .5rem .9rem; font-size: .78rem; font-weight: 650; color: #56605c; }
 .lb-page .lb-preview-note { margin: .8rem 0 0; font-size: .81rem; line-height: 1.55; color: var(--color-text-muted); }
 .lb-page .lb-editor { padding: clamp(1.3rem,3vw,2rem); border-radius: 22px; border: 1px solid #dee4df; background: #fff; min-width: 0; }
