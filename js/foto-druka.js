@@ -5,11 +5,14 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const el = {
     files: $('#fp-files'), picker: $('#fp-pick'), drop: $('#fp-drop'),
-    fileStatus: $('#fp-file-status'), clear: $('#fp-clear'), link: $('#fp-link'),
+    fileStatus: $('#fp-file-status'), clear: $('#fp-clear'), link: $('#fp-link'), albumCount: $('#fp-album-count'), limitWarning: $('#fp-size-warning'),
     size: $('#fp-default-size'), paper: $('#fp-default-paper'), qty: $('#fp-default-qty'), fit: $('#fp-default-fit'),
     apply: $('#fp-apply'), list: $('#fp-photos'), empty: $('#fp-empty'), more: $('#fp-more'),
     summaryBox: $('.fp-summary'), summaryFiles: $('#fp-summary-files'), summaryPrints: $('#fp-summary-prints'),
-    summaryLines: $('#fp-summary-lines'), summaryTotal: $('#fp-summary-total'), summaryNote: $('#fp-summary-note')
+    summaryLines: $('#fp-summary-lines'), summaryTotal: $('#fp-summary-total'), summaryNote: $('#fp-summary-note'),
+    name: $('#fp-customer-name'), contact: $('#fp-customer-contact'), comment: $('#fp-customer-comment'),
+    submit: $('#fp-submit'), submitError: $('#fp-submit-error'), submitStatus: $('#fp-submit-status'),
+    demoHint: $('#fp-demo-hint'), turnstile: $('#fp-turnstile')
   };
   if (!el.files || !el.list) return;
 
@@ -22,7 +25,9 @@
   const sizeLabels = {'10x15':'10 × 15 cm','12x15':'12 × 15 cm','15x20':'15 × 20 cm','other':'Cits izmērs'};
   const formatEUR = v => new Intl.NumberFormat('lv-LV',{style:'currency',currency:'EUR'}).format(v);
   const safe = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const state = { items: [], shown: 10, nextId: 1 };
+  const MAX_ATTACHMENTS_BYTES = 20_000_000;
+  const MAX_ATTACHMENTS = 25;
+  const state = { items: [], shown: 10, nextId: 1, rejectedFiles: false };
   const defaults = () => ({
     size: el.size.value, paper: el.paper.value, mode: el.fit.checked ? 'contain' : 'cover',
     qty: Math.min(999, Math.max(1, Number.parseInt(el.qty.value,10) || 1))
@@ -32,10 +37,16 @@
   function addFiles(fileList) {
     const incoming = [...fileList];
     let accepted = 0;
+    let bytes = state.items.reduce((sum, item) => sum + item.bytes, 0);
     for (const file of incoming) {
-      if (!['image/jpeg','image/png','image/webp'].includes(file.type)) continue;
-      // Keep the original File in memory for the future R2 uploader; previews remain local.
+      if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size < 1
+        || state.items.length >= MAX_ATTACHMENTS || bytes + file.size > MAX_ATTACHMENTS_BYTES) {
+        state.rejectedFiles = true;
+        continue;
+      }
+      // Keep original print-quality File only in browser memory until live submission.
       state.items.push({id: state.nextId++, file, name:file.name, bytes:file.size, url:URL.createObjectURL(file), positions:[defaults()]});
+      bytes += file.size;
       accepted++;
     }
     if (accepted) {
@@ -43,7 +54,8 @@
       el.empty.hidden=true;
     }
     render();
-    if (accepted !== incoming.length) el.fileStatus.textContent += ' · Daži neatbalstīti faili netika pievienoti';
+    if (accepted !== incoming.length) el.fileStatus.textContent += ' · Daļu failu nepieņēma ierobežojuma dēļ';
+    if (el.limitWarning) el.limitWarning.hidden = !state.rejectedFiles;
   }
 
   function removeFile(id) {
@@ -83,8 +95,9 @@
     el.empty.hidden = state.items.length > 0;
     el.clear.hidden = state.items.length === 0;
     el.fileStatus.textContent = state.items.length
-      ? state.items.length+' fotogrāfija'+(state.items.length===1?'':'s')+' pievienota'+(state.items.length===1?'':'s')+' · tikai priekšskatījumam'
+      ? state.items.length+' fotogrāfija'+(state.items.length===1?'':'s')+' pievienota'+(state.items.length===1?'':'s')+' · '+(document.body.dataset.photoOrdersLive === 'true' ? 'gatava pasūtījumam' : 'tikai priekšskatījumam')
       : 'Nav pievienota neviena fotogrāfija';
+    if (el.limitWarning) el.limitWarning.hidden = !state.rejectedFiles;
     el.more.hidden = state.items.length <= state.shown;
     if (!el.more.hidden) el.more.textContent = 'Rādīt vēl ('+(state.items.length-state.shown)+')';
     for (const img of el.list.querySelectorAll('.fp-thumb img')) {
@@ -103,6 +116,8 @@
     const grouped = new Map();
     state.items.forEach(item=>item.positions.forEach(p=>grouped.set(p.size,(grouped.get(p.size)||0)+p.qty)));
     const linkPresent = el.link.value.trim().length > 0;
+    const albumPhotos = Number.parseInt(el.albumCount?.value, 10) || 0;
+    const albumPrints = linkPresent && albumPhotos > 0 ? albumPhotos * defaults().qty : 0;
     // Compact the mobile summary until photos or an album link are selected.
     el.summaryBox.classList.toggle('is-empty', state.items.length === 0 && !linkPresent);
     el.summaryBox.classList.toggle('has-items', state.items.length > 0 || linkPresent);
@@ -115,9 +130,9 @@
       else sum+=price;
       return '<div class="fp-summary-line"><span>'+safe(sizeLabels[size]||size)+' · '+qty+' gab.</span><strong>'+(price===null?'Pēc pieprasījuma':formatEUR(price))+'</strong></div>';
     });
-    if (linkPresent) {unknown=true;lines.push('<div class="fp-summary-line"><span>Ārēja albuma saite</span><strong>Pēc pieprasījuma</strong></div>');}
+    if (linkPresent) {unknown=true;lines.push('<div class="fp-summary-line"><span>Ārēja albuma saite'+(albumPhotos?' · '+albumPhotos+' foto':'')+'</span><strong>Pēc pieprasījuma</strong></div>');}
     el.summaryFiles.textContent=String(state.items.length)+(linkPresent?' + saite':'');
-    el.summaryPrints.textContent=String(quantity)+(linkPresent?' + jāprecizē':'');
+    el.summaryPrints.textContent=String(quantity+albumPrints)+(linkPresent && !albumPhotos?' + jāprecizē':'');
     el.summaryLines.innerHTML=lines.length?lines.join(''):'<p>Izvēlies fotogrāfijas, lai redzētu aprēķinu.</p>';
     el.summaryTotal.textContent=!lines.length?'—':unknown?'Jāprecizē':formatEUR(sum);
     const mixedSizes=grouped.size>1;
@@ -135,10 +150,12 @@
   el.drop.addEventListener('dragover',e=>{e.preventDefault();el.drop.classList.add('is-dragging')});
   el.drop.addEventListener('dragleave',()=>el.drop.classList.remove('is-dragging'));
   el.drop.addEventListener('drop',e=>{e.preventDefault();el.drop.classList.remove('is-dragging');addFiles(e.dataTransfer.files)});
-  el.clear.addEventListener('click',()=>{state.items.forEach(item=>URL.revokeObjectURL(item.url));state.items=[];state.shown=10;render()});
+  el.clear.addEventListener('click',()=>{state.items.forEach(item=>URL.revokeObjectURL(item.url));state.items=[];state.shown=10;state.rejectedFiles=false;render()});
   el.apply.addEventListener('click',()=>{const cfg=defaults();state.items.forEach(item=>item.positions.forEach(p=>Object.assign(p,cfg)));render();el.apply.textContent='Piemērots visām bildēm';setTimeout(()=>{el.apply.textContent='Piemērot visām bildēm'},1400)});
   el.more.addEventListener('click',()=>{state.shown+=20;render()});
   el.link.addEventListener('input',summary);
+  el.albumCount?.addEventListener('input',summary);
+  [el.size, el.paper, el.qty, el.fit].forEach(input=>input.addEventListener('change',summary));
 
   el.list.addEventListener('click',event=>{
     const button=event.target.closest('button[data-action]');
@@ -167,6 +184,89 @@
     pos[field]=field==='qty'?Math.min(999,Math.max(1,Number.parseInt(input.value,10)||1)):(field==='mode'?(input.checked?'contain':'cover'):input.value);
     render();
   });
+
+  /* Resend activation requires a verified domain, secure Turnstile site/secret,
+     environment secrets and successful real-world order tests. Demo stays OFF. */
+  const isConfigured = document.body.dataset.photoOrdersLive === 'true'
+    && Boolean(document.body.dataset.turnstileSitekey);
+  let widgetId = null;
+  const showError = message => {
+    if (el.submitError) { el.submitError.textContent = message; el.submitError.hidden = false; }
+    if (el.submitStatus) el.submitStatus.hidden = true;
+  };
+  if (isConfigured) {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.onload = () => {
+      if (!window.turnstile || !el.turnstile) return;
+      try {
+        widgetId = window.turnstile.render(el.turnstile, {
+          sitekey: document.body.dataset.turnstileSitekey,
+          theme: 'auto'
+        });
+        [el.name, el.contact, el.comment].forEach(input => { if (input) input.disabled = false; });
+        if (el.submit) el.submit.disabled = false;
+        if (el.demoHint) el.demoHint.hidden = true;
+      } catch { showError('Drošības pārbaudi neizdevās ielādēt.'); }
+    };
+    script.onerror = () => showError('Drošības pārbaudi neizdevās ielādēt.');
+    document.head.appendChild(script);
+  }
+  el.submit?.addEventListener('click', async () => {
+    if (!isConfigured || widgetId === null || el.submit.disabled) return;
+    if (el.submitError) el.submitError.hidden = true;
+    if (el.submitStatus) el.submitStatus.hidden = true;
+    const name = el.name?.value.trim() || '';
+    const contact = el.contact?.value.trim() || '';
+    const link = el.link.value.trim();
+    const count = Number.parseInt(el.albumCount?.value, 10) || 0;
+    const bytes = state.items.reduce((sum,item)=>sum+item.bytes,0);
+    if (!name || name.length > 100 || !contact || !(/^([^\\s@]+@[^\\s@]+\\.[^\\s@]+)$/.test(contact) || /^[+0-9()\\s-]{7,22}$/.test(contact))) {
+      showError('Ievadi vārdu un derīgu e-pastu vai tālruni.'); return;
+    }
+    if ((state.items.length > 0 && link) || (!state.items.length && !link)) {
+      showError('Izvēlies vienu variantu: pievienoti foto faili vai albuma saite.'); return;
+    }
+    if (state.items.length > MAX_ATTACHMENTS || bytes > MAX_ATTACHMENTS_BYTES) {
+      showError('Pārāk daudz attēlu. Izmanto Failiem.lv saiti.'); return;
+    }
+    if (link && (!(count >= 1 && count <= 9999) || count * defaults().qty > 10000)) {
+      showError('Norādi fotogrāfiju skaitu albumā.'); return;
+    }
+    const token = window.turnstile?.getResponse(widgetId);
+    if (!token) { showError('Pabeidz drošības pārbaudi.'); return; }
+    const items = link
+      ? [{...defaults(), qty:count*defaults().qty}]
+      : state.items.flatMap((item,fileIndex)=>item.positions.map(p=>({...p,fileIndex})));
+    const data = new FormData();
+    data.append('name',name);
+    data.append('contact',contact);
+    data.append('comment',el.comment?.value.trim() || '');
+    data.append('filesLink',link);
+    data.append('items',JSON.stringify(items));
+    data.append('turnstileToken',token);
+    if (!link) state.items.forEach(item=>data.append('files',item.file,item.name));
+    el.submit.disabled = true;
+    el.submit.textContent = 'Nosūta pasūtījumu…';
+    try {
+      const response = await fetch('/api/photo-orders/submit', {method:'POST',body:data});
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.error || 'Pasūtījumu neizdevās nosūtīt.');
+      el.submit.textContent = 'Pasūtījums nosūtīts';
+      if (el.submitStatus) {
+        el.submitStatus.textContent = 'Pieprasījums nosūtīts PrintStich. Mēs sazināsimies ar tevi par galīgo cenu.';
+        el.submitStatus.hidden = false;
+      }
+      window.turnstile?.reset(widgetId);
+    } catch (cause) {
+      showError(cause.message || 'Neizdevās nosūtīt. Mēģini vēlreiz.');
+      window.turnstile?.reset(widgetId);
+      el.submit.disabled = false;
+      el.submit.textContent = 'Nosūtīt foto pasūtījumu';
+    }
+  });
+
   window.addEventListener('pagehide',()=>state.items.forEach(item=>URL.revokeObjectURL(item.url)));
   render();
 })();
