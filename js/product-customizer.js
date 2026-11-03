@@ -1053,8 +1053,8 @@
   const debugEnabled = new URLSearchParams(location.search).has('debug');
   if (els.debugMockup) { els.debugMockup.hidden = !debugEnabled; if (debugEnabled) els.debugMockup.addEventListener('click', async () => { error('form'); try { const blob = await createWorksheetBlob(FORM_LIMIT); const url = URL.createObjectURL(blob); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000); } catch (cause) { console.error('PrintStich konfigurators: debug darba lapu neizdevās izveidot.', cause); error('form', 'Neizdevās sagatavot attēlu, mēģini vēlreiz'); } }); }
   if (els.form) els.form.addEventListener('submit', async event => {
-    if (state.submitting) return;
     event.preventDefault();
+    if (state.submitting) return;
     error('form');
 
     const name = $('[data-customer-name]')?.value.trim() || '';
