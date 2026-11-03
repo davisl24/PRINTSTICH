@@ -33,7 +33,7 @@
   const eur = value => new Intl.NumberFormat('lv-LV',{style:'currency',currency:'EUR'}).format(value);
   const safe = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   let captchaId = null;
-  const shippingEnabled = document.body.dataset.lbOrdersLive === 'true' && !!document.body.dataset.lbTurnstileSitekey;
+  let shippingEnabled = false;
   const chosen = () => models[state.product];
   function refreshSize() {
     const wanted=el.size.value;
@@ -208,20 +208,14 @@
   el.more?.addEventListener('click',()=>setQuantity(state.quantity+1));
   el.quantity?.addEventListener('change',()=>setQuantity(el.quantity.value));
   function showError(message) { if(el.error){el.error.textContent=message;el.error.hidden=false;} if(el.status)el.status.hidden=true; }
-  if(shippingEnabled){
-    const script=document.createElement('script');
-    script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-    script.async=true;
-    script.onload=()=>{
-      if(!window.turnstile)return;
-      try {captchaId=window.turnstile.render(el.turnstile,{sitekey:document.body.dataset.lbTurnstileSitekey,theme:'auto'});
-        if(el.submit)el.submit.disabled=false;
-        if(el.demo)el.demo.hidden=true;
-      } catch {showError('Drošības pārbaudi neizdevās ielādēt.');}
-    };
-    script.onerror=()=>showError('Drošības pārbaudi neizdevās ielādēt.');
-    document.head.appendChild(script);
-  }
+  window.PrintStichDelivery.config().then(async cfg => {
+    if (!cfg.enabled || !cfg.sitekey) return;
+    const captcha=await window.PrintStichDelivery.loadTurnstile();
+    captchaId=captcha.render(el.turnstile,{sitekey:cfg.sitekey,theme:'auto'});
+    shippingEnabled=true;
+    if(el.submit)el.submit.disabled=false;
+    if(el.demo)el.demo.hidden=true;
+  }).catch(()=>showError('Drošības pārbaudi neizdevās ielādēt.'));
   el.form.addEventListener('submit',async event=>{
     event.preventDefault();
     if(!shippingEnabled || captchaId===null || el.submit.disabled)return;
@@ -233,7 +227,7 @@
     if(!/^\d{4}$/.test(state.year)){showError('Ievadi gadu ar četriem cipariem.');return;}
     const token=window.turnstile?.getResponse(captchaId);
     if(!token){showError('Pabeidz drošības pārbaudi.');return;}
-    const payload={name,contact,comment:el.comment.value.trim(),size:el.size.value,product:state.product,
+    const payload={kind:'collection',name,contact,comment:el.comment.value.trim(),size:el.size.value,product:state.product,
       variant:state.variant,number:state.variant==='number'?state.number:null,year:state.year,quantity:state.quantity,turnstileToken:token};
     el.submit.disabled=true;el.submit.textContent='Nosūta…';
     try {
