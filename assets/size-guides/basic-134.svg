@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470" role="img" aria-label="MALFINI Basic 134 sieviešu T-krekla mērījumu shēma">
+  <rect width="600" height="470" rx="14" fill="#f6f7f4"/>
+  <path d="M232 70 L173 94 L133 181 L185 198 L208 145 Q211 195 222 252 Q230 305 216 384 L384 384 Q370 305 378 252 Q389 195 392 145 L415 198 L467 181 L427 94 L368 70 Q354 110 300 112 Q246 110 232 70 Z" fill="#fff" stroke="#476158" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M233 71 Q246 117 300 119 Q354 117 367 71" fill="none" stroke="#476158" stroke-width="4"/>
+  <g fill="none" stroke="#2b5a4a" stroke-width="2" stroke-linecap="round">
+    <path d="M199 72 V384 M191 72 H207 M191 384 H207"/>
+    <path d="M213 182 H388 M213 175 V189 M388 175 V189"/>
+    <path d="M414 98 L476 184 M409 105 L419 93 M471 189 L482 179"/>
+  </g>
+  <g fill="#163c32" font-family="sans-serif" font-size="24" font-weight="700">
+    <text x="183" y="238" text-anchor="middle">A</text>
+    <text x="300" y="172" text-anchor="middle">C</text>
+    <text x="471" y="135" text-anchor="middle">H</text>
+  </g>
+  <text x="300" y="435" fill="#60716b" text-anchor="middle" font-family="sans-serif" font-size="17">Ilustratīva shēma — izmēri tabulā no MALFINI</text>
+</svg>
