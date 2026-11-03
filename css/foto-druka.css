@@ -193,3 +193,6 @@
 @media (max-width: 560px) {
   .fp-limit-note, .fp-submit-status { font-size: .85rem; }
 }
+
+/* Do not show the demo banner after verified Resend activation. */
+.fp-demo-note[hidden], .fp-not-live[hidden] { display: none !important; }
