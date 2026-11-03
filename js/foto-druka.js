@@ -222,7 +222,7 @@
     const link = el.link.value.trim();
     const count = Number.parseInt(el.albumCount?.value, 10) || 0;
     const bytes = state.items.reduce((sum,item)=>sum+item.bytes,0);
-    if (!name || name.length > 100 || !contact || !(/^([^\\s@]+@[^\\s@]+\\.[^\\s@]+)$/.test(contact) || /^[+0-9()\\s-]{7,22}$/.test(contact))) {
+    if (!name || name.length > 100 || !contact || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) || /^[+0-9()\s-]{7,22}$/.test(contact))) {
       showError('Ievadi vārdu un derīgu e-pastu vai tālruni.'); return;
     }
     if ((state.items.length > 0 && link) || (!state.items.length && !link)) {
