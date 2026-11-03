@@ -221,6 +221,61 @@
     },
 
 
+    womens: {
+      id: 'womens',
+      modelis: 'Basic 134',
+      nosaukums: 'Sieviešu T-krekls',
+      kategorija: 'Sieviešu T-krekls',
+      auditorija: 'Sievietēm',
+      razotajs: 'MALFINI',
+      apraksts: 'Pieguloša piegriezuma sieviešu T-krekls ar sānu šuvēm, elastīgu apkakli un silikona apdari.',
+      materials: '100% kokvilna',
+      gramaza: '160 g/m²',
+      kopsana: '40 °C',
+      avots: 'https://shop.malfini.com/lv/en/product/basic-134?color=12',
+      svg: 'assets/sieviesu-krekls.svg',
+      sleeveSvgs: {
+        sleeveLeft: 'assets/piedurkne-laba.svg',
+        sleeveRight: 'assets/piedurkne-laba.svg'
+      },
+      krasas: colorsFor(['00', '01', '02', '05', '07', '12', '67', '36', '87', '04', '06', '44']),
+      papilduKrasas: catalogColorsFor(['30', '94', '03', '21', '08', '86', '23', '11', 'A2', 'A1', '40', '49', '43', '64', 'D1', '15', '14', '70', '60', '93', '19', '95', 'A7', 'C9', '16', '92', '62', '69', '09', '28', '96']),
+      materialOverrides: {
+        '03': '97% kokvilna, 3% viskoze',
+        '12': '85% kokvilna, 15% viskoze'
+      },
+      careOverrides: {
+        '03': '30 °C',
+        '12': '30 °C'
+      },
+      // MALFINI confirms 3XL only for the listed colours.
+      sizeColorAvailability: { '3XL': ['00', '01', '02', '05', '07', '12', '30'] },
+      izmeri: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+      izmeruKopsavilkums: 'XS–3XL',
+      sizeGuide: {
+        kind: 'tshirt',
+        diagramSvg: 'assets/size-guides/basic-134.svg',
+        columns: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+        rows: {
+          A: [62, 64, 66, 68.5, 71, 73.5, 76],
+          C: [40, 44, 48, 52, 58, 64, 70],
+          H: [15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5]
+        },
+        labels: { A: 'Garums', C: 'Platums krūšu daļā', H: 'Piedurknes garums' },
+        note: 'Ražotāja MALFINI izmēri cm. Pieļaujamā tolerance ±5%.'
+      },
+      puses: commonSides,
+      drukasZona: {
+        prieksa: { x: 0.35, y: 0.34, w: 0.30, h: 0.34 },
+        aizmugure: { x: 0.34, y: 0.31, w: 0.32, h: 0.38 },
+        sleeveLeft: commonZones.sleeveLeft,
+        sleeveRight: commonZones.sleeveRight
+      },
+      // Exact physical print area for Basic 134 is not client-approved.
+      drukasLaukumsMm: { prieksa: {}, aizmugure: {}, sleeveLeft: {}, sleeveRight: {} },
+      maxDrukaMm: { w: 297, h: 420 }
+    },
+
     kids: {
       id: 'kids',
       modelis: 'Basic 138',
