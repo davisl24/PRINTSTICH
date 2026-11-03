@@ -238,7 +238,7 @@
         sleeveLeft: 'assets/piedurkne-laba.svg',
         sleeveRight: 'assets/piedurkne-laba.svg'
       },
-      krasas: colorsFor(['00', '01', '02', '05', '07', '12', '67', '36', '87', '04', '06', '44']),
+      krasas: [...colorsFor(['00', '01', '02', '05', '07', '12', '67', '36', '87', '04', '06', '44']), ...catalogColorsFor(['30'])],
       papilduKrasas: catalogColorsFor(['30', '94', '03', '21', '08', '86', '23', '11', 'A2', 'A1', '40', '49', '43', '64', 'D1', '15', '14', '70', '60', '93', '19', '95', 'A7', 'C9', '16', '92', '62', '69', '09', '28', '96']),
       materialOverrides: {
         '03': '97% kokvilna, 3% viskoze',
