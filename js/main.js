@@ -3,7 +3,7 @@
 
   // Preserve existing links to the form after moving it to the contact page.
   if (window.location.hash === '#piedavajums' && !document.getElementById('piedavajums')) {
-    window.location.replace('kontakti.html#piedavajums');
+    window.location.replace('/kontakti#piedavajums');
     return;
   }
 
