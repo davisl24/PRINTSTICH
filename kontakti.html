@@ -75,11 +75,7 @@
   <div class="contact-detail"><h2>Darba laiks</h2><dl class="opening-hours"><div><dt>Pirmdiena–piektdiena</dt><dd>08:00–16:00</dd></div><div><dt>Sestdiena, svētdiena</dt><dd>Slēgts</dd></div></dl></div>
 </div></div></section>
 <section class="section inquiry" id="piedavajums"><div class="container inquiry-grid"><div class="inquiry-copy"><h2>Saņem piedāvājumu</h2><p>Aizpildi īsu pieteikumu. Sazināsimies, lai precizētu detaļas un sagatavotu piedāvājumu.</p></div>
-      <form class="inquiry-form" id="inquiry-form" method="POST" action="https://formsubmit.co/davislocs135@gmail.com" enctype="multipart/form-data" novalidate>
-        <input type="hidden" name="_subject" value="Jauns pieprasījums no printstich.lv">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_next" value="https://printstich.lv/paldies.html">
-        <input type="text" name="_honey" style="display:none">
+      <form class="inquiry-form" id="inquiry-form" method="POST" action="/api/orders/submit" enctype="multipart/form-data" novalidate>
         <div class="field">
           <label for="vards">Vārds</label>
           <input id="vards" name="vards" type="text" autocomplete="name" required aria-describedby="name-error">
@@ -175,12 +171,14 @@
   </footer>
   <button class="scroll-top" type="button" aria-label="Uz augšu" hidden>↑</button>
   <script src="js/main.js"></script>
+  <script src="js/order-delivery.js"></script>
   <script>
     (() => {
       'use strict';
       const form = document.getElementById('inquiry-form');
       const formError = document.getElementById('form-error');
       if (!form || !formError) return;
+      const delivery = window.PrintStichDelivery.setup(form, document.getElementById("submit-button"));
       const fields = {
         name: { input: document.getElementById('vards'), error: document.getElementById('name-error') },
         contact: { input: document.getElementById('kontakts'), error: document.getElementById('contact-error') },
@@ -278,8 +276,17 @@
         return valid;
       };
 
-      form.addEventListener('submit', (event) => {
-        if (!validate()) event.preventDefault();
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!validate()) return;
+        try {
+          await delivery.send('contact');
+          window.location.assign('/paldies');
+        } catch(e) {
+          formError.textContent=e?.message || 'Nosūtīšana neizdevās. Sazinies ar PrintStich.';
+          formError.hidden=false;
+          formError.classList.add('is-error');
+        }
       });
     })();
   </script>
