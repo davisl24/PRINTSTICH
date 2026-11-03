@@ -199,9 +199,15 @@
     if (!el.turnstile) return;
     widgetId = captcha.render(el.turnstile, {sitekey: cfg.sitekey, theme:'auto'});
     isConfigured = true;
+    document.body.dataset.photoOrdersLive = 'true';
+    document.querySelector('.fp-demo-note')?.setAttribute('hidden', '');
+    if (document.title.includes(' — pasūtījuma demo')) {
+      document.title = document.title.replace(' — pasūtījuma demo', '');
+    }
     [el.name, el.contact, el.comment].forEach(input => { if (input) input.disabled = false; });
     if (el.submit) el.submit.disabled = false;
     if (el.demoHint) el.demoHint.hidden = true;
+    render();
   }).catch(() => showError('Drošības pārbaudi neizdevās ielādēt.'));
   el.submit?.addEventListener('click', async () => {
     if (!isConfigured || widgetId === null || el.submit.disabled) return;
