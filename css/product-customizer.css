@@ -1741,3 +1741,8 @@ html[data-theme="dark"] .customizer-page .customizer-product-stats .product-stat
   .customizer-page .customizer-fieldset + .customizer-fieldset { margin-top: 1.05rem; }
   .customizer-page .customizer-fieldset legend { margin-bottom: .7rem; }
 }
+
+/* Five products: preserve readable cards at laptop widths. Mobile keeps two columns. */
+@media (min-width: 769px) and (max-width: 1150px) {
+  .product-visual-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
