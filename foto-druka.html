@@ -53,7 +53,7 @@
   <script>try{const key='printstich-theme';const selected=sessionStorage.getItem(key);const c=JSON.parse(localStorage.getItem('printstich-consent-v1')||'null');const saved=c&&c.version===1&&c.preferences===true?localStorage.getItem(key):null;const theme=selected||saved;if(theme==='dark'||theme==='light')document.documentElement.setAttribute('data-theme',theme)}catch(e){}</script>
 
 </head>
-<body>
+<body data-photo-orders-live="false" data-turnstile-sitekey="">
   <a class="skip-link" href="#top">Pāriet uz saturu</a>
   <header class="site-header" data-header>
     <div class="container header-inner">
@@ -88,16 +88,19 @@
             <input type="file" id="fp-files" accept="image/jpeg,image/png,image/webp" multiple hidden>
             <span class="fp-drop-symbol" aria-hidden="true">+</span>
             <strong>Ievelc attēlus šeit vai izvēlies failus</strong>
-            <span>JPG, PNG vai WebP · var pievienot vairākus reizē</span>
+            <span>JPG, PNG vai WebP · līdz 20 MB kopā; lielākam albumam izmanto saiti</span>
             <button type="button" class="fp-small-button" id="fp-pick">Izvēlēties attēlus</button>
           </div>
           <div class="fp-upload-meta"><span id="fp-file-status" aria-live="polite">Nav pievienota neviena fotogrāfija</span><button type="button" id="fp-clear" class="fp-text-button" hidden>Notīrīt visu</button></div>
+          <p class="fp-limit-note" id="fp-size-warning" role="status" hidden>Šis pasūtījums pārsniedz 20 MB vai 25 failus. Augšupielādē tos Failiem.lv un izmanto lejupielādes saiti.</p>
           <details class="fp-external" id="fp-external-details">
             <summary>Vai fotogrāfijas jau ir Failiem.lv vai citā servisā? <span aria-hidden="true">+</span></summary>
             <div class="fp-external-body">
               <label for="fp-link">Koplietojama lejupielādes saite</label>
               <input type="url" id="fp-link" placeholder="https://failiem.lv/u/..." inputmode="url">
-              <p>Saite būs alternatīva lieliem albumiem. Demo režīmā tā nekur netiek nosūtīta.</p>
+              <label for="fp-album-count">Fotogrāfiju skaits albumā</label>
+              <input type="number" id="fp-album-count" min="1" max="9999" step="1" inputmode="numeric" placeholder="Piemēram, 600">
+              <p>Lieliem albumiem pievieno lejupielādes saiti un norādi fotogrāfiju skaitu. Pielikumus un saiti vienlaikus nesūtām.</p>
             </div>
           </details>
         </section>
@@ -123,11 +126,15 @@
         <section class="fp-panel fp-review" aria-labelledby="fp-step-4">
           <div class="fp-step-head"><span class="fp-index">04</span><div><h2 id="fp-step-4">Nosūti pieprasījumu</h2><p>Pirms nodošanas PrintStich pārbaudīsim bildes, kvalitāti un precīzu cenu.</p></div></div>
           <div class="fp-review-inputs">
-            <label class="fp-field"><span>Vārds</span><input placeholder="Tavs vārds" type="text" disabled></label>
-            <label class="fp-field"><span>Telefons vai e-pasts</span><input placeholder="Kontakti saziņai" type="text" disabled></label>
+            <label class="fp-field"><span>Vārds</span><input id="fp-customer-name" placeholder="Tavs vārds" type="text" autocomplete="name" maxlength="100" required disabled></label>
+            <label class="fp-field"><span>Telefons vai e-pasts</span><input id="fp-customer-contact" placeholder="Kontakti saziņai" type="text" maxlength="160" required disabled></label>
           </div>
-          <button type="button" class="button fp-submit" disabled>Nosūtīt foto pasūtījumu</button>
-          <p class="fp-not-live">Demo priekšskatījums — īstā nosūtīšana, failu glabāšana un kontaktu ievade tiks pieslēgta pēc testēšanas.</p>
+          <label class="fp-field fp-comment-field"><span>Komentārs (neobligāti)</span><textarea id="fp-customer-comment" rows="3" maxlength="1200" placeholder="Papildu informācija par pasūtījumu" disabled></textarea></label>
+          <div id="fp-turnstile"></div>
+          <p class="fp-limit-note" id="fp-submit-error" role="alert" hidden></p>
+          <p class="fp-submit-status" id="fp-submit-status" role="status" hidden></p>
+          <button id="fp-submit" type="button" class="button fp-submit" disabled>Nosūtīt foto pasūtījumu</button>
+          <p class="fp-not-live" id="fp-demo-hint">Demo priekšskatījums — pasūtījumu nosūtīšana tiks aktivizēta tikai pēc drošības un e-pasta piegādes testiem.</p>
         </section>
       </div>
       <aside class="fp-sidebar" aria-label="Pasūtījuma kopsavilkums">
