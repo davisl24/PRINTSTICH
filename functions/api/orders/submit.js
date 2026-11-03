@@ -44,7 +44,7 @@ function buildContact(form) {
   if(!name || name.length>100 || !contactOK(contact)||!knownTopics.has(topic)
       || (topic==='Cits'&&!other) || message.length<10 || message.length>3000)
     throw Error('Pārbaudi vārdu, kontaktus, tēmu un ziņojumu.');
-  const attachments=form.getAll('pielikums').filter(validFile);
+  const attachments=form.getAll('pielikums').filter(f=>validFile(f) && f.size>0);
   if(attachments.length>1) throw Error('Drīkst pievienot vienu failu.');
   return {kind:'contact',contact,attachments,
     subject:'PrintStich — jauns kontaktu pieprasījums',
