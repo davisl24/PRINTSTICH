@@ -41,14 +41,46 @@
     el.size.innerHTML='<option value="">Izvēlies izmēru</option>'+sizes.map(size=>`<option value="${safe(size)}">${safe(size)}</option>`).join('');
     if(sizes.includes(wanted)) el.size.value=wanted;
   }
+  // Athletic block numerals, traced to match the customer's original sleeve number.
+  // SVG contours replace Georgia text so the typeface does not vary by device.
+  const JERSEY_NUMERALS = Object.freeze({
+    '0': 'M9 1 H30 L37 8 V50 L30 57 H9 L2 50 V8 Z M16 13 V45 H23 V13 Z',
+    '1': 'M3 14 L21 1 H33 V45 H38 V57 H4 V45 H19 V17 L10 23 Z',
+    '2': 'M9 1 H30 L37 8 V25 L12 44 H37 V57 H2 V41 L27 22 V13 H15 V20 H2 V8 Z',
+    '3': 'M8 1 H30 L37 8 V24 L32 29 L37 34 V50 L30 57 H8 L2 51 V42 H15 V45 H24 V35 H12 V23 H24 V13 H15 V20 H2 V8 Z',
+    '4': 'M24 1 H37 V57 H24 V40 H2 V28 L15 1 H28 L17 29 H24 Z',
+    '5': 'M3 1 H37 V13 H16 V22 H31 L37 29 V50 L31 57 H8 L2 51 V42 H15 V45 H24 V33 H2 Z',
+    // The 6's cut-out and squared inner counter follow Maija's original print.
+    '6': 'M32 1 H9 L2 8 V50 L8 57 H31 L37 51 V30 L32 23 H18 V14 H30 L37 18 V1 Z M17 35 V45 H23 V35 Z',
+    '7': 'M2 1 H37 V14 L20 57 H6 L23 14 H2 Z',
+    '8': 'M8 1 H31 L37 8 V23 L32 29 L37 35 V50 L31 57 H8 L2 50 V35 L7 29 L2 23 V8 Z M16 13 V23 H23 V13 Z M16 35 V45 H23 V35 Z',
+    '9': 'M8 1 H31 L37 8 V50 L31 57 H7 V45 H23 V35 H8 L2 28 V8 Z M16 13 V23 H23 V13 Z'
+  });
+
+  function numberArt() {
+    const value = state.number;
+    if (!/^\d{1,2}$/.test(value)) return '';
+    const {x, y, font} = chosen().sleeve;
+    const scale = font / 60 * (value.length === 2 ? 0.78 : 1);
+    const glyphWidth = 39;
+    const gap = 4;
+    const fullWidth = glyphWidth * value.length + gap * (value.length - 1);
+    const paths = [...value].map((digit, index) => {
+      const d = JERSEY_NUMERALS[digit];
+      const xPosition = index * (glyphWidth + gap);
+      return '<g transform="translate(' + xPosition + ' 0)">' +
+        '<path class="lb-num-outer" d="' + d + '"/>' +
+        '<path class="lb-num-inner" d="' + d + '"/>' +
+        '</g>';
+    }).join('');
+    return '<g data-lb-overlay transform="translate(' + x + ' ' + y + ') scale(' + scale + ') translate(' +
+      (-fullWidth / 2) + ' -29)">' + paths + '</g>';
+  }
+
   function numberSvg() {
-    const {width,height,x,y,font}=chosen().sleeve;
-    const text=state.number||'—';
-    const size=font*(text.length===2?.78:1);
-    return `<svg class="lb-number-overlay" viewBox="0 0 ${width} ${height}" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-      <text class="lb-num-back" x="${x}" y="${y}" font-size="${size}" data-lb-overlay>${safe(text)}</text>
-      <text class="lb-num-face" x="${x}" y="${y}" font-size="${size}" data-lb-overlay>${safe(text)}</text>
-    </svg>`;
+    const {width, height} = chosen().sleeve;
+    return '<svg class="lb-number-overlay" viewBox="0 0 ' + width + ' ' + height +
+      '" aria-hidden="true" preserveAspectRatio="xMidYMid meet">' + numberArt() + '</svg>';
   }
   const views=[['front','Priekšpuse'],['back','Aizmugure'],['sleeve','Piedurkne']];
   function renderGallery() {
@@ -66,8 +98,8 @@
     }
   }
   function updateNumberVisual() {
-    const text=state.number||'—';
-    $$('[data-lb-overlay]',el.gallery).forEach(node=>{node.textContent=text;node.setAttribute('font-size',String(chosen().sleeve.font*(text.length===2?.78:1)));});
+    const svg = $('.lb-number-overlay', el.gallery);
+    if (svg) svg.innerHTML = numberArt();
   }
   function renderPrice() {
     el.unit.textContent=eur(chosen().price)+' / gab.';
