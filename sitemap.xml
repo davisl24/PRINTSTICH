@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://printstich.vercel.app/</loc><lastmod>2026-10-19</lastmod></url>
-  <url><loc>https://printstich.vercel.app/pakalpojumi.html</loc><lastmod>2026-10-19</lastmod></url>
-  <url><loc>https://printstich.vercel.app/konfigurators.html</loc><lastmod>2026-10-19</lastmod></url>
-  <url><loc>https://printstich.vercel.app/musu-darbi.html</loc><lastmod>2026-10-19</lastmod></url>
-  <url><loc>https://printstich.vercel.app/kontakti.html</loc><lastmod>2026-10-19</lastmod></url>
+  <url>
+    <loc>https://printstich.lv/</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://printstich.lv/pakalpojumi</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://printstich.lv/konfigurators</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://printstich.lv/musu-darbi</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://printstich.lv/kontakti</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
 </urlset>
