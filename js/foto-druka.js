@@ -228,6 +228,9 @@
     if ((state.items.length > 0 && link) || (!state.items.length && !link)) {
       showError('Izvēlies vienu variantu: pievienoti foto faili vai albuma saite.'); return;
     }
+    if (state.rejectedFiles) {
+      showError('Daļa attēlu netika pievienota. Notīri izvēli un pievieno mazāku pasūtījumu vai izmanto Failiem.lv saiti.'); return;
+    }
     if (state.items.length > MAX_ATTACHMENTS || bytes > MAX_ATTACHMENTS_BYTES) {
       showError('Pārāk daudz attēlu. Izmanto Failiem.lv saiti.'); return;
     }
