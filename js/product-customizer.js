@@ -58,7 +58,7 @@
     return isSleeve(sideKey) ? { w: SLEEVE_MAX_MM, h: SLEEVE_MAX_MM } : { w: 297, h: 420 };
   };
   const createSideState = sideKey => ({ libraryId: null, x: 0.5, y: 0.5, scale: isSleeve(sideKey) ? SLEEVE_PRINT_MM / SLEEVE_MAX_MM : 0.5, rotation: 0, preset: 'center' });
-  const state = { step: 1, productId: 'tshirt', color: '00', previewColor: '00', colorListExpanded: false, productDetailsOpen: false, size: '', sizeQuantities: {}, activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
+  const state = { step: 1, productId: 'tshirt', color: '12', previewColor: '12', colorListExpanded: false, productDetailsOpen: false, size: '', sizeQuantities: {}, activeSide: 'front', mobileSleevesOpen: false, svgLoaded: false, svgRoot: null, svgPath: '', submitting: false, designSelected: false, library: [], sides: Object.fromEntries(SIDE_KEYS.map(key => [key, createSideState(key)])) };
   const svgMarkupCache = new Map();
   const currentSide = () => state.sides[state.activeSide];
   const getLibraryItem = libraryId => state.library.find(item => item.id === libraryId) || null;
@@ -298,8 +298,9 @@
         els.productDetailsToggle.innerHTML = 'Skatīt detaļas <span aria-hidden="true">↓</span>';
       }
     }
-    state.color = candidate.krasas?.some(color => color.id === previousColor)
-      ? previousColor
+    const defaultColor = candidate.id === 'womens' ? '00' : '12';
+    state.color = candidate.krasas?.some(color => color.id === defaultColor)
+      ? defaultColor
       : (candidate.krasas?.[0]?.id || '');
     state.previewColor = state.color || (candidate.krasas?.[0]?.id || '00');
 
