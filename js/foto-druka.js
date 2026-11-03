@@ -187,32 +187,22 @@
 
   /* Resend activation requires a verified domain, secure Turnstile site/secret,
      environment secrets and successful real-world order tests. Demo stays OFF. */
-  const isConfigured = document.body.dataset.photoOrdersLive === 'true'
-    && Boolean(document.body.dataset.turnstileSitekey);
+  let isConfigured = false;
   let widgetId = null;
   const showError = message => {
     if (el.submitError) { el.submitError.textContent = message; el.submitError.hidden = false; }
     if (el.submitStatus) el.submitStatus.hidden = true;
   };
-  if (isConfigured) {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-    script.async = true;
-    script.onload = () => {
-      if (!window.turnstile || !el.turnstile) return;
-      try {
-        widgetId = window.turnstile.render(el.turnstile, {
-          sitekey: document.body.dataset.turnstileSitekey,
-          theme: 'auto'
-        });
-        [el.name, el.contact, el.comment].forEach(input => { if (input) input.disabled = false; });
-        if (el.submit) el.submit.disabled = false;
-        if (el.demoHint) el.demoHint.hidden = true;
-      } catch { showError('Drošības pārbaudi neizdevās ielādēt.'); }
-    };
-    script.onerror = () => showError('Drošības pārbaudi neizdevās ielādēt.');
-    document.head.appendChild(script);
-  }
+  window.PrintStichDelivery.config().then(async cfg => {
+    if (!cfg.photoEnabled || !cfg.sitekey) return;
+    const captcha = await window.PrintStichDelivery.loadTurnstile();
+    if (!el.turnstile) return;
+    widgetId = captcha.render(el.turnstile, {sitekey: cfg.sitekey, theme:'auto'});
+    isConfigured = true;
+    [el.name, el.contact, el.comment].forEach(input => { if (input) input.disabled = false; });
+    if (el.submit) el.submit.disabled = false;
+    if (el.demoHint) el.demoHint.hidden = true;
+  }).catch(() => showError('Drošības pārbaudi neizdevās ielādēt.'));
   el.submit?.addEventListener('click', async () => {
     if (!isConfigured || widgetId === null || el.submit.disabled) return;
     if (el.submitError) el.submitError.hidden = true;
