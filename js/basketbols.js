@@ -24,7 +24,7 @@
     options: $$('[data-lb-product]'), gallery: $('#lb-gallery'), previewTitle: $('#lb-preview-title'),
     radio: $$('[name="lb-variant"]'), numberGroup: $('#lb-number-group'), number: $('#lb-number'),
     size: $('#lb-size'), quantity: $('#lb-quantity'), less: $('#lb-less'), more: $('#lb-more'),
-    price: $('#lb-price'), unit: $('#lb-unit'), year: $('#lb-year'), form: $('#lb-order-form'),
+    price: $('#lb-price'), unit: $('#lb-unit'), year: $('#lb-year'), yearGroup: $('#lb-year-group'), form: $('#lb-order-form'),
     submit: $('#lb-submit'), name: $('#lb-name'), contact: $('#lb-contact'), comment: $('#lb-comment'),
     error: $('#lb-error'), status: $('#lb-status'), turnstile: $('#lb-turnstile'), demo: $('#lb-demo-note')
   };
@@ -152,7 +152,7 @@
       const hide=state.variant==='logo'&&view!=='front';
       return `<figure class="lb-view lb-view-${view}"${hide?' hidden':''}>
         <div class="lb-view-art"><div class="lb-image-wrap"><img src="${model.images[view]}" alt="${safe(model.name)}: ${label.toLowerCase()} ar Limbaži Basketball dizainu" loading="${view==='sleeve'?'eager':'lazy'}" width="${view==='sleeve'?model.sleeve.width:600}">
-        ${view==='sleeve'?numberSvg():''}${view==='front'||view==='back'?yearSvg(view):''}</div></div><figcaption>${label}</figcaption></figure>`;
+        ${view==='sleeve'?numberSvg():''}${state.variant==='number'&&(view==='front'||view==='back')?yearSvg(view):''}</div></div><figcaption>${label}</figcaption></figure>`;
     }).join('');
     if(state.variant==='number' && matchMedia('(max-width:690px)').matches){
       const sleeve=$('.lb-view-sleeve',el.gallery);
@@ -171,6 +171,7 @@
     el.options.forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.lbProduct===state.product)));
     el.previewTitle.textContent=chosen().name+' — priekšskatījums';
     el.numberGroup.hidden=state.variant!=='number';
+    if(el.yearGroup) el.yearGroup.hidden=state.variant!=='number';
     refreshSize();renderGallery();renderPrice();
   }
   el.options.forEach(button=>button.addEventListener('click',()=>{
@@ -185,6 +186,7 @@
     state.variant=radio.value;
     state.sent=false;
     el.numberGroup.hidden=state.variant!=='number';
+    if(el.yearGroup) el.yearGroup.hidden=state.variant!=='number';
     renderGallery();
   }));
   el.year.addEventListener('input', () => {
@@ -224,11 +226,11 @@
     const validContact=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)||/^[+0-9()\s-]{7,22}$/.test(contact);
     if(!name || name.length>100 || !validContact || !el.size.value){showError('Norādi vārdu, kontaktus un izmēru.');return;}
     if(state.variant==='number'&&!/^\d{1,2}$/.test(state.number)){showError('Ievadi spēlētāja numuru (1–2 cipari).');return;}
-    if(!/^\d{4}$/.test(state.year)){showError('Ievadi gadu ar četriem cipariem.');return;}
+    if(state.variant==='number'&&!/^\d{4}$/.test(state.year)){showError('Ievadi gadu ar četriem cipariem.');return;}
     const token=window.turnstile?.getResponse(captchaId);
     if(!token){showError('Pabeidz drošības pārbaudi.');return;}
     const payload={kind:'collection',name,contact,comment:el.comment.value.trim(),size:el.size.value,product:state.product,
-      variant:state.variant,number:state.variant==='number'?state.number:null,year:state.year,quantity:state.quantity,turnstileToken:token};
+      variant:state.variant,number:state.variant==='number'?state.number:null,year:state.variant==='number'?state.year:null,quantity:state.quantity,turnstileToken:token};
     el.submit.disabled=true;el.submit.textContent='Nosūta…';
     try {
       const resp=await fetch('/api/orders/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
