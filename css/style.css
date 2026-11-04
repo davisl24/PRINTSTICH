@@ -1865,3 +1865,20 @@ main { scroll-margin-top: 100px; }
   .photo-order-progress b { width:22px; height:22px; flex-basis:22px; }
 }
 @media(prefers-reduced-motion:reduce){.photo-order-feature *, .photo-order-feature *::before { scroll-behavior:auto; }}
+
+
+/* Shared heading rhythm: preserve page-specific layout and approved sections. */
+:root { --ps-heading-xl: clamp(2.35rem, 5vw, 4.85rem); --ps-heading-lg: clamp(1.85rem, 3.3vw, 3.35rem); --ps-section-gap: clamp(3.25rem, 6vw, 5.5rem); }
+main > .section { padding-block: var(--ps-section-gap); }
+main > .section h2 { line-height: 1.1; text-wrap: balance; }
+.create-own h2, .ready-design-feature h2, .photo-order-copy h2 { font-size: var(--ps-heading-lg); line-height: 1.1; letter-spacing: -.04em; max-width: 18ch; white-space: normal; margin-bottom: 1rem; }
+.ready-design-feature { background: var(--color-bg); }
+.ready-design-feature .create-own-shell { align-items: center; }
+.ready-design-feature .create-own-media { display: flex; align-items: center; justify-content: center; }
+.ready-design-feature .create-own-media img { max-height: 440px; width: auto; max-width: 100%; object-fit: contain; }
+@media (max-width: 767px) {
+  :root { --ps-heading-lg: clamp(1.85rem, 7.3vw, 2.45rem); --ps-section-gap: 3rem; }
+  main > .section { padding-block: var(--ps-section-gap); }
+  .create-own h2, .ready-design-feature h2, .photo-order-copy h2 { font-size: var(--ps-heading-lg); line-height: 1.12; margin-bottom: .75rem; }
+  .ready-design-feature .create-own-media img { max-height: 300px; }
+}
