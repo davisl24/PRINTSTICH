@@ -95,14 +95,14 @@ function buildCollection(data) {
   const sizes=new Set(['XS','S','M','L','XL','2XL','3XL','4XL','5XL','6XL','7XL','8XL','9XL','10XL','11XL','12XL','134','146','158']);
   if(!name||name.length>100||!contactOK(contact)||comment.length>1200
     ||!Object.hasOwn(prices,product)||!variants.has(variant)||!sizes.has(size)
-    ||!/^\d{4}$/.test(year)||(variant==='number'&&!/^\d{1,2}$/.test(number))
+    ||(variant==='number'&&!/^\d{4}$/.test(year))||(variant==='number'&&!/^\d{1,2}$/.test(number))
     ||!Number.isSafeInteger(quantity)||quantity<1||quantity>99)
     throw Error('Pārbaudi produktu, izmēru, numuru un kontaktus.');
   return {kind:'collection',contact,attachments:[],
     subject:'PrintStich — Limbaži Basketball pasūtījums',
     body:['LIMBAŽI BASKETBALL PASŪTĪJUMS','Vārds: '+name,'Kontakts: '+contact,
       'Produkts: '+names[product], 'Apdruka: '+(variant==='number'?'Pilnais dizains ar numuru':'Tikai logo priekšpusē'),
-      'Numurs: '+(variant==='number'?number:'Nav'), 'Gads: '+year,
+      ...(variant==='number'?['Numurs: '+number,'Gads: '+year]:[]),
       'Izmērs: '+size,'Daudzums: '+quantity,
       'Cena par gabalu: '+prices[product]+' EUR',
       'Summa: '+(prices[product]*quantity)+' EUR',
