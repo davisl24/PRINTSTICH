@@ -231,7 +231,7 @@
       variant:state.variant,number:state.variant==='number'?state.number:null,year:state.year,quantity:state.quantity,turnstileToken:token};
     el.submit.disabled=true;el.submit.textContent='Nosūta…';
     try {
-      const resp=await fetch('/api/collection-orders/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+      const resp=await fetch('/api/orders/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
       const body=await resp.json();if(!resp.ok||!body.success)throw Error(body.error||'Neizdevās nosūtīt pasūtījumu.');
       el.submit.textContent='Pieteikums nosūtīts';
       if(el.status){el.status.textContent='Pieteikums ir nosūtīts PrintStich. Ar tevi sazināsies par izgatavošanu.';el.status.hidden=false;}
