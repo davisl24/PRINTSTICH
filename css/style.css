@@ -1910,3 +1910,27 @@ body:has(.ready-design-feature) main .photo-order-copy h2 { white-space: normal;
     margin-bottom: .85rem;
   }
 }
+
+
+/* Page-level typography: consistent content hierarchy, without overriding form labels or product cards. */
+.page-intro h1, .contact-details > .container > h1, .customizer-intro h1 {
+  font-size: clamp(2.5rem, 5vw, 4.6rem);
+  line-height: 1.07;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.services-page-intro + .section h2, .starting-prices h2,
+.portfolio-intro ~ .section .create-own h2,
+.contact-details .inquiry-copy h2,
+.services .create-own h2 {
+  font-size: clamp(1.9rem, 3.3vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -.04em;
+}
+@media (max-width: 767px) {
+  .page-intro h1, .contact-details > .container > h1, .customizer-intro h1 { font-size: clamp(2.3rem, 9vw, 3.15rem); }
+  .services-page-intro + .section h2, .starting-prices h2,
+  .portfolio-intro ~ .section .create-own h2,
+  .contact-details .inquiry-copy h2,
+  .services .create-own h2 { font-size: clamp(1.85rem, 7.2vw, 2.35rem); }
+}
