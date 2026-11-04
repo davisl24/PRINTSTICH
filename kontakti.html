@@ -110,15 +110,15 @@
         </div>
 
         <div class="field field-full inquiry-upload">
-          <span class="field-label">Pievieno failu <small>— nav obligāti</small></span>
+          <span class="field-label">Pievieno attēlus vai failus <small>— nav obligāti, līdz 10 MB kopā</small></span>
           <label class="file-drop" for="idejas-fails">
             <span class="file-drop-icon" aria-hidden="true">↑</span>
             <span class="file-drop-copy">
-              <strong>Pievienot failu</strong>
+              <strong>Pievienot failus</strong>
               <small>Logo, skice, attēls vai piemērs · PNG, JPG, PDF, SVG</small>
             </span>
           </label>
-          <input class="file-input" id="idejas-fails" name="pielikums" type="file" accept=".png,.jpg,.jpeg,.pdf,.svg,image/png,image/jpeg,application/pdf,image/svg+xml">
+          <input class="file-input" id="idejas-fails" name="pielikums" type="file" multiple accept=".png,.jpg,.jpeg,.pdf,.svg,image/png,image/jpeg,application/pdf,image/svg+xml">
           <div class="file-selected" data-file-selected hidden>
             <span data-file-name></span>
             <button type="button" data-file-remove>Noņemt</button>
@@ -218,9 +218,9 @@
 
       if (fileInput && fileSelected && fileName) {
         fileInput.addEventListener('change', () => {
-          const file = fileInput.files?.[0];
-          fileSelected.hidden = !file;
-          fileName.textContent = file ? file.name : '';
+          const files = [...(fileInput.files || [])];
+          fileSelected.hidden = !files.length;
+          fileName.textContent = files.map(file => file.name).join(', ');
         });
       }
       fileRemove?.addEventListener('click', () => {
