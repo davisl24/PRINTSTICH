@@ -1934,3 +1934,68 @@ body:has(.ready-design-feature) main .photo-order-copy h2 { white-space: normal;
   .contact-details .inquiry-copy h2,
   .services .create-own h2 { font-size: clamp(1.85rem, 7.2vw, 2.35rem); }
 }
+
+
+/* PrintStich 2026-11: unified page and feature typography; visual direction v1.2 scale. */
+:root {
+  --ps-page-title: clamp(3rem, 5vw, 4.5rem);
+  --ps-feature-title: clamp(1.875rem, 3.2vw, 3rem);
+  --ps-feature-gap: clamp(2rem, 5vw, 5rem);
+}
+/* Page H1: consistent across service, portfolio, contact and ordering pages. */
+main .page-intro h1,
+main .contact-details > .container > h1,
+main .customizer-intro h1,
+main .fp-intro h1,
+main .lb-intro h1 {
+  font-size: var(--ps-page-title);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  font-weight: 700;
+  max-width: 100%;
+  text-wrap: balance;
+}
+/* Homepage three feature titles: identical size and rhythm. */
+main .create-own > .container .create-own-intro h2,
+main .ready-design-feature .create-own-intro h2,
+main .photo-order-feature .photo-order-copy h2 {
+  font-size: var(--ps-feature-title);
+  line-height: 1.12;
+  letter-spacing: -.04em;
+  font-weight: 650;
+  white-space: normal;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+/* Alternating desktop composition: copy/media, media/copy, copy/media. */
+@media (min-width: 768px) {
+  main .create-own > .create-own-shell,
+  main .ready-design-feature > .create-own-shell,
+  main .photo-order-feature > .photo-order-shell {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    align-items: center;
+    column-gap: var(--ps-feature-gap);
+  }
+  main .create-own > .create-own-shell > .create-own-copy { grid-column: 1; grid-row: 1; }
+  main .create-own > .create-own-shell > .create-own-media { grid-column: 2; grid-row: 1; }
+  main .ready-design-feature > .create-own-shell > .create-own-media { grid-column: 1; grid-row: 1; }
+  main .ready-design-feature > .create-own-shell > .create-own-copy { grid-column: 2; grid-row: 1; }
+  main .photo-order-feature > .photo-order-shell > .photo-order-copy { grid-column: 1; grid-row: 1; }
+  main .photo-order-feature > .photo-order-shell > .photo-order-visual { grid-column: 2; grid-row: 1; }
+}
+@media (max-width: 767px) {
+  :root { --ps-page-title: clamp(2rem, 8.5vw, 2.75rem); --ps-feature-title: clamp(1.875rem, 7vw, 2.25rem); }
+  main .create-own > .container .create-own-intro h2,
+  main .ready-design-feature .create-own-intro h2,
+  main .photo-order-feature .photo-order-copy h2 { margin-bottom: 1rem; }
+  main .create-own > .create-own-shell,
+  main .ready-design-feature > .create-own-shell,
+  main .photo-order-feature > .photo-order-shell { display: flex; flex-direction: column; gap: 1.5rem; }
+  main .create-own > .create-own-shell > .create-own-copy,
+  main .ready-design-feature > .create-own-shell > .create-own-copy,
+  main .photo-order-feature > .photo-order-shell > .photo-order-copy { order: 0; width: 100%; }
+  main .create-own > .create-own-shell > .create-own-media,
+  main .ready-design-feature > .create-own-shell > .create-own-media,
+  main .photo-order-feature > .photo-order-shell > .photo-order-visual { order: 1; width: 100%; }
+}
