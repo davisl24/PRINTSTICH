@@ -1882,3 +1882,31 @@ main > .section h2 { line-height: 1.1; text-wrap: balance; }
   .create-own h2, .ready-design-feature h2, .photo-order-copy h2 { font-size: var(--ps-heading-lg); line-height: 1.12; margin-bottom: .75rem; }
   .ready-design-feature .create-own-media img { max-height: 300px; }
 }
+
+
+/* Homepage heading system: one consistent H2 scale across feature, services, work and process. */
+body:has(.ready-design-feature) main .create-own h2,
+body:has(.ready-design-feature) main .ready-design-feature h2,
+body:has(.ready-design-feature) main .photo-order-copy h2,
+body:has(.ready-design-feature) main .services h2,
+body:has(.ready-design-feature) main .work h2,
+body:has(.ready-design-feature) main .process h2 {
+  font-size: clamp(2rem, 3.3vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -.04em;
+  font-weight: 650;
+  text-wrap: balance;
+}
+body:has(.ready-design-feature) main .photo-order-copy h2 { white-space: normal; max-width: 18ch; }
+@media (max-width: 767px) {
+  body:has(.ready-design-feature) main .create-own h2,
+  body:has(.ready-design-feature) main .ready-design-feature h2,
+  body:has(.ready-design-feature) main .photo-order-copy h2,
+  body:has(.ready-design-feature) main .services h2,
+  body:has(.ready-design-feature) main .work h2,
+  body:has(.ready-design-feature) main .process h2 {
+    font-size: clamp(1.85rem, 7.2vw, 2.35rem);
+    line-height: 1.12;
+    margin-bottom: .85rem;
+  }
+}
