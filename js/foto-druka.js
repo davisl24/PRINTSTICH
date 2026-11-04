@@ -155,7 +155,14 @@
   el.more.addEventListener('click',()=>{state.shown+=20;render()});
   el.link.addEventListener('input',summary);
   el.albumCount?.addEventListener('input',summary);
-  [el.size, el.paper, el.qty, el.fit].forEach(input=>input.addEventListener('change',summary));
+  [el.size, el.paper, el.qty, el.fit].forEach(input=>input.addEventListener('change',()=>{
+    // With one photo and one print variant, global choices are the active choices.
+    // For multiple photos/variants, preserve individual overrides until Apply is clicked.
+    if(state.items.length===1 && state.items[0].positions.length===1){
+      Object.assign(state.items[0].positions[0],defaults());
+      render();
+    } else summary();
+  }));
 
   el.list.addEventListener('click',event=>{
     const button=event.target.closest('button[data-action]');
